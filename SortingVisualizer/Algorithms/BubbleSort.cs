@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-
 namespace SortingVisualizer.Algorithms
 {
     public class BubbleSort : ISortAlgorithms
@@ -17,10 +16,14 @@ namespace SortingVisualizer.Algorithms
         /// </summary>
         private int[] array;
         private Thread SleepThread = null;
-        public int iterations { get; set; }
-        public BubbleSort(int[] array)
+        public int iterations;
+        private string name = "BubbleSort";
+        private int currentlyMoving;
+        private int sleepTime;
+        public BubbleSort(int[] array, int sleepTime)
         {
             this.array = array;
+            this.sleepTime = sleepTime;
         }
 
         public void StartThread()
@@ -41,11 +44,27 @@ namespace SortingVisualizer.Algorithms
                         int temp = array[j + 1];
                         array[j + 1] = array[j];
                         array[j] = temp;
+                        currentlyMoving = array[j];
                         iterations++;
-                        Thread.Sleep(100);
+                        Thread.Sleep(sleepTime);
                     }
                 }
             }
+        }
+
+        public string getName()
+        {
+            return name;
+        }
+
+        public int getIterations()
+        {
+            return iterations;
+        }
+
+        public int getCurrentMoving()
+        {
+            return currentlyMoving;
         }
     }
 }
