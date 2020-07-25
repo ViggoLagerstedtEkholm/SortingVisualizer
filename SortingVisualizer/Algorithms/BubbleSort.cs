@@ -20,10 +20,12 @@ namespace SortingVisualizer.Algorithms
         private string name = "BubbleSort";
         private int currentlyMoving;
         private int sleepTime;
-        public BubbleSort(int[] array, int sleepTime)
+        SortingStarter sortingStarter;
+        public BubbleSort(int[] array, int sleepTime, SortingStarter sortingStarter)
         {
             this.array = array;
             this.sleepTime = sleepTime;
+            this.sortingStarter = sortingStarter;
         }
 
         public void StartThread()
@@ -50,6 +52,7 @@ namespace SortingVisualizer.Algorithms
                     }
                 }
             }
+            Done();
         }
 
         public string getName()
@@ -65,6 +68,11 @@ namespace SortingVisualizer.Algorithms
         public int getCurrentMoving()
         {
             return currentlyMoving;
+        }
+
+        public void Done()
+        {
+            sortingStarter.startData();
         }
     }
 }
