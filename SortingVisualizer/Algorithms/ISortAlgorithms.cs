@@ -13,5 +13,6 @@ namespace SortingVisualizer.Algorithms
         int getIterations();
         void StartThread();
         void Sort();
+        void Done();
     }
 }
