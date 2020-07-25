@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SortingVisualizer.Setup;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,14 @@ namespace SortingVisualizer.Algorithms
         /// </summary>
         private int[] array;
         private Thread SleepThread = null;
-        public int iterations { get; set; }
-        public SelectionSort(int[] array)
+        public int iterations;
+        private string name = "SelectionSort";
+        private int currentlyMoving;
+        private int sleepTime;
+        public SelectionSort(int[] array, int sleepTime)
         {
             this.array = array;
+            this.sleepTime = sleepTime;
         }
         public void StartThread()
         {
@@ -41,7 +46,7 @@ namespace SortingVisualizer.Algorithms
                 }
                 iterations++;
                 Swap(i, smallest);
-                Thread.Sleep(100);
+                Thread.Sleep(sleepTime);
             }
         }
 
@@ -50,6 +55,23 @@ namespace SortingVisualizer.Algorithms
             int temporary = array[first];
             array[first] = array[second];
             array[second] = temporary;
+            currentlyMoving = array[second];
+        }
+
+        public string getName()
+        {
+            return name;
+        }
+
+        public int getIterations()
+        {
+            return iterations;
+        }
+
+
+        public int getCurrentMoving()
+        {
+            return currentlyMoving;
         }
     }
 }
