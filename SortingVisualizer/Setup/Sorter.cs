@@ -13,13 +13,15 @@ namespace SortingVisualizer.Setup
         public Sorter() : base(
             "Sort algorithms!"
             )
-        {
+        {}
 
-        }
-
-        public override void OnLoad(SelectionSort selectionSort)
+        public override void OnLoad(List<ISortAlgorithms> sortAlgorithms)
         {
-            selectionSort.StartThread();
+            foreach(ISortAlgorithms item in sortAlgorithms)
+            {
+                item.StartThread();
+            }
+            
         }
 
         int frame = 0;
