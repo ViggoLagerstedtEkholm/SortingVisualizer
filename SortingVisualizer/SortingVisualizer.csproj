@@ -47,7 +47,11 @@
   <ItemGroup>
     <Compile Include="Algorithms\AlgorithmType.cs" />
     <Compile Include="Algorithms\BubbleSort.cs" />
+    <Compile Include="Algorithms\GnomeSort.cs" />
+    <Compile Include="Algorithms\HeapSort.cs" />
     <Compile Include="Algorithms\ISortAlgorithms.cs" />
+    <Compile Include="Algorithms\MergeSort.cs" />
+    <Compile Include="Algorithms\QuickSort.cs" />
     <Compile Include="Algorithms\SelectionSort.cs" />
     <Compile Include="Setup\Input.cs" />
     <Compile Include="Program.cs" />
