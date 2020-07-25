@@ -10,8 +10,10 @@ namespace SortingVisualizer.Setup
 {
     public class Input
     {
-        public Input(Window window)
+        private SortingStarter sortingStarter;
+        public Input(Window window, SortingStarter sortingStarter)
         {
+            this.sortingStarter = sortingStarter;
             window.KeyDown += Window_KeyDown;
         }
 
@@ -19,7 +21,9 @@ namespace SortingVisualizer.Setup
         {
             if (e.KeyCode == Keys.Escape)
             {
-                Application.Exit();
+                sortingStarter.startData();
+                //Application.Exit();
+                
             }
         }
     }
