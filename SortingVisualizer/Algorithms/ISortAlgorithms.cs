@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace SortingVisualizer.Algorithms
 {
-    interface ISortAlgorithms
+    public interface ISortAlgorithms
     {
+        string getName();
+        int getCurrentMoving();
+        int getIterations();
         void StartThread();
         void Sort();
     }
