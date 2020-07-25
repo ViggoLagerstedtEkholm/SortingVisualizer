@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace SortingVisualizer.Setup
 {
-    class Window : Form
+    public class Window : Form
     {
         public Window()
         {
