@@ -17,18 +17,20 @@ namespace SortingVisualizer.Setup
         private Window Window;
         private string Title;
         private int[] dataSet;
-        private BubbleSort bubbleSort;
-        private SelectionSort selectionSort;
+        private List<ISortAlgorithms> sortAlgorithms;
+        private Input input;
+        private int sleepTime;
         public SortingStarter(string Title) 
         {
             this.Title = Title;
             Window = new Window();
-
             Window.Size = new Size((int)ScreenDimensions.X, (int)ScreenDimensions.Y);
+            sortAlgorithms = new List<ISortAlgorithms>();
+            input = new Input(Window);
+            sleepTime = 5;
 
-            this.dataSet = GenerateArray(200);
-            //bubbleSort = new BubbleSort(dataSet);
-            selectionSort = new SelectionSort(dataSet);
+            this.dataSet = GenerateArray(100);
+            selectAlgorithm(AlgorithmType.BubbleSort);
 
             Window.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Window.Text = Title;
@@ -38,6 +40,18 @@ namespace SortingVisualizer.Setup
             LoopThread.Start();
 
             Application.Run(Window);
+        }
+
+        private void selectAlgorithm(AlgorithmType algorithm)
+        {
+            if(algorithm == AlgorithmType.BubbleSort)
+            {
+                sortAlgorithms.Add(new BubbleSort(dataSet, sleepTime));
+            }
+            else if(algorithm == AlgorithmType.SelectionSort)
+            {
+                sortAlgorithms.Add(new SelectionSort(dataSet, sleepTime));
+            }
         }
 
         private int[] GenerateArray(int values)
@@ -56,7 +70,7 @@ namespace SortingVisualizer.Setup
 
         void SortingLoop()
         {
-            OnLoad(selectionSort);
+            OnLoad(sortAlgorithms);
 
             while (LoopThread.IsAlive)
             {
@@ -64,7 +78,7 @@ namespace SortingVisualizer.Setup
                 {
                     Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); });
                     OnUpdate();
-                    Thread.Sleep(10);
+                    Thread.Sleep(5);
                 }
                 catch
                 { }
@@ -83,12 +97,29 @@ namespace SortingVisualizer.Setup
             {
                 //ScreenDimensions.X
                 g.DrawRectangle(Pens.White, new Rectangle((i * ScreenDimensions.X / dataSet.Length), 0, (ScreenDimensions.X / dataSet.Length), dataSet[i]));
+                g.FillRectangle(new SolidBrush(Color.White), new Rectangle((i * ScreenDimensions.X / dataSet.Length), 0, (ScreenDimensions.X / dataSet.Length), dataSet[i]));
             }
-            g.ResetTransform();
-            g.DrawString("ITERATIONS: " + selectionSort.iterations.ToString(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
+
+           foreach(ISortAlgorithms algo in sortAlgorithms)
+           {
+                int movingValue = algo.getCurrentMoving();
+
+                for (int i = 0; i < dataSet.Length; i++)
+                {
+                    if (dataSet[i] == movingValue)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.Red), new Rectangle((i * ScreenDimensions.X / dataSet.Length), 0, (ScreenDimensions.X / dataSet.Length), dataSet[i]));
+                    }
+                }
+
+                g.ResetTransform();
+
+                g.DrawString("Iterations: " + algo.getIterations(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
+                g.DrawString("Algorithm: " + algo.getName(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100);
+            }
         }
 
-        public abstract void OnLoad(SelectionSort selectionSort);
+        public abstract void OnLoad(List<ISortAlgorithms> sortAlgorithms);
         public abstract void OnUpdate();
     }
 }
