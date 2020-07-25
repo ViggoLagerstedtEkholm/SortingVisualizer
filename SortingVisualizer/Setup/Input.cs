@@ -23,7 +23,7 @@ namespace SortingVisualizer.Setup
             {
                 sortingStarter.startData();
                 //Application.Exit();
-                
+                sortingStarter.ExitApplication();
             }
         }
     }
