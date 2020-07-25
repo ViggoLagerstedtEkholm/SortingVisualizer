@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SortingVisualizer.Setup
@@ -15,23 +16,14 @@ namespace SortingVisualizer.Setup
             )
         {}
 
-        public override void OnExit()
+        public override void OnExit(Thread thread)
         {
-            throw new NotImplementedException();
+            thread.Abort();
         }
-
-        public override void OnLoad(List<ISortAlgorithms> sortAlgorithms, int index)
+        public override void OnLoad(ISortAlgorithms sortAlgorithm, int index)
         {
-            //foreach(ISortAlgorithms item in sortAlgorithms)
-            //{
-            //    item.StartThread();
-            //}
-
-            for(int i = 0; i < sortAlgorithms.Count; i++)
-            {
-                ISortAlgorithms aItem = sortAlgorithms[i];
-                aItem.StartThread();
-            }
+            ISortAlgorithms aItem = sortAlgorithm;
+            aItem.StartThread();
         }
     }
 }
