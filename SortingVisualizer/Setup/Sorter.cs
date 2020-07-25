@@ -15,20 +15,23 @@ namespace SortingVisualizer.Setup
             )
         {}
 
-        public override void OnLoad(List<ISortAlgorithms> sortAlgorithms)
+        public override void OnExit()
         {
-            foreach(ISortAlgorithms item in sortAlgorithms)
-            {
-                item.StartThread();
-            }
-            
+            throw new NotImplementedException();
         }
 
-        int frame = 0;
-        public override void OnUpdate()
+        public override void OnLoad(List<ISortAlgorithms> sortAlgorithms, int index)
         {
-            frame++;
-            Console.Write(frame + ", ");
+            //foreach(ISortAlgorithms item in sortAlgorithms)
+            //{
+            //    item.StartThread();
+            //}
+
+            for(int i = 0; i < sortAlgorithms.Count; i++)
+            {
+                ISortAlgorithms aItem = sortAlgorithms[i];
+                aItem.StartThread();
+            }
         }
     }
 }
