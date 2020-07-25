@@ -20,10 +20,13 @@ namespace SortingVisualizer.Algorithms
         private string name = "SelectionSort";
         private int currentlyMoving;
         private int sleepTime;
-        public SelectionSort(int[] array, int sleepTime)
+        private bool isDone;
+        private SortingStarter sortingStarter;
+        public SelectionSort(int[] array, int sleepTime, SortingStarter sortingStarter)
         {
             this.array = array;
             this.sleepTime = sleepTime;
+            this.sortingStarter = sortingStarter;
         }
         public void StartThread()
         {
@@ -48,6 +51,7 @@ namespace SortingVisualizer.Algorithms
                 Swap(i, smallest);
                 Thread.Sleep(sleepTime);
             }
+            Done();
         }
 
         public void Swap(int first, int second)
@@ -68,10 +72,14 @@ namespace SortingVisualizer.Algorithms
             return iterations;
         }
 
-
         public int getCurrentMoving()
         {
             return currentlyMoving;
+        }
+
+        public void Done()
+        {
+            sortingStarter.startData();
         }
     }
 }
