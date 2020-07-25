@@ -73,6 +73,7 @@ namespace SortingVisualizer.Algorithms
         public void Done()
         {
             sortingStarter.startData();
+            SleepThread.Abort();
         }
     }
 }
