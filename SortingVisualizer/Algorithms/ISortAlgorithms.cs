@@ -14,5 +14,6 @@ namespace SortingVisualizer.Algorithms
         void StartThread();
         void Sort();
         void Done();
+        int getValue(int index);
     }
 }
