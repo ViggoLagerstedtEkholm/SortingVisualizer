@@ -56,6 +56,7 @@ namespace SortingVisualizer.Algorithms
                     Thread.Sleep(sleepTime);
                 }
             }
+            Done();
         }
 
         public string getName()

@@ -100,6 +100,7 @@ namespace SortingVisualizer.Algorithms
                     }
                 }
             }
+            Done();
         }
         public int getCurrentMoving()
         {

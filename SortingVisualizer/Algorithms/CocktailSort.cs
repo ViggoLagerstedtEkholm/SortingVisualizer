@@ -79,6 +79,7 @@ namespace SortingVisualizer.Algorithms
                 }
                 start = start + 1;
             }
+            Done();
         }
         public string getName()
         {

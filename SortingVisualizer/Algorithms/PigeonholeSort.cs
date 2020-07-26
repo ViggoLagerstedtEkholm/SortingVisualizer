@@ -77,6 +77,7 @@ namespace SortingVisualizer.Algorithms
                     currentlyMoving = j + min;
                     iterations++;
             }
+            Done();
         }
         public string getName()
         {

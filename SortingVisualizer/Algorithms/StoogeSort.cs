@@ -36,6 +36,7 @@ namespace SortingVisualizer.Algorithms
         private void temp()
         {
             Sort(array, 0, array.Length - 1);
+            Done();
         }
 
         public void Sort(int[] arr, int l, int h)

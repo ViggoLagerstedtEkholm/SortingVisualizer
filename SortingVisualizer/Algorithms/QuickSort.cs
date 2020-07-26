@@ -63,13 +63,13 @@ namespace SortingVisualizer.Algorithms
                     temp = array[i];
                     array[i] = array[j];
                     array[j] = temp;
+                    currentlyMoving = array[j];
                 }
             }
 
             temp = array[i + 1];
             array[i + 1] = array[end];
             array[end] = temp;
-            currentlyMoving = array[end];
             Thread.Sleep(sleepTime);
             iterations++;
             return i + 1;

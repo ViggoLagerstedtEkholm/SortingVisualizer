@@ -72,6 +72,7 @@ namespace SortingVisualizer.Algorithms
                     }
                 }
             }
+            Done();
         }
         static int getNextGap(int gap)
         {
