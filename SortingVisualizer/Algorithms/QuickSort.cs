@@ -89,10 +89,16 @@ namespace SortingVisualizer.Algorithms
         {
             return currentlyMoving;
         }
+        public int getValue(int index)
+        {
+            return array[index];
+        }
 
         public void Done()
         {
-            sortingStarter.startData();
+            sortingStarter.DequeueItem();
+            sortingStarter.Shuffle();
+            sortingStarter.StartQueue();
             SleepThread.Abort();
         }
 
