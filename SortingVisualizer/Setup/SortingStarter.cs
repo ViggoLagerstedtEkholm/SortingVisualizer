@@ -17,13 +17,12 @@ namespace SortingVisualizer.Setup
         private readonly Thread LoopThread = null;
         private Window Window;
         private string Title;
-        private int[] dataSet;
         private Input input;
         private int sleepTime;
         private Queue<ISortAlgorithms> queue;
 
-        private readonly int amountOfPillars = 100;
-        private readonly int minValue = 20;
+        private readonly int amountOfPillars = 300;
+        private readonly int minValue = 30;
         private readonly int maxValue = 900;
         public SortingStarter(string Title) 
         {
@@ -32,7 +31,7 @@ namespace SortingVisualizer.Setup
             Window.Size = new Size((int)ScreenDimensions.X, (int)ScreenDimensions.Y);
             input = new Input(Window, this);
             queue = new Queue<ISortAlgorithms>();
-            sleepTime = 20;
+            sleepTime = 25;
 
             EnqueueItems();
             StartQueue();
@@ -41,33 +40,54 @@ namespace SortingVisualizer.Setup
             Window.Text = Title;
             Window.Paint += Renderer;
 
+            //Create a thread.
             LoopThread = new Thread(SortingLoop);
             LoopThread.Start();
 
             Application.Run(Window);
         }
 
+        /// <summary>
+        /// Uses GenerateArray to return a int[]
+        /// </summary>
+        /// <returns></returns>
         public int[] Shuffle()
         {
             //this.dataSet = GenerateArray(amountOfPillars, minValue, maxValue);
             return GenerateArray(amountOfPillars, minValue, maxValue);
         }
 
+        /// <summary>
+        /// Remove the first item in the queue.
+        /// </summary>
         public void DequeueItem()
         {
             Console.WriteLine(queue.Peek().getName());
             queue.Dequeue();
         }
 
+        /// <summary>
+        /// Fill the queue with the different algorithms.
+        /// </summary>
         private void EnqueueItems()
         {
-            queue.Enqueue(new BubbleSort(Shuffle(), 10, this));
-            queue.Enqueue(new SelectionSort(Shuffle(), 100, this));
-            queue.Enqueue(new HeapSort(Shuffle(), 100, this));
-            queue.Enqueue(new MergeSort(Shuffle(), 100, this));
-            queue.Enqueue(new QuickSort(Shuffle(), 100, this));
+            queue.Enqueue(new BubbleSort(Shuffle(), sleepTime = 10, this));
+            queue.Enqueue(new SelectionSort(Shuffle(), sleepTime = 25, this));
+            queue.Enqueue(new HeapSort(Shuffle(), sleepTime = 50, this));
+            queue.Enqueue(new MergeSort(Shuffle(), sleepTime = 50, this));
+            queue.Enqueue(new QuickSort(Shuffle(), sleepTime = 50, this));
+            queue.Enqueue(new InsertionSort(Shuffle(), sleepTime = 25, this));
+            queue.Enqueue(new CocktailSort(Shuffle(), sleepTime = 25, this));
+            queue.Enqueue(new ShellSort(Shuffle(), sleepTime = 25, this));
+            queue.Enqueue(new CombSort(Shuffle(), sleepTime = 25, this));
+            queue.Enqueue(new CycleSort(Shuffle(), sleepTime = 25, this));
+            queue.Enqueue(new PigeonholeSort(Shuffle(), sleepTime = 25, this));
+            queue.Enqueue(new StoogeSort(Shuffle(), sleepTime = 25, this));
         }
 
+        /// <summary>
+        /// Start the queue, this will start the sorting.
+        /// </summary>
         public void StartQueue()
         {
             if (queue.Count != 0)
@@ -80,71 +100,93 @@ namespace SortingVisualizer.Setup
             }
         }
 
+        /// <summary>
+        /// Exit the application.
+        /// </summary>
         public void ExitApplication()
         {
             OnExit(LoopThread);
         }
-
+        /// <summary>
+        /// Returns an array of integers where none of the integers are recurring.
+        /// </summary>
+        /// <param name="values"> The amount of pillars we will need to get a number for.</param>
+        /// <param name="min"> The smallest number possible to generate. </param>
+        /// <param name="max"> The highest numver possible to generate.</param>
+        /// <returns></returns>
         private int[] GenerateArray(int values, int min, int max)
         {
             int[] array = new int[values];
 
             Random random = new Random();
 
-            for(int i = 0; i < values; i++)
+            int number;
+            for (int i = 0; i < values; i++)
             {
-                array[i] = random.Next(min, max);
+                do
+                {
+                    number = random.Next(min, max);
+                } while (array.Contains(number));
+                array[i] = number;
             }
-
             return array;
         }
 
+        /// <summary>
+        /// Draw window if the thread is alive.
+        /// </summary>
         void SortingLoop()
         {
+            
             while (LoopThread.IsAlive)
             {
                 try
                 {
                     Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); });
-                    Thread.Sleep(10);
+                    Thread.Sleep(sleepTime);
                 }
                 catch
                 { }
             }
         }
 
+        /// <summary>
+        /// Render the screen.
+        /// </summary>
         private void Renderer(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
+            //This draws the pillars in the right transformation, if we don't use this they will be draw upside down.
             g.TranslateTransform(0, ScreenDimensions.Y);
             g.ScaleTransform(1, -1);
 
             if (queue.Count != 0)
             {
-                queue.Peek();
-
+                //Draw all the pillars relative to the screen coordinates.
                 for (int i = 0; i < amountOfPillars; i++)
                 {
-                    //ScreenDimensions.X
                     g.DrawRectangle(Pens.White, new Rectangle((i * ScreenDimensions.X / amountOfPillars), 0, (ScreenDimensions.X / amountOfPillars), queue.Peek().getValue(i)));
                     g.FillRectangle(new SolidBrush(Color.White), new Rectangle((i * ScreenDimensions.X / amountOfPillars), 0, (ScreenDimensions.X / amountOfPillars), queue.Peek().getValue(i)));
                 }
 
-
+                //Get the currently selected pillar that the algorithm is moving.
                 int movingValue = queue.Peek().getCurrentMoving();
 
                 for (int i = 0; i < amountOfPillars; i++)
                 {
+                    //If the pillar matches the moving value draw that pillar red to highlight the sorting.
                     if (queue.Peek().getValue(i) == movingValue)
                     {
                         g.FillRectangle(new SolidBrush(Color.Red), new Rectangle((i * ScreenDimensions.X / amountOfPillars), 0, (ScreenDimensions.X / amountOfPillars), queue.Peek().getValue(i)));
                     }
                 }
 
+                //Reset the transformation so we can draw the text normally.
                 g.ResetTransform();
 
+                //Draw the strings with iterations and algorithm name.
                 g.DrawString("Iterations: " + queue.Peek().getIterations(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
                 g.DrawString("Algorithm: " + queue.Peek().getName(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100);
             }
@@ -156,11 +198,5 @@ namespace SortingVisualizer.Setup
 
         public abstract void OnLoad(ISortAlgorithms sortAlgorithms);
         public abstract void OnExit(Thread thread);
-
-        //private int[] testArray;
-        //private int test(int index)
-        //{
-        //    return testArray[index];
-        //}
     }
 }
