@@ -20,7 +20,7 @@ namespace SortingVisualizer.Algorithms
         private string name = "GnomeSort";
         private int currentlyMoving;
         private int sleepTime;
-        SortingStarter sortingStarter;
+        private SortingStarter sortingStarter;
         
         public GnomeSort(int[] array, int sleepTime, SortingStarter sortingStarter)
         {
@@ -83,7 +83,6 @@ namespace SortingVisualizer.Algorithms
         public void Done()
         {
             sortingStarter.DequeueItem();
-            sortingStarter.Shuffle();
             sortingStarter.StartQueue();
             SleepThread.Abort();
         }
