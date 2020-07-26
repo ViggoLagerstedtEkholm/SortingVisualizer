@@ -20,7 +20,6 @@ namespace SortingVisualizer.Algorithms
         private string name = "MergeSort";
         private int currentlyMoving;
         private int sleepTime;
-        private bool isDone;
         private SortingStarter sortingStarter;
         public MergeSort(int[] array, int sleepTime, SortingStarter sortingStarter)
         {
@@ -68,21 +67,25 @@ namespace SortingVisualizer.Algorithms
                 {
                     array[k] = rightArray[j];
                     j++;
+                    currentlyMoving = array[k];
                 }
                 else if (j == rightArray.Length)
                 {
                     array[k] = leftArray[i];
                     i++;
+                    currentlyMoving = array[k];
                 }
                 else if (leftArray[i] <= rightArray[j])
                 {
                     array[k] = leftArray[i];
                     i++;
+                    currentlyMoving = array[k];
                 }
                 else
                 {
                     array[k] = rightArray[j];
                     j++;
+                    currentlyMoving = array[k];
                 }
             }
         }
@@ -108,7 +111,6 @@ namespace SortingVisualizer.Algorithms
         public void Done()
         {
             sortingStarter.DequeueItem();
-            sortingStarter.Shuffle();
             sortingStarter.StartQueue();
             SleepThread.Abort();
         }
