@@ -20,7 +20,7 @@ namespace SortingVisualizer.Algorithms
         private string name = "HeapSort";
         private int currentlyMoving;
         private int sleepTime;
-        SortingStarter sortingStarter;
+        private SortingStarter sortingStarter;
         public HeapSort(int[] array, int sleepTime, SortingStarter sortingStarter)
         {
             this.array = array;
@@ -95,7 +95,6 @@ namespace SortingVisualizer.Algorithms
         public void Done()
         {
             sortingStarter.DequeueItem();
-            sortingStarter.Shuffle();
             sortingStarter.StartQueue();
             SleepThread.Abort();
         }
