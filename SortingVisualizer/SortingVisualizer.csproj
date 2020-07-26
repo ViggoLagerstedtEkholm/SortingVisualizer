@@ -46,12 +46,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\BubbleSort.cs" />
+    <Compile Include="Algorithms\CocktailSort.cs" />
+    <Compile Include="Algorithms\CombSort.cs" />
+    <Compile Include="Algorithms\StoogeSort.cs" />
+    <Compile Include="Algorithms\CycleSort.cs" />
     <Compile Include="Algorithms\GnomeSort.cs" />
     <Compile Include="Algorithms\HeapSort.cs" />
+    <Compile Include="Algorithms\InsertionSort.cs" />
     <Compile Include="Algorithms\ISortAlgorithms.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
+    <Compile Include="Algorithms\PigeonholeSort.cs" />
     <Compile Include="Algorithms\QuickSort.cs" />
     <Compile Include="Algorithms\SelectionSort.cs" />
+    <Compile Include="Algorithms\ShellSort.cs" />
     <Compile Include="Setup\Input.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
