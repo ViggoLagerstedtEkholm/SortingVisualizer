@@ -20,7 +20,7 @@ namespace SortingVisualizer.Setup
         {
             thread.Abort();
         }
-        public override void OnLoad(ISortAlgorithms sortAlgorithm, int index)
+        public override void OnLoad(ISortAlgorithms sortAlgorithm)
         {
             ISortAlgorithms aItem = sortAlgorithm;
             aItem.StartThread();
