@@ -11,6 +11,7 @@ namespace SortingVisualizer.Setup
     public class Sorter : SortingStarter
     {
         private string Title;
+        private Input input;
         public Sorter() : base(
             "Sort algorithms!"
             )
@@ -20,8 +21,9 @@ namespace SortingVisualizer.Setup
         {
             thread.Abort();
         }
-        public override void OnLoad(ISortAlgorithms sortAlgorithm)
+        public override void OnLoad(ISortAlgorithms sortAlgorithm, Window Window)
         {
+            input = new Input(Window, this);
             ISortAlgorithms aItem = sortAlgorithm;
             //Start the thread for selected algorithm.
             aItem.StartThread();
