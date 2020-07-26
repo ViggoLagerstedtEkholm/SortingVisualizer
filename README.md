@@ -21,3 +21,5 @@ https://www.youtube.com/watch?v=i845p47_5kA&feature=youtu.be
 More algorithms can be implemented in the future.
 
 It would also be fun to add audio to audiolize the sorting. 
+
+And yes, my favorite sorting algorithm has to be cocktail.
