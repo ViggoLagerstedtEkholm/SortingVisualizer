@@ -77,7 +77,6 @@ namespace SortingVisualizer.Algorithms
         public void Done()
         {
             sortingStarter.DequeueItem();
-            sortingStarter.Shuffle();
             sortingStarter.StartQueue();
             SleepThread.Abort();
         }
