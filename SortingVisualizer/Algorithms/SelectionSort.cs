@@ -20,7 +20,6 @@ namespace SortingVisualizer.Algorithms
         private string name = "SelectionSort";
         private int currentlyMoving;
         private int sleepTime;
-        private bool isDone;
         private SortingStarter sortingStarter;
         public SelectionSort(int[] array, int sleepTime, SortingStarter sortingStarter)
         {
@@ -84,7 +83,6 @@ namespace SortingVisualizer.Algorithms
         public void Done()
         {
             sortingStarter.DequeueItem();
-            sortingStarter.Shuffle();
             sortingStarter.StartQueue();
             SleepThread.Abort();
         }
