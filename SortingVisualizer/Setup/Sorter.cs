@@ -23,6 +23,7 @@ namespace SortingVisualizer.Setup
         public override void OnLoad(ISortAlgorithms sortAlgorithm)
         {
             ISortAlgorithms aItem = sortAlgorithm;
+            //Start the thread for selected algorithm.
             aItem.StartThread();
         }
     }
