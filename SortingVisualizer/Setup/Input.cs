@@ -21,7 +21,7 @@ namespace SortingVisualizer.Setup
         {
             if (e.KeyCode == Keys.Escape)
             {
-                sortingStarter.startData();
+                sortingStarter.StartQueue();
                 //Application.Exit();
                 sortingStarter.ExitApplication();
             }
