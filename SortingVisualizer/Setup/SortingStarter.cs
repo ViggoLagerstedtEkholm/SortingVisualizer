@@ -17,11 +17,10 @@ namespace SortingVisualizer.Setup
         private readonly Thread LoopThread = null;
         private Window Window;
         private string Title;
-        private Input input;
         private int sleepTime;
         private Queue<ISortAlgorithms> queue;
 
-        private readonly int amountOfPillars = 300;
+        private readonly int amountOfPillars = 600;
         private readonly int minValue = 30;
         private readonly int maxValue = 900;
         public SortingStarter(string Title) 
@@ -29,14 +28,15 @@ namespace SortingVisualizer.Setup
             this.Title = Title;
             Window = new Window();
             Window.Size = new Size((int)ScreenDimensions.X, (int)ScreenDimensions.Y);
-            input = new Input(Window, this);
             queue = new Queue<ISortAlgorithms>();
-            sleepTime = 25;
+            sleepTime = 5;
 
             EnqueueItems();
             StartQueue();
 
-            Window.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Cursor.Hide();
+            Window.FormBorderStyle = FormBorderStyle.None;
+            Window.WindowState = FormWindowState.Maximized;
             Window.Text = Title;
             Window.Paint += Renderer;
 
@@ -62,8 +62,11 @@ namespace SortingVisualizer.Setup
         /// </summary>
         public void DequeueItem()
         {
-            Console.WriteLine(queue.Peek().getName());
-            queue.Dequeue();
+            if(queue.Count != 0)
+            {
+                Console.WriteLine(queue.Peek().getName());
+                queue.Dequeue();
+            }
         }
 
         /// <summary>
@@ -71,18 +74,18 @@ namespace SortingVisualizer.Setup
         /// </summary>
         private void EnqueueItems()
         {
-            queue.Enqueue(new BubbleSort(Shuffle(), sleepTime = 10, this));
-            queue.Enqueue(new SelectionSort(Shuffle(), sleepTime = 25, this));
-            queue.Enqueue(new HeapSort(Shuffle(), sleepTime = 50, this));
-            queue.Enqueue(new MergeSort(Shuffle(), sleepTime = 50, this));
-            queue.Enqueue(new QuickSort(Shuffle(), sleepTime = 50, this));
-            queue.Enqueue(new InsertionSort(Shuffle(), sleepTime = 25, this));
-            queue.Enqueue(new CocktailSort(Shuffle(), sleepTime = 25, this));
-            queue.Enqueue(new ShellSort(Shuffle(), sleepTime = 25, this));
-            queue.Enqueue(new CombSort(Shuffle(), sleepTime = 25, this));
-            queue.Enqueue(new CycleSort(Shuffle(), sleepTime = 25, this));
-            queue.Enqueue(new PigeonholeSort(Shuffle(), sleepTime = 25, this));
-            queue.Enqueue(new StoogeSort(Shuffle(), sleepTime = 25, this));
+            queue.Enqueue(new BubbleSort(Shuffle(), 1, this));
+            queue.Enqueue(new SelectionSort(Shuffle(), sleepTime, this));
+            queue.Enqueue(new HeapSort(Shuffle(), sleepTime, this));
+            queue.Enqueue(new MergeSort(Shuffle(), sleepTime, this));
+            queue.Enqueue(new QuickSort(Shuffle(), 100, this));
+            queue.Enqueue(new InsertionSort(Shuffle(), 1, this));
+            queue.Enqueue(new CocktailSort(Shuffle(), 1, this));
+            queue.Enqueue(new ShellSort(Shuffle(), sleepTime, this));
+            queue.Enqueue(new CombSort(Shuffle(), 10, this));
+            queue.Enqueue(new CycleSort(Shuffle(), sleepTime, this));
+            queue.Enqueue(new PigeonholeSort(Shuffle(), 10, this));
+            queue.Enqueue(new StoogeSort(Shuffle(), 1, this));
         }
 
         /// <summary>
@@ -92,11 +95,7 @@ namespace SortingVisualizer.Setup
         {
             if (queue.Count != 0)
             {
-                OnLoad(queue.Peek());
-            }
-            else
-            {
-                ExitApplication();
+                OnLoad(queue.Peek(), Window);
             }
         }
 
@@ -162,7 +161,7 @@ namespace SortingVisualizer.Setup
             g.TranslateTransform(0, ScreenDimensions.Y);
             g.ScaleTransform(1, -1);
 
-            if (queue.Count != 0)
+            if(queue.Count != 0)
             {
                 //Draw all the pillars relative to the screen coordinates.
                 for (int i = 0; i < amountOfPillars; i++)
@@ -190,13 +189,9 @@ namespace SortingVisualizer.Setup
                 g.DrawString("Iterations: " + queue.Peek().getIterations(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
                 g.DrawString("Algorithm: " + queue.Peek().getName(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100);
             }
-            else
-            {
-                ExitApplication();
-            }
         }
 
-        public abstract void OnLoad(ISortAlgorithms sortAlgorithms);
+        public abstract void OnLoad(ISortAlgorithms sortAlgorithms, Window Window);
         public abstract void OnExit(Thread thread);
     }
 }
