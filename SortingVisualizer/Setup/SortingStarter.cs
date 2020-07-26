@@ -1,5 +1,6 @@
 ﻿using SortingVisualizer.Algorithms;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,10 +18,9 @@ namespace SortingVisualizer.Setup
         private Window Window;
         private string Title;
         private int[] dataSet;
-        private ISortAlgorithms sortAlgorithm;
         private Input input;
         private int sleepTime;
-        private int atIndex;
+        private Queue<ISortAlgorithms> queue;
 
         private readonly int amountOfPillars = 100;
         private readonly int minValue = 20;
@@ -31,9 +31,11 @@ namespace SortingVisualizer.Setup
             Window = new Window();
             Window.Size = new Size((int)ScreenDimensions.X, (int)ScreenDimensions.Y);
             input = new Input(Window, this);
-            sleepTime = 10;
+            queue = new Queue<ISortAlgorithms>();
+            sleepTime = 20;
 
-            startData();
+            EnqueueItems();
+            StartQueue();
 
             Window.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Window.Text = Title;
@@ -45,74 +47,39 @@ namespace SortingVisualizer.Setup
             Application.Run(Window);
         }
 
-        public void startData()
+        public int[] Shuffle()
         {
-            this.dataSet = GenerateArray(amountOfPillars, minValue, maxValue);
-
-            switch (atIndex)
-            {
-                case 0:
-                    SelectAlgorithm(AlgorithmType.BubbleSort);
-                    break;
-                case 1:
-                    SelectAlgorithm(AlgorithmType.SelectionSort);
-                    break;
-                case 2:
-                    SelectAlgorithm(AlgorithmType.GnomeSort);
-                    break;
-                case 3:
-                    SelectAlgorithm(AlgorithmType.HeapSort);
-                    break;
-                case 4:
-                    SelectAlgorithm(AlgorithmType.MergeSort);
-                    break;
-                case 5:
-                    SelectAlgorithm(AlgorithmType.QuickSort);
-                    break;
-                default:
-                   // Application.Exit();
-                    break;
-            }
-
-            OnLoad(sortAlgorithm, atIndex);
-
-            Console.WriteLine("INDEX: " + atIndex);
-            atIndex++;
+            //this.dataSet = GenerateArray(amountOfPillars, minValue, maxValue);
+            return GenerateArray(amountOfPillars, minValue, maxValue);
         }
 
-        private void SelectAlgorithm(AlgorithmType algorithm)
+        public void DequeueItem()
         {
-            if(algorithm == AlgorithmType.BubbleSort)
+            Console.WriteLine(queue.Peek().getName());
+            queue.Dequeue();
+        }
+
+        private void EnqueueItems()
+        {
+            queue.Enqueue(new BubbleSort(Shuffle(), 10, this));
+            queue.Enqueue(new SelectionSort(Shuffle(), 100, this));
+            queue.Enqueue(new HeapSort(Shuffle(), 100, this));
+            queue.Enqueue(new MergeSort(Shuffle(), 100, this));
+            queue.Enqueue(new QuickSort(Shuffle(), 100, this));
+        }
+
+        public void StartQueue()
+        {
+            if (queue.Count != 0)
             {
-                sleepTime = 10;
-                sortAlgorithm = new BubbleSort(dataSet, sleepTime, this);
+                OnLoad(queue.Peek());
             }
-            else if(algorithm == AlgorithmType.SelectionSort)
+            else
             {
-                sleepTime = 10;
-                sortAlgorithm = new SelectionSort(dataSet, sleepTime, this);
-            }
-            else if (algorithm == AlgorithmType.GnomeSort)
-            {
-                sleepTime = 10;
-                sortAlgorithm = new GnomeSort(dataSet, sleepTime, this);
-            }
-            else if (algorithm == AlgorithmType.HeapSort)
-            {
-                sleepTime = 10;
-                sortAlgorithm = new HeapSort(dataSet, sleepTime, this);
-            }
-            else if (algorithm == AlgorithmType.MergeSort)
-            {
-                sleepTime = 200;
-                sortAlgorithm = new MergeSort(dataSet, sleepTime, this);
-            }
-            else if (algorithm == AlgorithmType.QuickSort)
-            {
-                sleepTime = 200;
-                sortAlgorithm = new QuickSort(dataSet, sleepTime, this);
+                ExitApplication();
             }
         }
+
         public void ExitApplication()
         {
             OnExit(LoopThread);
@@ -154,32 +121,46 @@ namespace SortingVisualizer.Setup
             g.TranslateTransform(0, ScreenDimensions.Y);
             g.ScaleTransform(1, -1);
 
-     
-            for (int i = 0; i < dataSet.Length; i++)
+            if (queue.Count != 0)
             {
-                //ScreenDimensions.X
-                g.DrawRectangle(Pens.White, new Rectangle((i * ScreenDimensions.X / dataSet.Length), 0, (ScreenDimensions.X / dataSet.Length), dataSet[i]));
-                g.FillRectangle(new SolidBrush(Color.White), new Rectangle((i * ScreenDimensions.X / dataSet.Length), 0, (ScreenDimensions.X / dataSet.Length), dataSet[i]));
-            }
+                queue.Peek();
 
-
-            int movingValue = sortAlgorithm.getCurrentMoving();
-
-            for (int i = 0; i < dataSet.Length; i++)
-            {
-                if (dataSet[i] == movingValue)
+                for (int i = 0; i < amountOfPillars; i++)
                 {
-                    g.FillRectangle(new SolidBrush(Color.Red), new Rectangle((i * ScreenDimensions.X / dataSet.Length), 0, (ScreenDimensions.X / dataSet.Length), dataSet[i]));
+                    //ScreenDimensions.X
+                    g.DrawRectangle(Pens.White, new Rectangle((i * ScreenDimensions.X / amountOfPillars), 0, (ScreenDimensions.X / amountOfPillars), queue.Peek().getValue(i)));
+                    g.FillRectangle(new SolidBrush(Color.White), new Rectangle((i * ScreenDimensions.X / amountOfPillars), 0, (ScreenDimensions.X / amountOfPillars), queue.Peek().getValue(i)));
                 }
+
+
+                int movingValue = queue.Peek().getCurrentMoving();
+
+                for (int i = 0; i < amountOfPillars; i++)
+                {
+                    if (queue.Peek().getValue(i) == movingValue)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.Red), new Rectangle((i * ScreenDimensions.X / amountOfPillars), 0, (ScreenDimensions.X / amountOfPillars), queue.Peek().getValue(i)));
+                    }
+                }
+
+                g.ResetTransform();
+
+                g.DrawString("Iterations: " + queue.Peek().getIterations(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
+                g.DrawString("Algorithm: " + queue.Peek().getName(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100);
             }
-
-            g.ResetTransform();
-
-            g.DrawString("Iterations: " + sortAlgorithm.getIterations(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
-            g.DrawString("Algorithm: " + sortAlgorithm.getName(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100); 
+            else
+            {
+                ExitApplication();
+            }
         }
 
-        public abstract void OnLoad(ISortAlgorithms sortAlgorithms, int index);
+        public abstract void OnLoad(ISortAlgorithms sortAlgorithms);
         public abstract void OnExit(Thread thread);
+
+        //private int[] testArray;
+        //private int test(int index)
+        //{
+        //    return testArray[index];
+        //}
     }
 }
