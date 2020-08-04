@@ -157,7 +157,7 @@ namespace SortingVisualizer.Setup
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
-            //This draws the pillars in the right transformation, if we don't use this they will be draw upside down.
+            //This draws the pillars in the right transformation, if we don't use this they will be drawn upside down.
             g.TranslateTransform(0, ScreenDimensions.Y);
             g.ScaleTransform(1, -1);
 
