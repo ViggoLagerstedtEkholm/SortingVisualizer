@@ -20,6 +20,7 @@ namespace SortingVisualizer.Setup
         public override void OnExit(Thread thread)
         {
             thread.Abort();
+  
         }
         public override void OnLoad(ISortAlgorithms sortAlgorithm, Window Window)
         {
