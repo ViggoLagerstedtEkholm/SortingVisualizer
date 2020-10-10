@@ -1,4 +1,4 @@
-﻿using SortingVisualizer.Setup;
+﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +20,8 @@ namespace SortingVisualizer.Algorithms
         private string name = "InsertionSort";
         private int currentlyMoving;
         private int sleepTime;
-        private SortingStarter sortingStarter;
-        public InsertionSort(int[] array, int sleepTime, SortingStarter sortingStarter)
+        private Window sortingStarter;
+        public InsertionSort(int[] array, int sleepTime, Window sortingStarter)
         {
             this.array = array;
             this.sleepTime = sleepTime;

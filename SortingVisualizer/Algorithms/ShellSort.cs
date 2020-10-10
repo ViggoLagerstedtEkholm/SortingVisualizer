@@ -1,4 +1,4 @@
-﻿using SortingVisualizer.Setup;
+﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +20,8 @@ namespace SortingVisualizer.Algorithms
         private string name = "ShellSort";
         private int currentlyMoving;
         private int sleepTime;
-        private SortingStarter sortingStarter;
-
-        public ShellSort(int[] array, int sleepTime, SortingStarter sortingStarter)
+        private Window sortingStarter;
+        public ShellSort(int[] array, int sleepTime, Window sortingStarter)
         {
             this.array = array;
             this.sleepTime = sleepTime;
