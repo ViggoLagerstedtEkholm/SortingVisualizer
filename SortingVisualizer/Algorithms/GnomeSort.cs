@@ -1,4 +1,4 @@
-﻿using SortingVisualizer.Setup;
+﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +20,9 @@ namespace SortingVisualizer.Algorithms
         private string name = "GnomeSort";
         private int currentlyMoving;
         private int sleepTime;
-        private SortingStarter sortingStarter;
+        private Window sortingStarter;
         
-        public GnomeSort(int[] array, int sleepTime, SortingStarter sortingStarter)
+        public GnomeSort(int[] array, int sleepTime, Window sortingStarter)
         {
             this.array = array;
             this.sleepTime = sleepTime;
