@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace SortingVisualizer.Algorithms
 {
-    public interface ISortAlgorithms
+    interface IPlaySound
     {
-        string getName();
-        void Sort();
-
-        int GetSleepTime();
+        void PlaySound();
     }
 }

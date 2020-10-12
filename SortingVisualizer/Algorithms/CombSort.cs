@@ -14,28 +14,18 @@ namespace SortingVisualizer.Algorithms
         /// COMB-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/comb-sort/
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "CombSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
         public CombSort(int[] array, int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
-        }
-        public void StartThread()
-        {
-            SleepThread = new Thread(Sort);
-            SleepThread.Start();
         }
 
         public void Sort()
         {
-            int n = array.Length;
+            int n = sortingStarter.getLength();
 
             // initialize gap 
             int gap = n;
@@ -58,21 +48,17 @@ namespace SortingVisualizer.Algorithms
                 // Compare all elements with current gap 
                 for (int i = 0; i < n - gap; i++)
                 {
-                    if (array[i] > array[i + gap])
+                    if (sortingStarter.getIndex(i) > sortingStarter.getIndex(i + gap))
                     {
                         // Swap arr[i] and arr[i+gap] 
-                        int temp = array[i];
-                        array[i] = array[i + gap];
-                        array[i + gap] = temp;
-                        iterations++;
-                        currentlyMoving = array[i + gap];
+                        sortingStarter.swap(sortingStarter.getIndex(i), sortingStarter.getIndex(i + 1), sleepTime);
+      
                         Thread.Sleep(sleepTime);
                         // Set swapped 
                         swapped = true;
                     }
                 }
             }
-            Done();
         }
         static int getNextGap(int gap)
         {
@@ -82,31 +68,15 @@ namespace SortingVisualizer.Algorithms
                 return 1;
             return gap;
         }
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-
-        public int getIterations()
-        {
-            return iterations;
-        }
 
         public string getName()
         {
             return name;
         }
 
-        public int getValue(int index)
+        public int GetSleepTime()
         {
-            return array[index];
-        }
-
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
+            return sleepTime;
         }
     }
 }

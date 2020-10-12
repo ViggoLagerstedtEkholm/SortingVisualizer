@@ -14,29 +14,18 @@ namespace SortingVisualizer.Algorithms
         /// QUICK-SORT
         /// Help with implementation - http://csharpexamples.com/c-quick-sort-algorithm-implementation/
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "Quicksort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
-        public QuickSort(int[] array, int sleepTime, Window sortingStarter)
+        public QuickSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
         }
-        public void StartThread()
-        {
-            SleepThread = new Thread(temp);
-            SleepThread.Start();
-        }
 
-        private void temp()
+        public void Sort()
         {
-            Sort(0, array.Length - 1);
-            Done();
+            Sort(0, sortingStarter.getLength() - 1);
         }
         public void Sort(int start, int end)
         {
@@ -52,26 +41,19 @@ namespace SortingVisualizer.Algorithms
         private int Partition(int start, int end)
         {
             int temp;
-            int p = array[end];
+            int p = sortingStarter.getArray()[end];
             int i = start - 1;
 
             for (int j = start; j <= end - 1; j++)
             {
-                if (array[j] <= p)
+                if (sortingStarter.getArray()[j] <= p)
                 {
                     i++;
-                    temp = array[i];
-                    array[i] = array[j];
-                    array[j] = temp;
-                    currentlyMoving = array[j];
+                    sortingStarter.swap(sortingStarter.getArray()[i], sortingStarter.getArray()[j], sleepTime);
                 }
             }
+            sortingStarter.swap(sortingStarter.getArray()[i + 1], sortingStarter.getArray()[end], sleepTime);
 
-            temp = array[i + 1];
-            array[i + 1] = array[end];
-            array[end] = temp;
-            Thread.Sleep(sleepTime);
-            iterations++;
             return i + 1;
         }
         public string getName()
@@ -79,28 +61,9 @@ namespace SortingVisualizer.Algorithms
             return name;
         }
 
-        public int getIterations()
+        public int GetSleepTime()
         {
-            return iterations;
+            return sleepTime;
         }
-
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-        public int getValue(int index)
-        {
-            return array[index];
-        }
-
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
-        }
-
-        public void Sort()
-        {}
     }
 }

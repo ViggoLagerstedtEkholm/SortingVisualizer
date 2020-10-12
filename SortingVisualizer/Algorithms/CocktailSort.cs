@@ -14,29 +14,19 @@ namespace SortingVisualizer.Algorithms
         /// COCKTAIL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cocktail-sort/
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "CocktailSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
-        public CocktailSort(int[] array, int sleepTime, Window sortingStarter)
+        public CocktailSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
-        }
-        public void StartThread()
-        {
-            SleepThread = new Thread(Sort);
-            SleepThread.Start();
         }
         public void Sort()
         {
             bool swapped = true;
             int start = 0;
-            int end = array.Length;
+            int end = sortingStarter.getLength();
 
             while (swapped == true)
             {
@@ -44,15 +34,10 @@ namespace SortingVisualizer.Algorithms
 
                 for (int i = start; i < end - 1; ++i)
                 {
-                    if (array[i] > array[i + 1])
+                    if (sortingStarter.getIndex(i) > sortingStarter.getIndex(i + 1))
                     {
-                        int temp = array[i];
-                        array[i] = array[i + 1];
-                        array[i + 1] = temp;
+                        sortingStarter.swap(sortingStarter.getIndex(i), sortingStarter.getIndex(i + 1), sleepTime);
                         swapped = true;
-                        currentlyMoving = array[i + 1];
-                        iterations++;
-                        Thread.Sleep(sleepTime);
                     }
                 }
 
@@ -66,42 +51,23 @@ namespace SortingVisualizer.Algorithms
 
                 for (int i = end - 1; i >= start; i--)
                 {
-                    if (array[i] > array[i + 1])
+                    if (sortingStarter.getIndex(i) > sortingStarter.getIndex(i + 1))
                     {
-                        int temp = array[i];
-                        array[i] = array[i + 1];
-                        array[i + 1] = temp;
+                        sortingStarter.swap(sortingStarter.getIndex(i), sortingStarter.getIndex(i + 1), sleepTime);
                         swapped = true;
-                        currentlyMoving = array[i + 1];
-                        iterations++;
-                        Thread.Sleep(sleepTime);
                     }
                 }
                 start = start + 1;
             }
-            Done();
         }
         public string getName()
         {
             return name;
         }
-        public int getIterations()
+
+        public int GetSleepTime()
         {
-            return iterations;
-        }
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-        public int getValue(int index)
-        {
-            return array[index];
-        }
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
+            return sleepTime;
         }
     }
 }

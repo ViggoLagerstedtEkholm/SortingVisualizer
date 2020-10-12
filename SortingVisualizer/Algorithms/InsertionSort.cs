@@ -14,39 +14,24 @@ namespace SortingVisualizer.Algorithms
         /// INSERTION-SORT
         /// https://en.wikipedia.org/wiki/Insertion_sort
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "InsertionSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
-        public InsertionSort(int[] array, int sleepTime, Window sortingStarter)
+        public InsertionSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
-        }
-        public void StartThread()
-        {
-            SleepThread = new Thread(Sort);
-            SleepThread.Start();
         }
 
         public void Sort()
         {
-            for (int i = 1; i < array.Length; i++)
+            for (int i = 1; i < sortingStarter.getLength(); i++)
             {
                 for (int j = i; j > 0; j--)
                 {
-                    if (array[j] < array[j - 1])
+                    if (sortingStarter.getIndex(j) < sortingStarter.getIndex(j - 1))
                     {
-                        int tmp = array[j - 1];
-                        array[j - 1] = array[j];
-                        array[j] = tmp;
-                        currentlyMoving = array[j];
-                        iterations++;
-                        Thread.Sleep(sleepTime);
+                        sortingStarter.swap(sortingStarter.getIndex(j - 1), sortingStarter.getIndex(j), sleepTime);
                     }
                     else
                     {
@@ -54,32 +39,15 @@ namespace SortingVisualizer.Algorithms
                     }
                 }
             }
-            Done();
         }
         public string getName()
         {
             return name;
         }
 
-        public int getIterations()
+        public int GetSleepTime()
         {
-            return iterations;
-        }
-
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-        public int getValue(int index)
-        {
-            return array[index];
-        }
-
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
+            return sleepTime;
         }
     }
 }

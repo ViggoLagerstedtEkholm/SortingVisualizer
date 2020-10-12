@@ -14,42 +14,27 @@ namespace SortingVisualizer.Algorithms
         /// HEAP-SORT	
         /// Help with implementation - https://www.geeksforgeeks.org/heap-sort/	
         /// </summary>	
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
+
         private string name = "HeapSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
-        public HeapSort(int[] array, int sleepTime, Window sortingStarter)
+        public HeapSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
         }
-        public void StartThread()
-        {
-            SleepThread = new Thread(Sort);
-            SleepThread.Start();
-        }
         public void Sort()
         {
-            int n = array.Length;
+            int n = sortingStarter.getLength();
             for (int i = n / 2 - 1; i >= 0; i--)
             {
-                heap(array, n, i);
+                heap(sortingStarter.getArray(), n, i);
             }
             for (int i = n - 1; i >= 0; i--)
             {
-                int temp = array[0];
-                array[0] = array[i];
-                array[i] = temp;
-                heap(array, i, 0);
-                currentlyMoving = array[i];
-                iterations++;
-                Thread.Sleep(sleepTime);
+                sortingStarter.swap(sortingStarter.getIndex(0), sortingStarter.getIndex(i), sleepTime);
+                heap(sortingStarter.getArray(), i, 0);
             }
-            Done();
         }
 
         private void heap(int[] array, int n, int i)
@@ -79,24 +64,9 @@ namespace SortingVisualizer.Algorithms
             return name;
         }
 
-        public int getIterations()
+        public int GetSleepTime()
         {
-            return iterations;
-        }
-
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-        public int getValue(int index)
-        {
-            return array[index];
-        }
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
+            return sleepTime;
         }
     }
 }

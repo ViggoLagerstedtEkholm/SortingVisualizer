@@ -14,42 +14,33 @@ namespace SortingVisualizer.Algorithms
         /// PIGEONHOLE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/pigeonhole-sort/
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "PigeonSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
-        public PigeonholeSort(int[] array, int sleepTime, Window sortingStarter)
+        public PigeonholeSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
         }
-        public void StartThread()
-        {
-            SleepThread = new Thread(Sort);
-            SleepThread.Start();
-        }
+
         public void Sort()
         {
-            int min = array[0];
-            int max = array[0];
+            int min = sortingStarter.getIndex(0);
+            int max = sortingStarter.getIndex(0);
             int range, i, j, index;
-            int n = array.Length ;
+            int n = sortingStarter.getLength();
 
 
             for (int a = 0; a < n; a++)
             {
-                if (array[a] > max)
+                if (sortingStarter.getIndex(a) > max)
                 {
-                    max = array[a];
+                    max = sortingStarter.getIndex(a);
                 }
                     
-                if (array[a] < min)
+                if (sortingStarter.getIndex(a) < min)
                 {
-                    min = array[a];
+                    min = sortingStarter.getIndex(a);
                 }
             }
 
@@ -64,7 +55,7 @@ namespace SortingVisualizer.Algorithms
 
             for (i = 0; i < n; i++)
             {
-                phole[array[i] - min]++;
+                phole[sortingStarter.getIndex(i) - min]++;
             }
 
             index = 0;
@@ -72,37 +63,17 @@ namespace SortingVisualizer.Algorithms
             for (j = 0; j < range; j++)
             {
                 while (phole[j]-- > 0)
-                    array[index++] = j + min;
-                    Thread.Sleep(sleepTime);
-                    currentlyMoving = j + min;
-                    iterations++;
+                    sortingStarter.getArray()[index++] = j + min;
             }
-            Done();
         }
         public string getName()
         {
             return name;
         }
 
-        public int getIterations()
+        public int GetSleepTime()
         {
-            return iterations;
-        }
-
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-        public int getValue(int index)
-        {
-            return array[index];
-        }
-
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
+            return sleepTime;
         }
     }
 }

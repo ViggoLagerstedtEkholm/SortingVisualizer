@@ -5,54 +5,41 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using SortingVisualizer.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class BubbleSort : ISortAlgorithms
+    public class BubbleSort : ISortAlgorithms, IPlaySound
     {
         /// <summary>
         /// BUBBLE-SORT
         /// https://sv.wikipedia.org/wiki/Bubbelsortering
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "BubbleSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
-        public BubbleSort(int[] array, int sleepTime, Window sortingStarter)
+        public BubbleSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
+            Console.WriteLine("Created bubble sort!");
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
         }
 
-        public void StartThread()
-        {
-            SleepThread = new Thread(Sort);
-            SleepThread.Start();
-        }
-
         public void Sort()
         {
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < sortingStarter.getLength(); i++)
             {
-
-                for (int j = 0; j < array.Length - 1; j++)
+                for (int j = 0; j < sortingStarter.getLength() - 1; j++)
                 {
-                    if (array[j] > array[j + 1])
+                    if (sortingStarter.getIndex(j) > sortingStarter.getIndex(j + 1))
                     {
-                        int temp = array[j + 1];
-                        array[j + 1] = array[j];
-                        array[j] = temp;
-                        currentlyMoving = array[j];
-                        iterations++;
+                        sortingStarter.swap(j, j+ 1, sleepTime);
+
                         Thread.Sleep(sleepTime);
                     }
                 }
             }
-            Done();
+
         }
 
         public string getName()
@@ -60,25 +47,14 @@ namespace SortingVisualizer.Algorithms
             return name;
         }
 
-        public int getIterations()
+        public int GetSleepTime()
         {
-            return iterations;
+            return sleepTime;
         }
 
-        public int getCurrentMoving()
+        public void PlaySound()
         {
-            return currentlyMoving;
-        }
-
-        public int getValue(int index)
-        {
-            return array[index];
-        }
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
+            
         }
     }
 }

@@ -14,77 +14,41 @@ namespace SortingVisualizer.Algorithms
         /// GNOME-SORT
         /// https://en.wikipedia.org/wiki/Gnome_sort
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "GnomeSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
         
-        public GnomeSort(int[] array, int sleepTime, Window sortingStarter)
+        public GnomeSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
-        }
-        public void StartThread()
-        {
-            SleepThread = new Thread(Sort);
-            SleepThread.Start();
         }
 
         public void Sort()
         {
             int index = 0;
-            int n = array.Length;
+            int n = sortingStarter.getLength();
             while (index < n)
             {
                 if (index == 0)
                     index++;
-                if (array[index] >= array[index - 1])
+                if (sortingStarter.getIndex(index) >= sortingStarter.getIndex(index - 1))
                     index++;
                 else
                 {
-                    int temp = 0;
-                    temp = array[index];
-                    array[index] = array[index - 1];
-                    array[index - 1] = temp;
+                    sortingStarter.swap(sortingStarter.getIndex(index), sortingStarter.getIndex(index + 1), sleepTime);
                     index--;
-                    iterations++;
-                    Thread.Sleep(sleepTime);
-                    currentlyMoving = array[index];
                 }
             }
-            Done();
         }
-
-
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-
-        public int getIterations()
-        {
-            return iterations;
-        }
-
         public string getName()
         {
             return name;
         }
 
-        public int getValue(int index)
+        public int GetSleepTime()
         {
-            return array[index];
-        }
-
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
+            return sleepTime;
         }
     }
 }

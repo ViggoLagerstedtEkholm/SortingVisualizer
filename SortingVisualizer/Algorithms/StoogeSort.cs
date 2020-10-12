@@ -14,29 +14,18 @@ namespace SortingVisualizer.Algorithms
         /// STOOGE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/stooge-sort/
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "StoogeSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
-        public StoogeSort(int[] array, int sleepTime, Window sortingStarter)
+        public StoogeSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
         }
-        public void StartThread()
-        {
-            SleepThread = new Thread(temp);
-            SleepThread.Start();
-        }
 
-        private void temp()
+        public void Sort()
         {
-            Sort(array, 0, array.Length - 1);
-            Done();
+            Sort(sortingStarter.getArray(), 0, sortingStarter.getLength() - 1);
         }
 
         public void Sort(int[] arr, int l, int h)
@@ -48,12 +37,7 @@ namespace SortingVisualizer.Algorithms
             // than last, swap them 
             if (arr[l] > arr[h])
             {
-                int t = arr[l];
-                arr[l] = arr[h];
-                arr[h] = t;
-                iterations++;
-                currentlyMoving = arr[h];
-                Thread.Sleep(sleepTime);
+                sortingStarter.swap(arr[l], arr[h], sleepTime);
             }
 
             // If there are more than 2  
@@ -76,36 +60,14 @@ namespace SortingVisualizer.Algorithms
                 Sort(arr, l, h - t);
             }
         }
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-
-        public int getIterations()
-        {
-            return iterations;
-        }
-
         public string getName()
         {
             return name;
         }
 
-        public int getValue(int index)
+        public int GetSleepTime()
         {
-            return array[index];
-        }
-
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
-        }
-
-        public void Sort()
-        {
-            throw new NotImplementedException();
+            return sleepTime;
         }
     }
 }

@@ -14,43 +14,32 @@ namespace SortingVisualizer.Algorithms
         /// CYCLE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cycle-sort/
         /// </summary>
-        private int[] array;
-        private Thread SleepThread = null;
-        public int iterations;
         private string name = "CycleSort";
-        private int currentlyMoving;
         private int sleepTime;
         private Window sortingStarter;
-        public CycleSort(int[] array, int sleepTime, Window sortingStarter)
+        public CycleSort(int sleepTime, Window sortingStarter)
         {
-            this.array = array;
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
-        }
-
-        public void StartThread()
-        {
-            SleepThread = new Thread(Sort);
-            SleepThread.Start();
         }
 
         public void Sort()
         {
             int writes = 0;
-            int n = array.Length;
+            int n = sortingStarter.getLength();
             // traverse array elements and  
             // put it to on the right place 
             for (int cycle_start = 0; cycle_start <= n - 2; cycle_start++)
             {
                 // initialize item as starting point 
-                int item = array[cycle_start];
+                int item = sortingStarter.getIndex(cycle_start);
 
                 // Find position where we put the item.  
                 // We basically count all smaller elements  
                 // on right side of item. 
                 int pos = cycle_start;
                 for (int i = cycle_start + 1; i < n; i++)
-                    if (array[i] < item)
+                    if (sortingStarter.getIndex(i) < item)
                         pos++;
 
                 // If item is already in correct position 
@@ -58,18 +47,14 @@ namespace SortingVisualizer.Algorithms
                     continue;
 
                 // ignore all duplicate elements 
-                while (item == array[pos])
+                while (item == sortingStarter.getIndex(pos))
                     pos += 1;
 
                 // put the item to it's right position 
                 if (pos != cycle_start)
                 {
-                    int temp = item;
-                    item = array[pos];
-                    array[pos] = temp;
+                    sortingStarter.swapSingle(sortingStarter.getIndex(pos), pos, sleepTime);
                     writes++;
-                    currentlyMoving = array[pos];
-                    iterations++;
                     Thread.Sleep(sleepTime);
                 }
 
@@ -80,36 +65,22 @@ namespace SortingVisualizer.Algorithms
 
                     // Find position where we put the element 
                     for (int i = cycle_start + 1; i < n; i++)
-                        if (array[i] < item)
+                        if (sortingStarter.getIndex(i) < item)
                             pos += 1;
 
                     // ignore all duplicate elements 
-                    while (item == array[pos])
+                    while (item == sortingStarter.getIndex(pos))
                         pos += 1;
 
                     // put the item to it's right position 
-                    if (item != array[pos])
+                    if (item != sortingStarter.getIndex(pos))
                     {
-                        int temp = item;
-                        item = array[pos];
-                        array[pos] = temp;
+                        sortingStarter.swapSingle(sortingStarter.getIndex(pos), pos, sleepTime);
                         writes++;
-                        iterations++;
-                        currentlyMoving = array[pos];
                         Thread.Sleep(sleepTime);
                     }
                 }
             }
-            Done();
-        }
-        public int getCurrentMoving()
-        {
-            return currentlyMoving;
-        }
-
-        public int getIterations()
-        {
-            return iterations;
         }
 
         public string getName()
@@ -117,16 +88,9 @@ namespace SortingVisualizer.Algorithms
             return name;
         }
 
-        public int getValue(int index)
+        public int GetSleepTime()
         {
-            return array[index];
-        }
-
-        public void Done()
-        {
-            sortingStarter.DequeueItem();
-            sortingStarter.StartQueue();
-            SleepThread.Abort();
+            return sleepTime;
         }
     }
 }
