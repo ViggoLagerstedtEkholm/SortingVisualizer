@@ -62,6 +62,7 @@
     <Compile Include="Algorithms\ShellSort.cs" />
     <Compile Include="Algorithms\StoogeSort.cs" />
     <Compile Include="Draw\SortingHandler.cs" />
+    <Compile Include="Draw\Windows\GenerateData.cs" />
     <Compile Include="Draw\Windows\SortAlgorithmWindow.cs">
       <SubType>Form</SubType>
     </Compile>
