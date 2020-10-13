@@ -40,10 +40,13 @@ namespace SortingVisualizer.Draw.Windows
                 foreach (ISortAlgorithms algorithm in algorithms)
                 {
                     window.setCurrentAlgorithm(algorithm);
-                    window.Shuffle();
+                    window.ShuffleWhenStarted();
 
                     algorithm.Sort();
                     window.ResetColor();
+                    window.ShuffleAfterSorted();
+
+                    Thread.Sleep(300);
                 }
 
             }).Start();
