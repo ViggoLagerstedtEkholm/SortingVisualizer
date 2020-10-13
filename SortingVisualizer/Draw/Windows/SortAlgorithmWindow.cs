@@ -85,14 +85,25 @@ namespace SortingVisualizer.Draw
             //Make thread sleep so we can see the updated changes.
             Sleep(sleepTime);
         }
-
-        public void swapSingle(int item, int pos, int sleepTime)
+        //sortingStarter.swapSingle(sortingStarter.getArray()[k], rightArray[j], sleepTime);
+        public int swapSingle(int index, int value, int sleepTime)
         {
-            int temp = item;
-            item = array[pos];
-            array[pos] = temp;
+            int temp = index;
+            index = array[value];
+            array[value] = temp;
 
-            colors[pos] = 100;
+            colors[value] = 100;
+
+            Sleep(sleepTime);
+
+            return index;
+        }
+
+        public void swapSingleElement(int index, int value, int sleepTime)
+        {
+            array[index] = value;
+
+            colors[index] = 100;
 
             Sleep(sleepTime);
         }
@@ -114,6 +125,15 @@ namespace SortingVisualizer.Draw
 
             this.iterations++;
             
+        }
+
+        public void runWhenFinallySorted()
+        {
+            for(int i = 0; i < array.Length; i++)
+            {
+                colors[i] = 100;
+                swapSingle(array[i], i, 20);
+            }
         }
 
         /// <summary>
