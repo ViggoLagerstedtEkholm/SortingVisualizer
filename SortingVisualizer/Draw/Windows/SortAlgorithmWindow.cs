@@ -182,30 +182,35 @@ namespace SortingVisualizer.Draw
             g.TranslateTransform(0, ScreenDimensions.Y);
             g.ScaleTransform(1, -1);
 
+            int BAR_WIDTH = ScreenDimensions.X / array.Length;
+
             //Draw all the pillars relative to the screen coordinates.
             for (int i = 0; i < amountOfBars; i++)
             {
-                int x = (i * ScreenDimensions.X / amountOfBars);
+
+                //g.DrawRectangle(Pens.White, new Rectangle((i * ScreenDimensions.X / dataSet.Length), 0, 
+                //                                          (ScreenDimensions.X / dataSet.Length), dataSet[i]));
+                int x = i + (BAR_WIDTH) * i;
                 int y = 0;
-                int width = (ScreenDimensions.X / amountOfBars);
+                int width = BAR_WIDTH;
                 int height = getIndex(i);
 
                 int colorValue = colors[i] * 2;
 
+                Brush brush;
+
                 if(colorValue > 190)
                 {
-                    Brush brush = new SolidBrush(Color.FromArgb(255 - colorValue, 255, 255 - colorValue));
-                    g.FillRectangle(brush, new Rectangle(x, y, width, height));
-                    g.DrawRectangle(new Pen(brush,width), new Rectangle(x, y, width, height));
+                    brush = new SolidBrush(Color.FromArgb(255 - colorValue, 255, 255 - colorValue));
                 }
                 else
                 {
-                    Brush brush = new SolidBrush(Color.FromArgb(255, 255 - colorValue, 255 - colorValue));
-                    g.FillRectangle(brush, new Rectangle(x, y, width, height));
-                    g.DrawRectangle(new Pen(brush, width), new Rectangle(x, y, width, height));
+                    brush = new SolidBrush(Color.FromArgb(255, 255 - colorValue, 255 - colorValue));
                 }
-               
-                if(colors[i] > 0)
+
+                g.FillRectangle(brush, new Rectangle(x, y, width, height));
+
+                if (colors[i] > 0)
                 {
                     colors[i] -= 1;
                 }
