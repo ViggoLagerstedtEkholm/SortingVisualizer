@@ -1,4 +1,5 @@
 ﻿using SortingVisualizer.Algorithms;
+using SortingVisualizer.Draw.Windows;
 using SortingVisualizer.Maths;
 using System;
 using System.Collections.Generic;
@@ -46,10 +47,18 @@ namespace SortingVisualizer.Draw
 
             this.Paint += Renderer;
         }    
-
-        public void Shuffle()
+        public void ShuffleAfterSorted()
         {
-            GenerateRandomArray(amountOfBars, min, max, array);
+            Random random = new Random();
+            for(int i = 0; i < array.Length; i++)
+            {
+                swapSingle(random.Next(50, 250), i, 5);
+            }
+        }
+
+        public void ShuffleWhenStarted()
+        {
+            GenerateData.GenerateRandomArray(amountOfBars, 50, 250, array);
         }
         private void createData(int amountOfBars)
         {
@@ -59,8 +68,8 @@ namespace SortingVisualizer.Draw
 
         private void populateLists()
         {
-            this.array = GenerateArray(this.amountOfBars);
-            this.colors = GenerateArray(this.amountOfBars);
+            this.array = GenerateData.GenerateArray(amountOfBars, array);
+            this.colors = GenerateData.GenerateArray(amountOfBars, colors);
         }
 
         //All algorithms should use this method for swapping indices.
@@ -118,43 +127,6 @@ namespace SortingVisualizer.Draw
             }
         }
 
-        /// <summary>
-        /// Returns an array of integers where none of the integers are recurring.
-        /// </summary>
-        /// <param name="values"> The amount of pillars we will need to get a number for.</param>
-        /// <param name="min"> The smallest number possible to generate. </param>
-        /// <param name="max"> The highest numver possible to generate.</param>
-        /// <returns></returns>
-        private int[] GenerateArray(int values)
-        {
-            int[] array = new int[values];
-
-            for (int i = 0; i < values; i++)
-            {
-                this.colors[i] = 0;
-                this.array[i] = 0;
-            }
-            return array;
-        }
-
-
-        /// <summary>
-        /// Returns an array of integers where none of the integers are recurring.
-        /// </summary>
-        /// <param name="values"> The amount of pillars we will need to get a number for.</param>
-        /// <param name="min"> The smallest number possible to generate. </param>
-        /// <param name="max"> The highest numver possible to generate.</param>
-        /// <returns></returns>
-        private int[] GenerateRandomArray(int values, int min, int max, int[] array)
-        {
-            Random random = new Random();
-
-            for (int i = 0; i < values; i++)
-            {
-                array[i] = random.Next(min, max);
-            }
-            return array;
-        }
 
         /// <summary>
         /// Render the screen.
