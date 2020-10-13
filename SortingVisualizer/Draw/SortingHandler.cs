@@ -12,6 +12,7 @@ namespace SortingVisualizer.Draw.Windows
     {
         private List<ISortAlgorithms> algorithms;
         private Window window;
+        private Queue<ISortAlgorithms> algotihmsQueue; //Use this in the rework.
         public SortingHandler(List<ISortAlgorithms> algorithms, Window window)
         {
             this.algorithms = algorithms;
@@ -19,9 +20,25 @@ namespace SortingVisualizer.Draw.Windows
             initiateSorting();
         }
 
+        private void Sleep(int sleepTime)
+        {
+            try
+            {
+                Thread.Sleep(sleepTime);
+            }
+            catch (ThreadInterruptedException e)
+            {
+                Thread.CurrentThread.Interrupt();
+            }
+
+        }
+
+        //I might rework this part and make a Queue, in that way you can pause, resume, add new algorithms, remove algorihms runtime.
+
         /// <summary>
         /// This method goes through the whole array of algorithms and displays the sorting using the window class.
         /// </summary>
+        /// 
         private void initiateSorting()
         {
             new Thread(() =>
@@ -43,10 +60,12 @@ namespace SortingVisualizer.Draw.Windows
                     window.ShuffleWhenStarted();
 
                     algorithm.Sort();
+                    Sleep(300);
+                    window.runWhenFinallySorted();
+                    Sleep(300);
                     window.ResetColor();
                     window.ShuffleAfterSorted();
-
-                    Thread.Sleep(300);
+                    Sleep(300);
                 }
 
             }).Start();
