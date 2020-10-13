@@ -51,22 +51,22 @@ namespace SortingVisualizer.Algorithms
             {
                 if (i == leftArray.Length)
                 {
-                    sortingStarter.getArray()[k] = rightArray[j];
+                    sortingStarter.swapSingle(rightArray[j], k, sleepTime);
                     j++;
                 }
                 else if (j == rightArray.Length)
                 {
-                    sortingStarter.getArray()[k] = leftArray[i];
+                    sortingStarter.swapSingle(leftArray[i], k, sleepTime);
                     i++;
                 }
                 else if (leftArray[i] <= rightArray[j])
                 {
-                    sortingStarter.getArray()[k] = leftArray[i];
+                    sortingStarter.swapSingle(leftArray[i], k, sleepTime);
                     i++;
                 }
                 else
                 {
-                    sortingStarter.getArray()[k] = rightArray[j];
+                    sortingStarter.swapSingle(rightArray[j], k, sleepTime);
                     j++;
 
                 }

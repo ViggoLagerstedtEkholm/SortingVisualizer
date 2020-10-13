@@ -37,10 +37,12 @@ namespace SortingVisualizer.Algorithms
                     int j;
                     for (j = i; j >= gap && sortingStarter.getArray()[j - gap] > temp; j -= gap)
                     {
-                        sortingStarter.getArray()[j] = sortingStarter.getArray()[j - gap];
+                        //sortingStarter.getArray()[j] = sortingStarter.getArray()[j - gap];
+                        sortingStarter.swapSingleElement(j, sortingStarter.getArray()[j - gap], sleepTime);
                     }
 
-                    sortingStarter.getArray()[j] = temp;
+                    sortingStarter.swapSingleElement(j, temp, sleepTime);
+                    //sortingStarter.swapSingle(sortingStarter.getArray()[j], temp, sleepTime);
                 }
             }
         }

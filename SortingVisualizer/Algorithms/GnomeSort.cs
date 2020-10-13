@@ -36,7 +36,7 @@ namespace SortingVisualizer.Algorithms
                     index++;
                 else
                 {
-                    sortingStarter.swap(sortingStarter.getIndex(index), sortingStarter.getIndex(index + 1), sleepTime);
+                    sortingStarter.swap(index, index - 1, sleepTime);
                     index--;
                 }
             }

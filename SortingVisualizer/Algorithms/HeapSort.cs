@@ -32,7 +32,7 @@ namespace SortingVisualizer.Algorithms
             }
             for (int i = n - 1; i >= 0; i--)
             {
-                sortingStarter.swap(sortingStarter.getIndex(0), sortingStarter.getIndex(i), sleepTime);
+                sortingStarter.swap(0, i, sleepTime);
                 heap(sortingStarter.getArray(), i, 0);
             }
         }
@@ -53,9 +53,7 @@ namespace SortingVisualizer.Algorithms
 
             if (largest != i)
             {
-                int swap = array[i];
-                array[i] = array[largest];
-                array[largest] = swap;
+                sortingStarter.swap(i, largest, sleepTime);
                 heap(array, n, largest);
             }
         }

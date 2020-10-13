@@ -37,7 +37,7 @@ namespace SortingVisualizer.Algorithms
             // than last, swap them 
             if (arr[l] > arr[h])
             {
-                sortingStarter.swap(arr[l], arr[h], sleepTime);
+                sortingStarter.swap(l, h, sleepTime);
             }
 
             // If there are more than 2  

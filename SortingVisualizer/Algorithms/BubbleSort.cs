@@ -34,8 +34,6 @@ namespace SortingVisualizer.Algorithms
                     if (sortingStarter.getIndex(j) > sortingStarter.getIndex(j + 1))
                     {
                         sortingStarter.swap(j, j+ 1, sleepTime);
-
-                        Thread.Sleep(sleepTime);
                     }
                 }
             }

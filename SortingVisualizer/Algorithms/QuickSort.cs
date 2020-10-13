@@ -49,10 +49,10 @@ namespace SortingVisualizer.Algorithms
                 if (sortingStarter.getArray()[j] <= p)
                 {
                     i++;
-                    sortingStarter.swap(sortingStarter.getArray()[i], sortingStarter.getArray()[j], sleepTime);
+                    sortingStarter.swap(i, j, sleepTime);
                 }
             }
-            sortingStarter.swap(sortingStarter.getArray()[i + 1], sortingStarter.getArray()[end], sleepTime);
+            sortingStarter.swap(i + 1, end, sleepTime);
 
             return i + 1;
         }

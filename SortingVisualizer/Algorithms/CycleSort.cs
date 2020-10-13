@@ -16,30 +16,30 @@ namespace SortingVisualizer.Algorithms
         /// </summary>
         private string name = "CycleSort";
         private int sleepTime;
-        private Window sortingStarter;
-        public CycleSort(int sleepTime, Window sortingStarter)
+        private Window window;
+        public CycleSort(int sleepTime, Window window)
         {
             this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
+            this.window = window;
         }
 
         public void Sort()
         {
             int writes = 0;
-            int n = sortingStarter.getLength();
+            int n = window.getLength();
             // traverse array elements and  
             // put it to on the right place 
             for (int cycle_start = 0; cycle_start <= n - 2; cycle_start++)
             {
                 // initialize item as starting point 
-                int item = sortingStarter.getIndex(cycle_start);
+                int item = window.getArray()[cycle_start];
 
                 // Find position where we put the item.  
                 // We basically count all smaller elements  
                 // on right side of item. 
                 int pos = cycle_start;
                 for (int i = cycle_start + 1; i < n; i++)
-                    if (sortingStarter.getIndex(i) < item)
+                    if (window.getArray()[i] < item)
                         pos++;
 
                 // If item is already in correct position 
@@ -47,15 +47,19 @@ namespace SortingVisualizer.Algorithms
                     continue;
 
                 // ignore all duplicate elements 
-                while (item == sortingStarter.getIndex(pos))
+                while (item == window.getArray()[pos])
                     pos += 1;
 
                 // put the item to it's right position 
                 if (pos != cycle_start)
                 {
-                    sortingStarter.swapSingle(sortingStarter.getIndex(pos), pos, sleepTime);
+                    //int temp = item;
+                    //item = array[pos];
+                    //array[pos] = temp
+
+                    item = window.swapSingle(item, pos, sleepTime);
+                    
                     writes++;
-                    Thread.Sleep(sleepTime);
                 }
 
                 // Rotate rest of the cycle 
@@ -65,19 +69,19 @@ namespace SortingVisualizer.Algorithms
 
                     // Find position where we put the element 
                     for (int i = cycle_start + 1; i < n; i++)
-                        if (sortingStarter.getIndex(i) < item)
+                        if (window.getArray()[i] < item)
                             pos += 1;
 
                     // ignore all duplicate elements 
-                    while (item == sortingStarter.getIndex(pos))
+                    while (item == window.getArray()[pos])
                         pos += 1;
 
                     // put the item to it's right position 
-                    if (item != sortingStarter.getIndex(pos))
+                    if (item != window.getArray()[pos])
                     {
-                        sortingStarter.swapSingle(sortingStarter.getIndex(pos), pos, sleepTime);
+                        item = window.swapSingle(item, pos, sleepTime);
+
                         writes++;
-                        Thread.Sleep(sleepTime);
                     }
                 }
             }

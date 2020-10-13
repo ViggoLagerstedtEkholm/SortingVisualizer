@@ -16,17 +16,17 @@ namespace SortingVisualizer.Algorithms
         /// </summary>
         private string name = "CocktailSort";
         private int sleepTime;
-        private Window sortingStarter;
-        public CocktailSort(int sleepTime, Window sortingStarter)
+        private Window window;
+        public CocktailSort(int sleepTime, Window window)
         {
             this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
+            this.window = window;
         }
         public void Sort()
         {
             bool swapped = true;
             int start = 0;
-            int end = sortingStarter.getLength();
+            int end = window.getLength();
 
             while (swapped == true)
             {
@@ -34,9 +34,9 @@ namespace SortingVisualizer.Algorithms
 
                 for (int i = start; i < end - 1; ++i)
                 {
-                    if (sortingStarter.getIndex(i) > sortingStarter.getIndex(i + 1))
+                    if (window.getIndex(i) > window.getIndex(i + 1))
                     {
-                        sortingStarter.swap(sortingStarter.getIndex(i), sortingStarter.getIndex(i + 1), sleepTime);
+                        window.swap(i, i + 1, sleepTime);
                         swapped = true;
                     }
                 }
@@ -51,9 +51,9 @@ namespace SortingVisualizer.Algorithms
 
                 for (int i = end - 1; i >= start; i--)
                 {
-                    if (sortingStarter.getIndex(i) > sortingStarter.getIndex(i + 1))
+                    if (window.getIndex(i) > window.getIndex(i + 1))
                     {
-                        sortingStarter.swap(sortingStarter.getIndex(i), sortingStarter.getIndex(i + 1), sleepTime);
+                        window.swap(i, i + 1, sleepTime);
                         swapped = true;
                     }
                 }

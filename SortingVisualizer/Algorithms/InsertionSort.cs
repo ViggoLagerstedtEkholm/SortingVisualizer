@@ -31,7 +31,7 @@ namespace SortingVisualizer.Algorithms
                 {
                     if (sortingStarter.getIndex(j) < sortingStarter.getIndex(j - 1))
                     {
-                        sortingStarter.swap(sortingStarter.getIndex(j - 1), sortingStarter.getIndex(j), sleepTime);
+                        sortingStarter.swap(j - 1, j, sleepTime);
                     }
                     else
                     {

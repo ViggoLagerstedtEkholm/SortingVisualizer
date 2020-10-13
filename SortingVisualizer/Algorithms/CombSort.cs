@@ -17,7 +17,7 @@ namespace SortingVisualizer.Algorithms
         private string name = "CombSort";
         private int sleepTime;
         private Window sortingStarter;
-        public CombSort(int[] array, int sleepTime, Window sortingStarter)
+        public CombSort(int sleepTime, Window sortingStarter)
         {
             this.sleepTime = sleepTime;
             this.sortingStarter = sortingStarter;
@@ -51,9 +51,7 @@ namespace SortingVisualizer.Algorithms
                     if (sortingStarter.getIndex(i) > sortingStarter.getIndex(i + gap))
                     {
                         // Swap arr[i] and arr[i+gap] 
-                        sortingStarter.swap(sortingStarter.getIndex(i), sortingStarter.getIndex(i + 1), sleepTime);
-      
-                        Thread.Sleep(sleepTime);
+                        sortingStarter.swap(i, i + 1, sleepTime);
                         // Set swapped 
                         swapped = true;
                     }

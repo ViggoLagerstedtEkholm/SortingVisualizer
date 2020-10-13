@@ -43,7 +43,7 @@ namespace SortingVisualizer.Algorithms
 
         public void Swap(int first, int second)
         {
-            sortingStarter.swap(sortingStarter.getArray()[first], sortingStarter.getArray()[second], sleepTime);
+            sortingStarter.swap(first, second, sleepTime);
         }
 
         public string getName()
