@@ -66,5 +66,10 @@ namespace SortingVisualizer.Algorithms
         {
             return sleepTime;
         }
+
+        public void setSleep(int sleepTime)
+        {
+            this.sleepTime = sleepTime;
+        }
     }
 }

@@ -9,7 +9,7 @@ using SortingVisualizer.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class BubbleSort : ISortAlgorithms, IPlaySound
+    public class BubbleSort : ISortAlgorithms
     {
         /// <summary>
         /// BUBBLE-SORT
@@ -50,9 +50,9 @@ namespace SortingVisualizer.Algorithms
             return sleepTime;
         }
 
-        public void PlaySound()
+        public void setSleep(int sleepTime)
         {
-            
+            this.sleepTime = sleepTime;
         }
     }
 }

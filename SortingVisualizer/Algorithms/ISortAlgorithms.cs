@@ -10,7 +10,9 @@ namespace SortingVisualizer.Algorithms
     {
         string getName();
         void Sort();
-
         int GetSleepTime();
+
+        //Enables runtime speedup.
+        void setSleep(int sleepTime);
     }
 }
