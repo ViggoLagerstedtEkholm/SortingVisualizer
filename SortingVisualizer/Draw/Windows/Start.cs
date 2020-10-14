@@ -17,6 +17,10 @@ namespace SortingVisualizer.Draw
 {
     public partial class Start : Form
     {
+        /// <summary>
+        /// Note to self: Give the user the option to select different pattern of values, the sine wave for example.
+        /// </summary>
+        /// 
         private List<ISortAlgorithms> existingAlgorithms;
         private readonly int sleepTime = 10;
         private readonly string[] algorithms = { "Bubble sort", "Selection sort", "Heap sort", "Merge sort", "Quick sort", "Insertion sort",
@@ -47,12 +51,20 @@ namespace SortingVisualizer.Draw
                 int min = Int32.Parse(MinTxf.Text);
                 int max = Int32.Parse(MaxTxf.Text);
 
-                window = new Window("SortingVisualizer", bars, min, max);
-                existingAlgorithms = new List<ISortAlgorithms>();
-                fillAlgotihms();
-                sortingHandler = new SortingHandler(existingAlgorithms, window);
-                window.Show();
-                this.Hide();
+                if((Validator.MinMax(min, max)))
+                {
+                    window = new Window("SortingVisualizer", bars, min, max);
+                    existingAlgorithms = new List<ISortAlgorithms>();
+                    fillAlgotihms();
+                    sortingHandler = new SortingHandler(existingAlgorithms, window);
+                    window.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Min is greater than max! Make min value less than max...", "SortingVisaulizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
             }
             else
             {
