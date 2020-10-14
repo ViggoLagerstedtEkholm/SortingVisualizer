@@ -57,6 +57,7 @@ namespace SortingVisualizer.Draw.Windows
                 foreach (ISortAlgorithms algorithm in algorithms)
                 {
                     window.setCurrentAlgorithm(algorithm);
+                    window.setAlgorithmName(algorithm.getName());
                     window.ShuffleWhenStarted();
 
                     algorithm.Sort();
