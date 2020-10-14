@@ -9,6 +9,18 @@ namespace SortingVisualizer.Validate
 {
     public static class Validator
     {
+
+        public static bool MinMax(int min, int max)
+        {
+            bool isGreater = false;
+
+            if(max > min)
+            {
+                isGreater = true;
+            }
+
+            return isGreater;
+        }
         public static bool TxfHasContent(TextBox txfBox)
         {
             bool hasValue = false;
