@@ -50,7 +50,7 @@ namespace SortingVisualizer.Draw
             this.Paint += Renderer;
         }    
 
-        private void SET_FULLSCREEN()
+        public void SET_FULLSCREEN()
         {
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
