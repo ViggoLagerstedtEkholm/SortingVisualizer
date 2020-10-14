@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// INSERTION-SORT
         /// https://en.wikipedia.org/wiki/Insertion_sort
         /// </summary>
-        private string name = "InsertionSort";
+        private string name = "Insertion Sort";
         private int sleepTime;
         private Window sortingStarter;
         public InsertionSort(int sleepTime, Window sortingStarter)

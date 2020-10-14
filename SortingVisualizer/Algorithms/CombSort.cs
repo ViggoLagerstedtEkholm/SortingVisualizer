@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// COMB-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/comb-sort/
         /// </summary>
-        private string name = "CombSort";
+        private string name = "Comb Sort";
         private int sleepTime;
         private Window sortingStarter;
         public CombSort(int sleepTime, Window sortingStarter)

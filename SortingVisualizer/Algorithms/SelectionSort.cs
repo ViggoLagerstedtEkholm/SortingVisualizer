@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// SELECTION-SORT
         /// https://en.wikipedia.org/wiki/Selection_sort
         /// </summary>
-        private string name = "SelectionSort";
+        private string name = "Selection Sort";
         private int sleepTime;
         private Window sortingStarter;
         public SelectionSort(int sleepTime, Window sortingStarter)

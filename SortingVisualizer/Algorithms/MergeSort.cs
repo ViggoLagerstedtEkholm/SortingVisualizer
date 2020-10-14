@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// MERGE-SORT
         /// Help with implementation - http://csharpexamples.com/c-merge-sort-algorithm-implementation/
         /// </summary>
-        private string name = "MergeSort";
+        private string name = "Merge Sort";
         private int sleepTime;
         private Window sortingStarter;
         public MergeSort(int sleepTime, Window sortingStarter)

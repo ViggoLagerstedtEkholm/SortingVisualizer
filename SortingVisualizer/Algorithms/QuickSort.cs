@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// QUICK-SORT
         /// Help with implementation - http://csharpexamples.com/c-quick-sort-algorithm-implementation/
         /// </summary>
-        private string name = "Quicksort";
+        private string name = "Quick Sort";
         private int sleepTime;
         private Window sortingStarter;
         public QuickSort(int sleepTime, Window sortingStarter)

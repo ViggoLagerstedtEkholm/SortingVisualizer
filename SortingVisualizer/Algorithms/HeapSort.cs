@@ -15,7 +15,7 @@ namespace SortingVisualizer.Algorithms
         /// Help with implementation - https://www.geeksforgeeks.org/heap-sort/	
         /// </summary>	
 
-        private string name = "HeapSort";
+        private string name = "Heap Sort";
         private int sleepTime;
         private Window sortingStarter;
         public HeapSort(int sleepTime, Window sortingStarter)

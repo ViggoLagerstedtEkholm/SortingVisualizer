@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// COCKTAIL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cocktail-sort/
         /// </summary>
-        private string name = "CocktailSort";
+        private string name = "Cocktail Sort";
         private int sleepTime;
         private Window window;
         public CocktailSort(int sleepTime, Window window)

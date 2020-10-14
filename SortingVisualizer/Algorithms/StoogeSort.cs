@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// STOOGE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/stooge-sort/
         /// </summary>
-        private string name = "StoogeSort";
+        private string name = "Stooge Sort";
         private int sleepTime;
         private Window sortingStarter;
         public StoogeSort(int sleepTime, Window sortingStarter)

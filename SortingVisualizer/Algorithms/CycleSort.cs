@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// CYCLE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cycle-sort/
         /// </summary>
-        private string name = "CycleSort";
+        private string name = "Cycle Sort";
         private int sleepTime;
         private Window window;
         public CycleSort(int sleepTime, Window window)

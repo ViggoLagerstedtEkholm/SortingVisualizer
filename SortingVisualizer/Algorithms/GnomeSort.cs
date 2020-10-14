@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// GNOME-SORT
         /// https://en.wikipedia.org/wiki/Gnome_sort
         /// </summary>
-        private string name = "GnomeSort";
+        private string name = "Gnome Sort";
         private int sleepTime;
         private Window sortingStarter;
         

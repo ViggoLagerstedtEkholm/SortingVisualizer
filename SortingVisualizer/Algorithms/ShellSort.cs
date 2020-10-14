@@ -14,7 +14,7 @@ namespace SortingVisualizer.Algorithms
         /// SHELL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/shellsort/
         /// </summary>
-        private string name = "ShellSort";
+        private string name = "Shell Sort";
         private int sleepTime;
         private Window sortingStarter;
 

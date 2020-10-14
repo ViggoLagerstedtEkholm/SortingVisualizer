@@ -15,7 +15,7 @@ namespace SortingVisualizer.Algorithms
         /// BUBBLE-SORT
         /// https://sv.wikipedia.org/wiki/Bubbelsortering
         /// </summary>
-        private string name = "BubbleSort";
+        private string name = "Bubble Sort";
         private int sleepTime;
         private Window sortingStarter;
         public BubbleSort(int sleepTime, Window sortingStarter)
