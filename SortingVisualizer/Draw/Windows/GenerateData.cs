@@ -28,20 +28,6 @@ namespace SortingVisualizer.Draw.Windows
         }
 
         /// <summary>
-        /// Go through an array and put every index to 0.
-        /// </summary>
-        /// <param name="array"> The em</param>
-        /// <returns></returns>
-        public static int[] GenerateArray(int amountOfPillars, int[] array)
-        {
-            for (int i = 0; i < amountOfPillars; i++)
-            {
-                array[i] = 0;
-            }
-            return array;
-        }
-
-        /// <summary>
         /// Returns an array of integers where none of the integers are recurring.
         /// </summary>
         /// <param name="values"> The amount of pillars we will need to get a number for.</param>
@@ -55,6 +41,20 @@ namespace SortingVisualizer.Draw.Windows
             for (int i = 0; i < values; i++)
             {
                 array[i] = random.Next(min, max);
+            }
+            return array;
+        }
+
+        /// <summary>
+        /// Go through an array and put every index to 0.
+        /// </summary>
+        /// <param name="array"> The em</param>
+        /// <returns></returns>
+        public static int[] GenerateArray(int amountOfPillars, int[] array)
+        {
+            for (int i = 0; i < amountOfPillars; i++)
+            {
+                array[i] = 0;
             }
             return array;
         }
