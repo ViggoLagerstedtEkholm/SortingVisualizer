@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SortingVisualizer.Draw.Windows
 {
@@ -12,11 +13,16 @@ namespace SortingVisualizer.Draw.Windows
     {
         private List<ISortAlgorithms> algorithms;
         private Window window;
-        private Queue<ISortAlgorithms> algotihmsQueue; //Use this in the rework.
+        private bool isPaused;
+        private bool isResumed;
+        private ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
+        private Thread workerThread;
+        private int sortingIndex;
         public SortingHandler(List<ISortAlgorithms> algorithms, Window window)
         {
             this.algorithms = algorithms;
             this.window = window;
+     
             initiateSorting();
         }
 
@@ -33,6 +39,8 @@ namespace SortingVisualizer.Draw.Windows
 
         }
 
+
+
         //I might rework this part and make a Queue, in that way you can pause, resume, add new algorithms, remove algorihms runtime.
 
         /// <summary>
@@ -41,7 +49,7 @@ namespace SortingVisualizer.Draw.Windows
         /// 
         private void initiateSorting()
         {
-            new Thread(() =>
+            workerThread = new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
 
@@ -59,7 +67,7 @@ namespace SortingVisualizer.Draw.Windows
                     window.setCurrentAlgorithm(algorithm);
                     window.setAlgorithmName(algorithm.getName());
                     window.ShuffleWhenStarted();
-
+                    
                     algorithm.Sort();
                     Sleep(300);
                     window.runWhenFinallySorted();
@@ -67,9 +75,28 @@ namespace SortingVisualizer.Draw.Windows
                     window.ResetColor();
                     window.ShuffleAfterSorted();
                     Sleep(300);
+
+                    window.setIterations();
+                    sortingIndex++;
                 }
 
-            }).Start();
+
+                //Write to files
+            });
+
+            workerThread.Start();
+        }
+
+        public ISortAlgorithms getCurrentSortingItem()
+        {
+            return this.algorithms[sortingIndex];
+        }
+
+        public void stop()
+        {
+            Console.WriteLine("stop");
+            workerThread.Abort();
+            Application.Exit();
         }
     }
 }
