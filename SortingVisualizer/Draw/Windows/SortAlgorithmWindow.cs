@@ -16,18 +16,21 @@ namespace SortingVisualizer.Draw
 {
     public class Window : Form
     {
-        private Vector2D ScreenDimensions = new Vector2D(1920, 1080);
+        private Vector2D ScreenDimensions;
         private int[] array;
         private int[] colors;
         private int amountOfBars;
         private int min;
         private int max;
         private string title;
+        private int sleepTime = 0;
         private ISortAlgorithms currentAlgorithm;
         private string Name = "";
         private int iterations;
+        private ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
+        private RadioButton generateArrayType;
 
-        public Window(string title, int amountOfBars, int min, int max)
+        public Window(string title, int amountOfBars, int min, int max, Vector2D dimensions, RadioButton generateArrayType)
         {
             InitializeComponent();
 
@@ -35,18 +38,24 @@ namespace SortingVisualizer.Draw
             this.min = min;
             this.max = max;
             this.title = title;
+            this.ScreenDimensions = dimensions;
+            this.generateArrayType = generateArrayType;
 
             createData(amountOfBars);
             populateLists();
 
             this.DoubleBuffered = true;
             this.Size = new Size((int)ScreenDimensions.X, (int)ScreenDimensions.Y);
-            Cursor.Hide();
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-
+            
             this.Paint += Renderer;
         }    
+
+        private void SET_FULLSCREEN()
+        {
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+            Cursor.Hide();
+        }
         public void ShuffleAfterSorted()
         {
             Random random = new Random();
@@ -58,7 +67,15 @@ namespace SortingVisualizer.Draw
 
         public void ShuffleWhenStarted()
         {
-            GenerateData.GenerateRandomArray(amountOfBars, min, max, array);
+            if (generateArrayType.Name == "sineWave")
+            {
+                this.array = GenerateData.GenerateSineArray(amountOfBars, array);
+            }
+            else
+            {
+                this.array = GenerateData.GenerateRandomArray(amountOfBars, min, max, array);
+
+            }
         }
         private void createData(int amountOfBars)
         {
@@ -124,7 +141,10 @@ namespace SortingVisualizer.Draw
             }
 
             this.iterations++;
-            
+            this.setSleepTime(sleepTime);
+
+            //If the thread is paused we will stop here until it's resumed.
+            _manualResetEvent.WaitOne();
         }
 
         public void runWhenFinallySorted()
@@ -159,6 +179,7 @@ namespace SortingVisualizer.Draw
             //Draw information about the algorithm.
             g.DrawString("Iterations: " + iterations, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
             g.DrawString("Algorithm: " + Name, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100);
+            g.DrawString("Sleep time: " + sleepTime + " ms", new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 150);
 
             //Draw the bars.
             RenderBars(g);
@@ -218,7 +239,7 @@ namespace SortingVisualizer.Draw
             // 
             // Window
             // 
-            this.ClientSize = new System.Drawing.Size(1209, 411);
+            this.ClientSize = new System.Drawing.Size(1209, 495);
             this.Name = "Window";
             this.ResumeLayout(false);
 
@@ -228,6 +249,20 @@ namespace SortingVisualizer.Draw
         /// Getters and setters.
         /// </summary>
         /// 
+
+        public void setPause()
+        {
+            _manualResetEvent.Reset();
+        }
+
+        public void setResume()
+        {
+            _manualResetEvent.Set();
+        }
+        public void setSleepTime(int sleepTime)
+        {
+            this.sleepTime = sleepTime;
+        }
         public void setCurrentAlgorithm(ISortAlgorithms algorithm)
         {
             this.currentAlgorithm = algorithm;
