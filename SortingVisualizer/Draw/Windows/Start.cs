@@ -20,8 +20,9 @@ namespace SortingVisualizer.Draw
         private List<ISortAlgorithms> existingAlgorithms;
         private readonly int sleepTime = 10;
         private readonly string[] algorithms = { "Bubble sort", "Selection sort", "Heap sort", "Merge sort", "Quick sort", "Insertion sort",
-                                                "Cocktail sort", "Shell sort", "Comb sort", "Cycle sort", "Pigeonhole sort", "Stooge sort"};
+                                                "Cocktail sort", "Shell sort", "Comb sort", "Cycle sort", "Stooge sort"};
         private SortingHandler sortingHandler;
+        Window window;
         public Start()
         {
             InitializeComponent();
@@ -29,10 +30,8 @@ namespace SortingVisualizer.Draw
 
         private void Start_Load(object sender, EventArgs e)
         {
-            for(int i = 0; i < algorithms.Length; i++)
-            {
-                AlgorithmsList.Items[i] = algorithms[i];
-            }
+            AlgorithmsList.Items.AddRange(algorithms);
+            AlgorithmsList.CheckOnClick = true;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -44,14 +43,13 @@ namespace SortingVisualizer.Draw
             (Validator.TxfHasInteger(MinTxf) && Validator.TxfHasInteger(MaxTxf) && Validator.TxfHasInteger(BarCountTxf)) &&
             (Validator.TxfHasContent(MinTxf) && Validator.TxfHasContent(MaxTxf) && Validator.TxfHasContent(BarCountTxf)))
             {
-                List<string> algorithms = new List<string>();
                 int bars = Int32.Parse(BarCountTxf.Text);
                 int min = Int32.Parse(MinTxf.Text);
                 int max = Int32.Parse(MaxTxf.Text);
 
-                Window window = new Window("SortingVisualizer", bars, min, max);
+                window = new Window("SortingVisualizer", bars, min, max);
                 existingAlgorithms = new List<ISortAlgorithms>();
-                existingAlgorithms.Add(new BubbleSort(sleepTime, window));
+                fillAlgotihms();
                 sortingHandler = new SortingHandler(existingAlgorithms, window);
                 window.Show();
                 this.Hide();
@@ -60,6 +58,63 @@ namespace SortingVisualizer.Draw
             {
                 MessageBox.Show("Make sure you only use integers with min/max/barCount and have selected atleast 1 algorithm!", "SortingVisaulizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void fillAlgotihms()
+        {
+            foreach (object itemChecked in AlgorithmsList.CheckedItems)
+            {
+                switch (itemChecked.ToString())
+                {
+                    case "Bubble sort":
+                        existingAlgorithms.Add(new BubbleSort(2, window));
+                        break;
+                    case "Selection sort":
+                        existingAlgorithms.Add(new SelectionSort(2, window));
+                        break;
+                    case "Heap sort":
+                        existingAlgorithms.Add(new HeapSort(2, window));
+                        break;
+                    case "Merge sort":
+                        existingAlgorithms.Add(new MergeSort(2, window));
+                        break;
+                    case "Quick sort":
+                        existingAlgorithms.Add(new QuickSort(2, window));
+                        break;
+                    case "Insertion sort":
+                        existingAlgorithms.Add(new InsertionSort(2, window));
+                        break;
+                    case "Cocktail sort":
+                        existingAlgorithms.Add(new CocktailSort(2, window));
+                        break;
+                    case "Shell sort":
+                        existingAlgorithms.Add(new ShellSort(2, window));
+                        break;
+                    case "Comb sort":
+                        existingAlgorithms.Add(new CombSort(2, window));
+                        break;
+                    case "Cycle sort":
+                        existingAlgorithms.Add(new CycleSort(2, window));
+                        break;
+                    case "Stooge sort":
+                        existingAlgorithms.Add(new StoogeSort(2, window));
+                        break;
+                }
+            }
+        }
+
+        private void AlgorithmsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedAlgorithmListBox.Items.Clear();
+            for (int i = 0; i < AlgorithmsList.CheckedItems.Count; i++)
+            {
+                selectedAlgorithmListBox.Items.Add(AlgorithmsList.CheckedItems[i]);
+            }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
