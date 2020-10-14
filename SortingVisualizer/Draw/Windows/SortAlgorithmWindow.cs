@@ -52,13 +52,13 @@ namespace SortingVisualizer.Draw
             Random random = new Random();
             for(int i = 0; i < array.Length; i++)
             {
-                swapSingle(random.Next(50, 250), i, 5);
+                swapSingle(random.Next(min, max), i, 5);
             }
         }
 
         public void ShuffleWhenStarted()
         {
-            GenerateData.GenerateRandomArray(amountOfBars, 50, 250, array);
+            GenerateData.GenerateRandomArray(amountOfBars, min, max, array);
         }
         private void createData(int amountOfBars)
         {
@@ -132,7 +132,7 @@ namespace SortingVisualizer.Draw
             for(int i = 0; i < array.Length; i++)
             {
                 colors[i] = 100;
-                swapSingle(array[i], i, 20);
+                swapSingle(array[i], i, 10);
             }
         }
 
@@ -232,6 +232,11 @@ namespace SortingVisualizer.Draw
         {
             this.currentAlgorithm = algorithm;
         }
+		
+		public void setAlgorithmName(string name)
+		{
+			this.Name = name;
+		}
 
         public int[] getArray()
         {
@@ -243,10 +248,6 @@ namespace SortingVisualizer.Draw
             this.array[index] = value;
         }
 
-        public void setAlgorithmName(string value)
-        {
-            this.Name = value;
-        }
         public int getLength()
         {
             return array.Length;
@@ -259,6 +260,11 @@ namespace SortingVisualizer.Draw
         {
             return colors[index];
         }
+		
+		public void setIterations()
+		{
+			this.iterations = 0;
+		}
 
     }
 }
