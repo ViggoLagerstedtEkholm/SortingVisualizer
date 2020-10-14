@@ -51,6 +51,7 @@
             this.SortingPanel = new System.Windows.Forms.Panel();
             this.sineWave = new System.Windows.Forms.RadioButton();
             this.regularArray = new System.Windows.Forms.RadioButton();
+            this.fullscreenCheckbox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sleepTimeBar)).BeginInit();
             this.panel4.SuspendLayout();
@@ -135,6 +136,7 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.fullscreenCheckbox);
             this.panel3.Controls.Add(this.regularArray);
             this.panel3.Controls.Add(this.sineWave);
             this.panel3.Controls.Add(this.AlgorithmsList);
@@ -271,6 +273,16 @@
             this.regularArray.UseVisualStyleBackColor = true;
             this.regularArray.CheckedChanged += new System.EventHandler(this.regularArray_CheckedChanged);
             // 
+            // fullscreenCheckbox
+            // 
+            this.fullscreenCheckbox.AutoSize = true;
+            this.fullscreenCheckbox.Location = new System.Drawing.Point(15, 595);
+            this.fullscreenCheckbox.Name = "fullscreenCheckbox";
+            this.fullscreenCheckbox.Size = new System.Drawing.Size(74, 17);
+            this.fullscreenCheckbox.TabIndex = 4;
+            this.fullscreenCheckbox.Text = "Fullscreen";
+            this.fullscreenCheckbox.UseVisualStyleBackColor = true;
+            // 
             // Start
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -317,6 +329,7 @@
         private System.Windows.Forms.TrackBar sleepTimeBar;
         private System.Windows.Forms.RadioButton regularArray;
         private System.Windows.Forms.RadioButton sineWave;
+        private System.Windows.Forms.CheckBox fullscreenCheckbox;
     }
 }
 
