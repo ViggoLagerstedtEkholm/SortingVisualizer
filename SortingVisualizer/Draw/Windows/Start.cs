@@ -25,10 +25,9 @@ namespace SortingVisualizer.Draw
         private readonly string[] algorithms = { "Bubble sort", "Selection sort", "Heap sort", "Merge sort", "Quick sort", "Insertion sort",
                                                 "Cocktail sort", "Shell sort", "Comb sort", "Cycle sort", "Stooge sort"};
         private SortingHandler sortingHandler;
-       
         private List<ISortAlgorithms> queueHandler;
-
         private List<RadioButton> radioButtons;
+        private bool fullscreen;
 
         Window window;
         public Start()
@@ -69,17 +68,31 @@ namespace SortingVisualizer.Draw
                     {
                         if (radioButtons[i].Checked)
                         {
-                            window = new Window("SortingVisualizer", bars, min, max, new Vector2D(SortingPanel.Width, SortingPanel.Height), radioButtons[i]);
-                            window.TopLevel = false;
+                            if (fullscreenCheckbox.Checked)
+                            {
+                                window = new Window("SortingVisualizer", bars, min, max, new Vector2D(1920, 1080), radioButtons[i]);
+                                fillAlgotihms();
+                                sortingHandler = new SortingHandler(queueHandler, window);
+                                window.SET_FULLSCREEN();
+                                this.Hide();
+                                window.Show();
+                                StopBtn.Enabled = true;
+                            }
+                            else
+                            {
+                                window = new Window("SortingVisualizer", bars, min, max, new Vector2D(SortingPanel.Width, SortingPanel.Height), radioButtons[i]);
+                                window.TopLevel = false;
 
-                            fillAlgotihms();
-                            sortingHandler = new SortingHandler(queueHandler, window);
+                                fillAlgotihms();
+                                sortingHandler = new SortingHandler(queueHandler, window);
 
-                            this.SortingPanel.Controls.Add(window);
-                            window.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-                            window.Dock = DockStyle.Fill;
-                            window.Show();
-                            StopBtn.Enabled = true;
+                                this.SortingPanel.Controls.Add(window);
+                                window.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                                window.Dock = DockStyle.Fill;
+                                window.Show();
+                                StopBtn.Enabled = true;
+                            }
+
                             //window.Show();
                             //this.Hide();
                         }
