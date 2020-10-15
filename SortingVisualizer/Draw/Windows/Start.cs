@@ -118,37 +118,37 @@ namespace SortingVisualizer.Draw
                 switch (itemChecked.ToString())
                 {
                     case "Bubble sort":
-                        queueHandler.Add(new BubbleSort(2, window));
+                        queueHandler.Add(new BubbleSort(2, window, "Bubble sort"));
                         break;
                     case "Selection sort":
-                        queueHandler.Add(new SelectionSort(2, window));
+                        queueHandler.Add(new SelectionSort(2, window, "Selection sort"));
                         break;
                     case "Heap sort":
-                        queueHandler.Add(new HeapSort(2, window));
+                        queueHandler.Add(new HeapSort(2, window, "Heap sort"));
                         break;
                     case "Merge sort":
-                        queueHandler.Add(new MergeSort(2, window));
+                        queueHandler.Add(new MergeSort(2, window, "Merge sort"));
                         break;
                     case "Quick sort":
-                        queueHandler.Add(new QuickSort(2, window));
+                        queueHandler.Add(new QuickSort(2, window, "Quick sort"));
                         break;
                     case "Insertion sort":
-                        queueHandler.Add(new InsertionSort(2, window));
+                        queueHandler.Add(new InsertionSort(2, window, "Insertion sort"));
                         break;
                     case "Cocktail sort":
-                        queueHandler.Add(new CocktailSort(2, window));
+                        queueHandler.Add(new CocktailSort(2, window, "Cocktail sort"));
                         break;
                     case "Shell sort":
-                        queueHandler.Add(new ShellSort(2, window));
+                        queueHandler.Add(new ShellSort(2, window, "Shell sort"));
                         break;
                     case "Comb sort":
-                        queueHandler.Add(new CombSort(2, window));
+                        queueHandler.Add(new CombSort(2, window, "Comb sort"));
                         break;
                     case "Cycle sort":
-                        queueHandler.Add(new CycleSort(2, window));
+                        queueHandler.Add(new CycleSort(2, window, "Cycle sort"));
                         break;
                     case "Stooge sort":
-                        queueHandler.Add(new StoogeSort(2, window));
+                        queueHandler.Add(new StoogeSort(2, window, "Stooge sort"));
                         break;
                 }
             }
