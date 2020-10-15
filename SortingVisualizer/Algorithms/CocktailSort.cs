@@ -5,24 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    class CocktailSort : ISortAlgorithms
+    class CocktailSort : Handler
     {
         /// <summary>
         /// COCKTAIL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cocktail-sort/
         /// </summary>
-        private string name = "Cocktail Sort";
-        private int sleepTime;
-        private Window window;
-        public CocktailSort(int sleepTime, Window window)
-        {
-            this.sleepTime = sleepTime;
-            this.window = window;
-        }
-        public void Sort()
+        public CocktailSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        {}
+
+        public override void Sort()
         {
             bool swapped = true;
             int start = 0;
@@ -60,17 +56,17 @@ namespace SortingVisualizer.Algorithms
                 start = start + 1;
             }
         }
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }

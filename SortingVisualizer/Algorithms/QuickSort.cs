@@ -5,27 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class QuickSort : ISortAlgorithms
+    public class QuickSort : Handler
     {
         /// <summary>
         /// QUICK-SORT
         /// Help with implementation - http://csharpexamples.com/c-quick-sort-algorithm-implementation/
         /// </summary>
-        private string name = "Quick Sort";
-        private int sleepTime;
-        private Window sortingStarter;
-        public QuickSort(int sleepTime, Window sortingStarter)
+        public QuickSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        { }
+        public override void Sort()
         {
-            this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
-        }
-
-        public void Sort()
-        {
-            Sort(0, sortingStarter.getLength() - 1);
+            Sort(0, window.getLength() - 1);
         }
         public void Sort(int start, int end)
         {
@@ -41,32 +35,32 @@ namespace SortingVisualizer.Algorithms
         private int Partition(int start, int end)
         {
             int temp;
-            int p = sortingStarter.getArray()[end];
+            int p = window.getArray()[end];
             int i = start - 1;
 
             for (int j = start; j <= end - 1; j++)
             {
-                if (sortingStarter.getArray()[j] <= p)
+                if (window.getArray()[j] <= p)
                 {
                     i++;
-                    sortingStarter.swap(i, j, sleepTime);
+                    window.swap(i, j, sleepTime);
                 }
             }
-            sortingStarter.swap(i + 1, end, sleepTime);
+            window.swap(i + 1, end, sleepTime);
 
             return i + 1;
         }
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }

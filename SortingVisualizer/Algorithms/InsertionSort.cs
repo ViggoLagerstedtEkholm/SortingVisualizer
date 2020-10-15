@@ -5,33 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class InsertionSort : ISortAlgorithms
+    public class InsertionSort : Handler
     {
         /// <summary>
         /// INSERTION-SORT
         /// https://en.wikipedia.org/wiki/Insertion_sort
         /// </summary>
-        private string name = "Insertion Sort";
-        private int sleepTime;
-        private Window sortingStarter;
-        public InsertionSort(int sleepTime, Window sortingStarter)
-        {
-            this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
-        }
+        public InsertionSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        { }
 
-        public void Sort()
+        public override void Sort()
         {
-            for (int i = 1; i < sortingStarter.getLength(); i++)
+            for (int i = 1; i < window.getLength(); i++)
             {
                 for (int j = i; j > 0; j--)
                 {
-                    if (sortingStarter.getIndex(j) < sortingStarter.getIndex(j - 1))
+                    if (window.getIndex(j) < window.getIndex(j - 1))
                     {
-                        sortingStarter.swap(j - 1, j, sleepTime);
+                        window.swap(j - 1, j, sleepTime);
                     }
                     else
                     {
@@ -40,17 +35,17 @@ namespace SortingVisualizer.Algorithms
                 }
             }
         }
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }

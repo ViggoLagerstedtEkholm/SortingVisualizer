@@ -5,27 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class StoogeSort : ISortAlgorithms
+    public class StoogeSort : Handler
     {
         /// <summary>
         /// STOOGE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/stooge-sort/
         /// </summary>
-        private string name = "Stooge Sort";
-        private int sleepTime;
-        private Window sortingStarter;
-        public StoogeSort(int sleepTime, Window sortingStarter)
+        public StoogeSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        { }
+        public override void Sort()
         {
-            this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
-        }
-
-        public void Sort()
-        {
-            Sort(sortingStarter.getArray(), 0, sortingStarter.getLength() - 1);
+            Sort(window.getArray(), 0, window.getLength() - 1);
         }
 
         public void Sort(int[] arr, int l, int h)
@@ -37,7 +31,7 @@ namespace SortingVisualizer.Algorithms
             // than last, swap them 
             if (arr[l] > arr[h])
             {
-                sortingStarter.swap(l, h, sleepTime);
+                window.swap(l, h, sleepTime);
             }
 
             // If there are more than 2  
@@ -60,17 +54,17 @@ namespace SortingVisualizer.Algorithms
                 Sort(arr, l, h - t);
             }
         }
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }

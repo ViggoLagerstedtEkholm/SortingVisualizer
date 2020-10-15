@@ -5,53 +5,48 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class GnomeSort : ISortAlgorithms
+    public class GnomeSort : Handler
     {
         /// <summary>
         /// GNOME-SORT
         /// https://en.wikipedia.org/wiki/Gnome_sort
         /// </summary>
-        private string name = "Gnome Sort";
-        private int sleepTime;
-        private Window sortingStarter;
-        
-        public GnomeSort(int sleepTime, Window sortingStarter)
-        {
-            this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
-        }
 
-        public void Sort()
+        public GnomeSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        { }
+
+        public override void Sort()
         {
             int index = 0;
-            int n = sortingStarter.getLength();
+            int n = window.getLength();
             while (index < n)
             {
                 if (index == 0)
                     index++;
-                if (sortingStarter.getIndex(index) >= sortingStarter.getIndex(index - 1))
+                if (window.getIndex(index) >= window.getIndex(index - 1))
                     index++;
                 else
                 {
-                    sortingStarter.swap(index, index - 1, sleepTime);
+                    window.swap(index, index - 1, sleepTime);
                     index--;
                 }
             }
         }
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }

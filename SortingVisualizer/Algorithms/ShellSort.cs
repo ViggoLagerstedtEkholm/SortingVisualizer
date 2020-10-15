@@ -5,59 +5,53 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class ShellSort : ISortAlgorithms
+    public class ShellSort : Handler
     {
         /// <summary>
         /// SHELL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/shellsort/
         /// </summary>
-        private string name = "Shell Sort";
-        private int sleepTime;
-        private Window sortingStarter;
+        public ShellSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        { }
 
-        public ShellSort(int sleepTime, Window sortingStarter)
+        public override void Sort()
         {
-            this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
-        }
-
-        public void Sort()
-        {
-            int n = sortingStarter.getLength();
+            int n = window.getLength();
 
             for (int gap = n / 2; gap > 0; gap /= 2)
             {
                 for (int i = gap; i < n; i += 1)
                 {
-                    int temp = sortingStarter.getArray()[i];
+                    int temp = window.getArray()[i];
 
                     int j;
-                    for (j = i; j >= gap && sortingStarter.getArray()[j - gap] > temp; j -= gap)
+                    for (j = i; j >= gap && window.getArray()[j - gap] > temp; j -= gap)
                     {
                         //sortingStarter.getArray()[j] = sortingStarter.getArray()[j - gap];
-                        sortingStarter.swapSingleElement(j, sortingStarter.getArray()[j - gap], sleepTime);
+                        window.swapSingleElement(j, window.getArray()[j - gap], sleepTime);
                     }
 
-                    sortingStarter.swapSingleElement(j, temp, sleepTime);
+                    window.swapSingleElement(j, temp, sleepTime);
                     //sortingStarter.swapSingle(sortingStarter.getArray()[j], temp, sleepTime);
                 }
             }
         }
 
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }

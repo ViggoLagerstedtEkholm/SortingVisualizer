@@ -6,51 +6,46 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SortingVisualizer.Algorithms;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class BubbleSort : ISortAlgorithms
+    public class BubbleSort : Handler
     {
         /// <summary>
         /// BUBBLE-SORT
         /// https://sv.wikipedia.org/wiki/Bubbelsortering
         /// </summary>
-        private string name = "Bubble Sort";
-        private int sleepTime;
-        private Window sortingStarter;
-        public BubbleSort(int sleepTime, Window sortingStarter)
-        {
-            Console.WriteLine("Created bubble sort!");
-            this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
-        }
 
-        public void Sort()
+        public BubbleSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        {}
+
+        public override void Sort()
         {
-            for (int i = 0; i < sortingStarter.getLength(); i++)
+            for (int i = 0; i < window.getLength(); i++)
             {
-                for (int j = 0; j < sortingStarter.getLength() - 1; j++)
+                for (int j = 0; j < window.getLength() - 1; j++)
                 {
-                    if (sortingStarter.getIndex(j) > sortingStarter.getIndex(j + 1))
+                    if (window.getIndex(j) > window.getIndex(j + 1))
                     {
-                        sortingStarter.swap(j, j+ 1, sleepTime);
+                        window.swap(j, j+ 1, sleepTime);
                     }
                 }
             }
 
         }
 
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }

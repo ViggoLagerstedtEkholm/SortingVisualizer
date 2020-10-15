@@ -5,25 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class CycleSort : ISortAlgorithms
+    public class CycleSort : Handler
     {
         /// <summary>
         /// CYCLE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cycle-sort/
         /// </summary>
-        private string name = "Cycle Sort";
-        private int sleepTime;
-        private Window window;
-        public CycleSort(int sleepTime, Window window)
-        {
-            this.sleepTime = sleepTime;
-            this.window = window;
-        }
+        public CycleSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        { }
 
-        public void Sort()
+        public override void Sort()
         {
             int writes = 0;
             int n = window.getLength();
@@ -87,17 +82,17 @@ namespace SortingVisualizer.Algorithms
             }
         }
 
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }

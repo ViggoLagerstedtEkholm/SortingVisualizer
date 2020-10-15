@@ -5,26 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class MergeSort : ISortAlgorithms
+    public class MergeSort : Handler
     {
         /// <summary>
         /// MERGE-SORT
         /// Help with implementation - http://csharpexamples.com/c-merge-sort-algorithm-implementation/
         /// </summary>
-        private string name = "Merge Sort";
-        private int sleepTime;
-        private Window sortingStarter;
-        public MergeSort(int sleepTime, Window sortingStarter)
-        {
-            this.sleepTime = sleepTime;
-            this.sortingStarter = sortingStarter;
-        }
-        public void Sort()
-        {
-            Sort(0, sortingStarter.getLength() - 1);
+        public MergeSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        { }
+        public override void Sort()
+        { 
+            Sort(0, window.getLength() - 1);
         }
         void Sort(int left, int right)
         {
@@ -42,8 +37,8 @@ namespace SortingVisualizer.Algorithms
             int[] leftArray = new int[middle - left + 1];
             int[] rightArray = new int[right - middle];
 
-            Array.Copy(sortingStarter.getArray(), left, leftArray, 0, middle - left + 1);
-            Array.Copy(sortingStarter.getArray(), middle + 1, rightArray, 0, right - middle);
+            Array.Copy(window.getArray(), left, leftArray, 0, middle - left + 1);
+            Array.Copy(window.getArray(), middle + 1, rightArray, 0, right - middle);
 
             int i = 0;
             int j = 0;
@@ -51,38 +46,37 @@ namespace SortingVisualizer.Algorithms
             {
                 if (i == leftArray.Length)
                 {
-                    sortingStarter.swapSingle(rightArray[j], k, sleepTime);
+                    window.swapSingle(rightArray[j], k, sleepTime);
                     j++;
                 }
                 else if (j == rightArray.Length)
                 {
-                    sortingStarter.swapSingle(leftArray[i], k, sleepTime);
+                    window.swapSingle(leftArray[i], k, sleepTime);
                     i++;
                 }
                 else if (leftArray[i] <= rightArray[j])
                 {
-                    sortingStarter.swapSingle(leftArray[i], k, sleepTime);
+                    window.swapSingle(leftArray[i], k, sleepTime);
                     i++;
                 }
                 else
                 {
-                    sortingStarter.swapSingle(rightArray[j], k, sleepTime);
+                    window.swapSingle(rightArray[j], k, sleepTime);
                     j++;
-
                 }
             }
         }
-        public string getName()
+        public override string getName()
         {
             return name;
         }
 
-        public int GetSleepTime()
+        public override int GetSleepTime()
         {
             return sleepTime;
         }
 
-        public void setSleep(int sleepTime)
+        public override void setSleep(int sleepTime)
         {
             this.sleepTime = sleepTime;
         }
