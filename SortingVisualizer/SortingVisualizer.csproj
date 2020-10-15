@@ -131,6 +131,7 @@
     <Compile Include="Algorithms\CombSort.cs" />
     <Compile Include="Algorithms\CycleSort.cs" />
     <Compile Include="Algorithms\GnomeSort.cs" />
+    <Compile Include="Algorithms\Handler.cs" />
     <Compile Include="Algorithms\HeapSort.cs" />
     <Compile Include="Algorithms\InsertionSort.cs" />
     <Compile Include="Algorithms\ISortAlgorithms.cs" />
