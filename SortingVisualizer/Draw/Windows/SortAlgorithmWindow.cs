@@ -16,36 +16,34 @@ namespace SortingVisualizer.Draw
 {
     public class Window : Form
     {
-        private Vector2D ScreenDimensions;
+        private readonly Vector2D SCREENDIMENSIONS;
         private int[] array;
         private int[] colors;
-        private int amountOfBars;
-        private int min;
-        private int max;
-        private string title;
+        private readonly int AMOUNT_OF_PILLARS;
+        private readonly int MIN_PILLAR_HEIGHT;
+        private readonly int MAX_PILLAR_HEIGHT;
+        private readonly string FORM_TITLE;
         private int sleepTime = 0;
-        private ISortAlgorithms currentAlgorithm;
         private string Name = "";
         private int iterations;
         private ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
-        private RadioButton generateArrayType;
+        private generationType generateArrayType;
 
-        public Window(string title, int amountOfBars, int min, int max, Vector2D dimensions, RadioButton generateArrayType)
+        public Window(string title, int amountOfBars, int min, int max, Vector2D dimensions, generationType generateArrayType)
         {
-            InitializeComponent();
-
-            this.amountOfBars = amountOfBars;
-            this.min = min;
-            this.max = max;
-            this.title = title;
-            this.ScreenDimensions = dimensions;
+            this.AMOUNT_OF_PILLARS = amountOfBars;
+            this.MIN_PILLAR_HEIGHT = min;
+            this.MAX_PILLAR_HEIGHT = max;
+            this.FORM_TITLE = title;
+            this.SCREENDIMENSIONS = dimensions;
             this.generateArrayType = generateArrayType;
 
             createData(amountOfBars);
             populateLists();
 
             this.DoubleBuffered = true;
-            this.Size = new Size((int)ScreenDimensions.X, (int)ScreenDimensions.Y);
+            this.Text = FORM_TITLE;
+            this.Size = new Size((int)SCREENDIMENSIONS.X, (int)SCREENDIMENSIONS.Y);
             
             this.Paint += Renderer;
         }    
@@ -61,20 +59,19 @@ namespace SortingVisualizer.Draw
             Random random = new Random();
             for(int i = 0; i < array.Length; i++)
             {
-                swapSingle(random.Next(min, max), i, 5);
+                swapSingle(random.Next(MIN_PILLAR_HEIGHT, MAX_PILLAR_HEIGHT), i, 5);
             }
         }
-
         public void ShuffleWhenStarted()
         {
-            if (generateArrayType.Name == "sineWave")
+            switch (generateArrayType)
             {
-                this.array = GenerateData.GenerateSineArray(amountOfBars, array);
-            }
-            else
-            {
-                this.array = GenerateData.GenerateRandomArray(amountOfBars, min, max, array);
-
+                case generationType.REGULAR:
+                    this.array = GenerateData.GenerateSineArray(AMOUNT_OF_PILLARS, array);
+                    break;
+                case generationType.SINE_WAVE:
+                    this.array = GenerateData.GenerateRandomArray(AMOUNT_OF_PILLARS, MIN_PILLAR_HEIGHT, MAX_PILLAR_HEIGHT, array);
+                    break;
             }
         }
         private void createData(int amountOfBars)
@@ -85,8 +82,8 @@ namespace SortingVisualizer.Draw
 
         private void populateLists()
         {
-            this.array = GenerateData.GenerateArray(amountOfBars, array);
-            this.colors = GenerateData.GenerateArray(amountOfBars, colors);
+            this.array = GenerateData.GenerateArray(AMOUNT_OF_PILLARS, array);
+            this.colors = GenerateData.GenerateArray(AMOUNT_OF_PILLARS, colors);
         }
 
         //All algorithms should use this method for swapping indices.
@@ -99,10 +96,8 @@ namespace SortingVisualizer.Draw
             colors[indexA] = 100;
             colors[indexB] = 100;
 
-            //Make thread sleep so we can see the updated changes.
             Sleep(sleepTime);
         }
-
         public int swapSingle(int index, int value, int sleepTime)
         {
             int temp = index;
@@ -115,7 +110,6 @@ namespace SortingVisualizer.Draw
 
             return index;
         }
-
         public void swapSingleElement(int index, int value, int sleepTime)
         {
             array[index] = value;
@@ -124,7 +118,6 @@ namespace SortingVisualizer.Draw
 
             Sleep(sleepTime);
         }
-
         private void Sleep(int sleepTime)
         {
             //Repaint screen.
@@ -143,7 +136,6 @@ namespace SortingVisualizer.Draw
             this.iterations++;
             this.setSleepTime(sleepTime);
 
-            //If the thread is paused we will stop here until it's resumed.
             _manualResetEvent.WaitOne();
         }
 
@@ -155,10 +147,6 @@ namespace SortingVisualizer.Draw
                 swapSingle(array[i], i, 10);
             }
         }
-
-        /// <summary>
-        /// Set every color in colors array to 0.
-        /// </summary>
         public void ResetColor()
         {
             for (int i = 0; i < this.colors.Length; i++)
@@ -166,11 +154,6 @@ namespace SortingVisualizer.Draw
                 this.colors[i] = 0;
             }
         }
-
-
-        /// <summary>
-        /// Render the screen.
-        /// </summary>
         private void Renderer(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -186,23 +169,15 @@ namespace SortingVisualizer.Draw
 
             this.Invalidate();
         }
-
-        /// <summary>
-        /// Render the bars.
-        /// </summary>
         private void RenderBars(Graphics g)
         {
-            g.TranslateTransform(0, ScreenDimensions.Y);
+            g.TranslateTransform(0, SCREENDIMENSIONS.Y);
             g.ScaleTransform(1, -1);
 
-            int BAR_WIDTH = ScreenDimensions.X / array.Length;
+            int BAR_WIDTH = SCREENDIMENSIONS.X / array.Length;
 
-            //Draw all the pillars relative to the screen coordinates.
-            for (int i = 0; i < amountOfBars; i++)
+            for (int i = 0; i < AMOUNT_OF_PILLARS; i++)
             {
-
-                //g.DrawRectangle(Pens.White, new Rectangle((i * ScreenDimensions.X / dataSet.Length), 0, 
-                //                                          (ScreenDimensions.X / dataSet.Length), dataSet[i]));
                 int x = i + (BAR_WIDTH) * i;
                 int y = 0;
                 int width = BAR_WIDTH;
@@ -229,14 +204,12 @@ namespace SortingVisualizer.Draw
                 }
             }
             this.Invalidate();
-            
         }
 
         public void setPause()
         {
             _manualResetEvent.Reset();
         }
-
         public void setResume()
         {
             _manualResetEvent.Set();
@@ -245,26 +218,18 @@ namespace SortingVisualizer.Draw
         {
             this.sleepTime = sleepTime;
         }
-        public void setCurrentAlgorithm(ISortAlgorithms algorithm)
-        {
-            this.currentAlgorithm = algorithm;
-        }
-		
 		public void setAlgorithmName(string name)
 		{
 			this.Name = name;
 		}
-
         public int[] getArray()
         {
             return array;
         }
-
         public void setIndex(int index,int value)
         {
             this.array[index] = value;
         }
-
         public int getLength()
         {
             return array.Length;
@@ -277,22 +242,14 @@ namespace SortingVisualizer.Draw
         {
             return colors[index];
         }
+        public int getIterations()
+        {
+            return iterations;
+        }
 		
 		public void setIterations()
 		{
 			this.iterations = 0;
 		}
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // Window
-            // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "Window";
-            this.ResumeLayout(false);
-
-        
     }
 }
