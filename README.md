@@ -5,7 +5,7 @@ UPDATE,
 ![solverUpdate](https://user-images.githubusercontent.com/60555651/96523134-3be0e480-1275-11eb-94cd-5c7af08d86ce.PNG)
 ![controllers](https://user-images.githubusercontent.com/60555651/96523142-40a59880-1275-11eb-8acd-284f171a0ff5.PNG)
 
-This new version of the visualizer makes it possible to serialize, change sleep time, pause/resume, select max/min of the randomized heights, array size, what algorithms to visualize.
+This new version of the visualizer makes it possible to serialize, change sleep time, pause/resume, select max/min of the randomized heights, array size, select what algorithms to visualize.
 
 This is the first version.
 https://www.youtube.com/watch?v=i845p47_5kA&feature=youtu.be
