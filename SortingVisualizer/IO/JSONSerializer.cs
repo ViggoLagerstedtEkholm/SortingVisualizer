@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WindowsFormsApp2.IO
 {
@@ -26,10 +28,11 @@ namespace WindowsFormsApp2.IO
         /// <typeparam name="T"></typeparam>
         /// <param name="serializeObject">Object to serialize</param>
         /// <param name="fileName">Name of the file we want to save.</param>
-        public void Serialize<T>(T serializeObject, string filePath, bool append)
+        public void Serialize<T>(T serializeObject, string filePath, bool append, string fileName)
         {
             string jsonData = JsonConvert.SerializeObject(serializeObject, settings);
-            using(StreamWriter writer = new StreamWriter("SortedData.json"))
+
+            using (StreamWriter writer = new StreamWriter(filePath + fileName + ".json"))
             {
                 writer.Write(jsonData);
             }

@@ -15,9 +15,9 @@ namespace WindowsFormsApp2.IO
         {
             formatter = new BinaryFormatter();
         }
-        public void Serialize<T>(T serializeObject, string filePath, bool append)
+        public void Serialize<T>(T serializeObject, string filePath, bool append, string fileName)
         {
-            using(FileStream outFile = new FileStream("SortedData.bin", FileMode.Create, FileAccess.Write))
+            using(FileStream outFile = new FileStream(filePath + fileName + ".bin", FileMode.Create, FileAccess.Write))
             {
                 formatter.Serialize(outFile, serializeObject);
             }

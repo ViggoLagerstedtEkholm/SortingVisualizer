@@ -20,11 +20,10 @@ namespace WindowsFormsApp2.IO
         /// <typeparam name="T"></typeparam>
         /// <param name="serializeObject">Object to serialize</param>
         /// <param name="fileName">Name of the file we want to save.</param>
-        public void Serialize<T>(T serializeObject, string filePath, bool append)
+        public void Serialize<T>(T serializeObject, string filePath, bool append, string fileName)
         {
             if (serializeObject == null) { return; }
-            string submittedFilePath =
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Path\\myFile.txt.";
+            string submittedFilePath = filePath + fileName + ".txt";
             TextWriter writer = null;
             try
             {
