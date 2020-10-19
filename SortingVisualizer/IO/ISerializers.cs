@@ -8,7 +8,7 @@ namespace WindowsFormsApp2.IO
 {
     interface ISerializers<T>
     {
-        void Serialize<T>(T serializeObject, string filePath, bool append);
+        void Serialize<T>(T serializeObject, string filePath, bool append, string fileName);
         T Deserialize(string path);
         T[] DeserializeList();
         T[] SerializeList(List<T> list);
