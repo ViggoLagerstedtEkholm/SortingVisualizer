@@ -102,7 +102,7 @@ namespace SortingVisualizer.Draw
             //Make thread sleep so we can see the updated changes.
             Sleep(sleepTime);
         }
-        //sortingStarter.swapSingle(sortingStarter.getArray()[k], rightArray[j], sleepTime);
+
         public int swapSingle(int index, int value, int sleepTime)
         {
             int temp = index;
@@ -232,24 +232,6 @@ namespace SortingVisualizer.Draw
             
         }
 
-        //Move this to the window code.
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // Window
-            // 
-            this.ClientSize = new System.Drawing.Size(1209, 495);
-            this.Name = "Window";
-            this.ResumeLayout(false);
-
-        }
-
-        /// <summary>
-        /// Getters and setters.
-        /// </summary>
-        /// 
-
         public void setPause()
         {
             _manualResetEvent.Reset();
@@ -301,5 +283,16 @@ namespace SortingVisualizer.Draw
 			this.iterations = 0;
 		}
 
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // Window
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "Window";
+            this.ResumeLayout(false);
+
+        
     }
 }
