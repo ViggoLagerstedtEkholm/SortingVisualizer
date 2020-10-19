@@ -141,18 +141,18 @@
     <Compile Include="Algorithms\ShellSort.cs" />
     <Compile Include="Algorithms\StoogeSort.cs" />
     <Compile Include="Draw\SortingHandler.cs" />
+    <Compile Include="Draw\SortSummary.cs" />
     <Compile Include="Draw\Windows\GenerateData.cs" />
     <Compile Include="Draw\Windows\SortAlgorithmWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Draw\Windows\Start.cs">
+    <Compile Include="Draw\Windows\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Draw\Windows\Start.Designer.cs">
-      <DependentUpon>Start.cs</DependentUpon>
+    <Compile Include="Draw\Windows\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="IO\BINARYSerializer.cs" />
-    <Compile Include="IO\Book.cs" />
     <Compile Include="IO\JSONSerializer.cs" />
     <Compile Include="IO\XMLSerializer.cs" />
     <Compile Include="IO\ISerializers.cs" />
@@ -163,8 +163,8 @@
     <EmbeddedResource Include="Draw\Windows\SortAlgorithmWindow.resx">
       <DependentUpon>SortAlgorithmWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Draw\Windows\Start.resx">
-      <DependentUpon>Start.cs</DependentUpon>
+    <EmbeddedResource Include="Draw\Windows\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
