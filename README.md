@@ -28,6 +28,6 @@ https://www.youtube.com/watch?v=i845p47_5kA&feature=youtu.be
 More algorithms can be implemented in the future.
 
 It would also be fun to add audio to audiolize the sorting. 
--> Update, I could not find a audio library that i could implement. I will still add audiolize sorting if I can find a simple to implement library.
+-> Update, I could not find a audio library that I could implement. I will still add audiolize sorting if I can find a simple to implement library.
 
 And yes, my favorite sorting algorithm has to be cocktail.
