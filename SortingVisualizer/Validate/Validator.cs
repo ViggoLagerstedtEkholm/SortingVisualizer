@@ -46,6 +46,20 @@ namespace SortingVisualizer.Validate
             return hasInteger;
         }
 
+        public static bool CheckRadioBtnHasSelected(List<RadioButton> buttons)
+        {
+            bool res = false;
+
+            for(int i = 0; i < buttons.Count; i++)
+            {
+                if (buttons[i].Checked)
+                {
+                    res = true;
+                }
+            }
+            return res;
+        }
+
         public static bool CheckBoxListHasValue(CheckedListBox list)
         {
             bool hasCheckedItems = false;
