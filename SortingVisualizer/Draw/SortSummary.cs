@@ -8,11 +8,11 @@ namespace WindowsFormsApp2.Draw
 {
     public class SortSummary
     {
-        public string name { get; set; }
-        public int iterations { get; set; }
-        public int sleepTime { get; set; }
-        public int[] sortedArray { get; set; }
-        public int[] unsortedArray { get; set; }
+        public string Name { get; set; }
+        public int Iterations { get; set; }
+        public int[] SortedArray { get; set; }
+        public int[] UnsortedArray { get; set; }
+
         public SortSummary()
         {}
     }

@@ -1,4 +1,5 @@
 ﻿using SortingVisualizer.Algorithms;
+using SortingVisualizer.Draw.Windows;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,43 +8,39 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp2.Algorithms;
 using WindowsFormsApp2.Draw;
 using WindowsFormsApp2.IO;
 
 namespace SortingVisualizer.Draw.Windows
 {
-    class SortingHandler 
+    public class SortingHandler 
     {
-        private List<ISortAlgorithms> algorithms;
-        private Window window;
-        private ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
-        private Thread workerThread;
+        public event Action SomeEvent;//TODO give better name
+
+        private readonly List<Handler> algorithms;
+        private readonly Window window;
+        private Thread thread;
         private int sortingIndex;
-        private fileType fileType;
-        private SortSummary summary;
-        private string path;
-        private bool shouldSave;
-        public SortingHandler(List<ISortAlgorithms> algorithms, Window window)
+        private readonly FileType fileType;
+        private readonly string path;
+        private readonly bool shouldSave;
+        public SortingHandler(List<Handler> algorithms, Window window)
         {
             this.algorithms = algorithms;
             this.window = window;
-            shouldSave = false;
-
-            summary = new SortSummary();
-            initiateSorting();
+            InitiateSorting();
         }
 
-        public SortingHandler(List<ISortAlgorithms> algorithms, Window window, fileType fileType, string path)
+        public SortingHandler(List<Handler> algorithms, Window window, FileType fileType, string path)
         {
             this.algorithms = algorithms;
             this.window = window;
             this.fileType = fileType;
             this.path = path;
-
             shouldSave = true;
 
-            summary = new SortSummary();
-            initiateSorting();
+            InitiateSorting();
         }
         private void Sleep(int sleepTime)
         {
@@ -51,80 +48,93 @@ namespace SortingVisualizer.Draw.Windows
             {
                 Thread.Sleep(sleepTime);
             }
-            catch (ThreadInterruptedException e)
+            catch (ThreadInterruptedException)
             {
                 Thread.CurrentThread.Interrupt();
             }
 
         }
-        private void initiateSorting()
+        private void InitiateSorting()
         {
-            workerThread = new Thread(() =>
+            ThreadStart starter = Sort;
+            thread = new Thread(starter) {IsBackground = true };
+            thread.Start();
+        }
+
+        private void Sort()
+        {
+            try
             {
-                Thread.CurrentThread.IsBackground = true;
+                Thread.Sleep(300);
+            }
+            catch (ThreadInterruptedException exception)
+            {
+                Console.WriteLine("Thread Interrupted" + exception);
+            }
 
-                try
-                {
-                    Thread.Sleep(300);
-                }
-                catch (ThreadInterruptedException exception)
-                {
-                    Console.WriteLine("Thread Interrupted" + exception);
-                }
+            foreach (Handler algorithm in algorithms)
+            {
+                SortSummary summary = new SortSummary();
+                window.ShuffleWhenStarted();
+                summary.UnsortedArray = window.GetArray();
 
-                foreach (ISortAlgorithms algorithm in algorithms)
-                {
-                    window.setAlgorithmName(algorithm.getName());
-                    window.ShuffleWhenStarted();
-                    summary.unsortedArray = window.getArray();
+                algorithm.Sort();
+                Sleep(300);
+                window.RunWhenFinallySorted();
+                Sleep(300);
+                window.ResetColor();
+                window.ShuffleAfterSorted();
+                Sleep(300);
 
-                    algorithm.Sort();
-                    Sleep(300);
-                    window.runWhenFinallySorted();
-                    Sleep(300);
-                    window.ResetColor();
-                    window.ShuffleAfterSorted();
-                    Sleep(300);
+                summary.Iterations = algorithm.Swaps;
+                summary.Name = algorithm.Name;
+                summary.SortedArray = window.GetArray();
 
-                    summary.iterations = window.getIterations();
-                    window.setIterations();
+                sortingIndex++;
 
-                    summary.name = algorithm.getName();
-                    summary.sleepTime = algorithm.GetSleepTime();
-                    summary.sortedArray = window.getArray();
-
-                    sortingIndex++;
-
-                    if (shouldSave)
-                    {
-                        switch (fileType)
-                        {
-                            case fileType.BINARY:
-                                new BINARYSerializer<SortSummary>().Serialize(summary, path, true,"minData");
-                                break;
-                            case fileType.JSON:
-                                new JSONSerializer<SortSummary>().Serialize(summary, path, true, "minData");
-                                break;
-                            case fileType.XML:
-                                new XMLSerializer<SortSummary>().Serialize(summary, path, true, "minData");
-                                break;
-                        }
-                    }
-                }
-            });
-
-            workerThread.Start();
+                if (shouldSave)
+                    Serialize(summary);
+            }
+            var handler = SomeEvent;
+            if (handler != null)
+                SomeEvent();
         }
 
-        public ISortAlgorithms getCurrentSortingItem()
+        private void Serialize(SortSummary summary)
         {
-            return this.algorithms[sortingIndex];
+            switch (fileType)
+            {
+                case FileType.BINARY:
+                    new BINARYSerializer<SortSummary>().Serialize(summary, path, true, "minData");
+                    break;
+                case FileType.JSON:
+                    new JSONSerializer<SortSummary>().Serialize(summary, path, true, "minData");
+                    break;
+                case FileType.XML:
+                    new XMLSerializer<SortSummary>().Serialize(summary, path, true, "minData");
+                    break;
+            }
         }
 
-        public void stop()
+        public int GetCount()
+        {
+            return algorithms.Count;
+        }
+
+        public int GetSortingIndex()
+        {
+            return sortingIndex + 1;
+        }
+
+        public Handler GetCurrentSortingItem()
+        {
+            return algorithms[sortingIndex];
+        }
+
+        public void Stop()
         {
             Console.WriteLine("stop");
-            workerThread.Abort();
+            thread.Abort();
             Application.Exit();
         }
     }
