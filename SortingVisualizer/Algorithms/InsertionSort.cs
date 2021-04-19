@@ -1,13 +1,12 @@
 ﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using WindowsFormsApp2.Algorithms;
 
-namespace SortingVisualizer.Algorithms
+namespace WindowsFormsApp2.Algorithms
 {
     public class InsertionSort : Handler
     {
@@ -20,34 +19,23 @@ namespace SortingVisualizer.Algorithms
 
         public override void Sort()
         {
-            for (int i = 1; i < window.getLength(); i++)
+            sw.Start();
+
+            for (int i = 1; i < Window.GetLength(); i++)
             {
-                for (int j = i; j > 0; j--)
+                int key = Window.GetIndex(i);
+                int j = i - 1;
+
+                while(j >= 0 && Window.GetIndex(j) > key)
                 {
-                    if (window.getIndex(j) < window.getIndex(j - 1))
-                    {
-                        window.swap(j - 1, j, sleepTime);
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    Window.GetArray()[j + 1] = Window.GetArray()[j];
+                    j -= 1;
                 }
+                Window.GetArray()[j + 1] = key;
             }
-        }
-        public override string getName()
-        {
-            return name;
-        }
 
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

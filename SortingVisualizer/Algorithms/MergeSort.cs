@@ -1,6 +1,7 @@
 ﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,8 +19,13 @@ namespace SortingVisualizer.Algorithms
         public MergeSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
         { }
         public override void Sort()
-        { 
-            Sort(0, window.getLength() - 1);
+        {
+            sw.Start();
+
+            Sort(0, Window.GetLength() - 1);
+
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
         void Sort(int left, int right)
         {
@@ -37,8 +43,8 @@ namespace SortingVisualizer.Algorithms
             int[] leftArray = new int[middle - left + 1];
             int[] rightArray = new int[right - middle];
 
-            Array.Copy(window.getArray(), left, leftArray, 0, middle - left + 1);
-            Array.Copy(window.getArray(), middle + 1, rightArray, 0, right - middle);
+            Array.Copy(Window.GetArray(), left, leftArray, 0, middle - left + 1);
+            Array.Copy(Window.GetArray(), middle + 1, rightArray, 0, right - middle);
 
             int i = 0;
             int j = 0;
@@ -46,39 +52,29 @@ namespace SortingVisualizer.Algorithms
             {
                 if (i == leftArray.Length)
                 {
-                    window.swapSingle(rightArray[j], k, sleepTime);
+                    Window.SwapSingle(rightArray[j], k, SleepTime);
+                    Swaps++;
                     j++;
                 }
                 else if (j == rightArray.Length)
                 {
-                    window.swapSingle(leftArray[i], k, sleepTime);
+                    Window.SwapSingle(leftArray[i], k, SleepTime);
+                    Swaps++;
                     i++;
                 }
                 else if (leftArray[i] <= rightArray[j])
                 {
-                    window.swapSingle(leftArray[i], k, sleepTime);
+                    Window.SwapSingle(leftArray[i], k, SleepTime);
+                    Swaps++;
                     i++;
                 }
                 else
                 {
-                    window.swapSingle(rightArray[j], k, sleepTime);
+                    Window.SwapSingle(rightArray[j], k, SleepTime);
+                    Swaps++;
                     j++;
                 }
             }
-        }
-        public override string getName()
-        {
-            return name;
-        }
-
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
         }
     }
 }

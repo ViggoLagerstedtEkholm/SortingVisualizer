@@ -1,6 +1,7 @@
 ﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,7 +20,12 @@ namespace SortingVisualizer.Algorithms
         { }
         public override void Sort()
         {
-            Sort(window.getArray(), 0, window.getLength() - 1);
+            sw.Start();
+
+            Sort(Window.GetArray(), 0, Window.GetLength() - 1);
+
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
 
         public void Sort(int[] arr, int l, int h)
@@ -31,7 +37,8 @@ namespace SortingVisualizer.Algorithms
             // than last, swap them 
             if (arr[l] > arr[h])
             {
-                window.swap(l, h, sleepTime);
+                Window.Swap(l, h, SleepTime);
+                Swaps++;
             }
 
             // If there are more than 2  
@@ -53,20 +60,6 @@ namespace SortingVisualizer.Algorithms
                 // confirm 
                 Sort(arr, l, h - t);
             }
-        }
-        public override string getName()
-        {
-            return name;
-        }
-
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
         }
     }
 }

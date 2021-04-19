@@ -1,6 +1,7 @@
 ﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,7 +20,12 @@ namespace SortingVisualizer.Algorithms
         { }
         public override void Sort()
         {
-            Sort(0, window.getLength() - 1);
+            sw.Start();
+
+            Sort(0, Window.GetLength() - 1);
+
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
         public void Sort(int start, int end)
         {
@@ -34,35 +40,22 @@ namespace SortingVisualizer.Algorithms
         }
         private int Partition(int start, int end)
         {
-            int temp;
-            int p = window.getArray()[end];
+            int p = Window.GetArray()[end];
             int i = start - 1;
 
             for (int j = start; j <= end - 1; j++)
             {
-                if (window.getArray()[j] <= p)
+                if (Window.GetArray()[j] <= p)
                 {
                     i++;
-                    window.swap(i, j, sleepTime);
+                    Window.Swap(i, j, SleepTime);
+                    Swaps++;
                 }
             }
-            window.swap(i + 1, end, sleepTime);
+            Window.Swap(i + 1, end, SleepTime);
+            Swaps++;
 
             return i + 1;
-        }
-        public override string getName()
-        {
-            return name;
-        }
-
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
         }
     }
 }

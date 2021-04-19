@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SortingVisualizer.Algorithms;
 using WindowsFormsApp2.Algorithms;
+using System.Diagnostics;
 
 namespace SortingVisualizer.Algorithms
 {
@@ -22,32 +23,22 @@ namespace SortingVisualizer.Algorithms
 
         public override void Sort()
         {
-            for (int i = 0; i < window.getLength(); i++)
+            sw.Start();
+
+            for (int i = 0; i < Window.GetLength(); i++)
             {
-                for (int j = 0; j < window.getLength() - 1; j++)
+                for (int j = 0; j < Window.GetLength() - 1; j++)
                 {
-                    if (window.getIndex(j) > window.getIndex(j + 1))
+                    if (Window.GetIndex(j) > Window.GetIndex(j + 1))
                     {
-                        window.swap(j, j+ 1, sleepTime);
+                        Window.Swap(j, j + 1, SleepTime);
+                        Swaps++;
                     }
                 }
             }
 
-        }
-
-        public override string getName()
-        {
-            return name;
-        }
-
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

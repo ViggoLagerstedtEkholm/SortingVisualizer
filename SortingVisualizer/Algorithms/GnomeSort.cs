@@ -1,6 +1,7 @@
 ﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,34 +22,25 @@ namespace SortingVisualizer.Algorithms
 
         public override void Sort()
         {
+            sw.Start();
+
             int index = 0;
-            int n = window.getLength();
+            int n = Window.GetLength();
             while (index < n)
             {
                 if (index == 0)
                     index++;
-                if (window.getIndex(index) >= window.getIndex(index - 1))
+                if (Window.GetIndex(index) >= Window.GetIndex(index - 1))
                     index++;
                 else
                 {
-                    window.swap(index, index - 1, sleepTime);
+                    Window.Swap(index, index - 1, SleepTime);
+                    Swaps++;
                     index--;
                 }
             }
-        }
-        public override string getName()
-        {
-            return name;
-        }
-
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

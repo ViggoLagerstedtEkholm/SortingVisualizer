@@ -1,6 +1,7 @@
 ﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,19 +20,24 @@ namespace SortingVisualizer.Algorithms
         { }
         public override void Sort()
         {
-            int n = window.getLength();
+            sw.Start();
+
+            int n = Window.GetLength();
             for (int i = n / 2 - 1; i >= 0; i--)
             {
-                heap(window.getArray(), n, i);
+                Heap(Window.GetArray(), n, i);
             }
             for (int i = n - 1; i >= 0; i--)
             {
-                window.swap(0, i, sleepTime);
-                heap(window.getArray(), i, 0);
+                Window.Swap(0, i, SleepTime);
+                Heap(Window.GetArray(), i, 0);
             }
+
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
 
-        private void heap(int[] array, int n, int i)
+        private void Heap(int[] array, int n, int i)
         {
             int largest = i;
             int left = 2 * i + 1;
@@ -47,23 +53,10 @@ namespace SortingVisualizer.Algorithms
 
             if (largest != i)
             {
-                window.swap(i, largest, sleepTime);
-                heap(array, n, largest);
+                Window.Swap(i, largest, SleepTime);
+                Swaps++;
+                Heap(array, n, largest);
             }
-        }
-        public override string getName()
-        {
-            return name;
-        }
-
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
         }
     }
 }

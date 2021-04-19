@@ -2,30 +2,31 @@
 using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WindowsFormsApp2.Algorithms
 {
-    public abstract class Handler : ISortAlgorithms
+    public abstract class Handler
     {
-        public string name { get; set; }
-        public int sleepTime { get; set; }
-        public Window window { get; set; }
+        public string Name { get; set; }
+        public int SleepTime { get; set; }
+        public Window Window { get; set; }
+        public int Swaps { get; set; }
+        public long ExecutionTime { get; set; }
+        public long ElapsedTime => sw.ElapsedMilliseconds;
+
+        public Stopwatch sw = new Stopwatch();
+
         public Handler(int sleepTime, Window window, string name)
         {
-            this.window = window;
-            this.sleepTime = sleepTime;
-            this.name = name;
+            Window = window;
+            SleepTime = sleepTime;
+            Name = name;
         }
 
         public abstract void Sort();
-
-        public abstract string getName();
-
-        public abstract int GetSleepTime();
-
-        public abstract void setSleep(int sleepTime);
     }
 }

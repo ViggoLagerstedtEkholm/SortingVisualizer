@@ -1,6 +1,7 @@
 ﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,9 +21,11 @@ namespace SortingVisualizer.Algorithms
 
         public override void Sort()
         {
+            sw.Start();
+
             bool swapped = true;
             int start = 0;
-            int end = window.getLength();
+            int end = Window.GetLength();
 
             while (swapped == true)
             {
@@ -30,9 +33,10 @@ namespace SortingVisualizer.Algorithms
 
                 for (int i = start; i < end - 1; ++i)
                 {
-                    if (window.getIndex(i) > window.getIndex(i + 1))
+                    if (Window.GetIndex(i) > Window.GetIndex(i + 1))
                     {
-                        window.swap(i, i + 1, sleepTime);
+                        Window.Swap(i, i + 1, SleepTime);
+                        Swaps++;
                         swapped = true;
                     }
                 }
@@ -43,32 +47,22 @@ namespace SortingVisualizer.Algorithms
                 }
                 swapped = false;
 
-                end = end - 1;
+                end -= 1;
 
                 for (int i = end - 1; i >= start; i--)
                 {
-                    if (window.getIndex(i) > window.getIndex(i + 1))
+                    if (Window.GetIndex(i) > Window.GetIndex(i + 1))
                     {
-                        window.swap(i, i + 1, sleepTime);
+                        Window.Swap(i, i + 1, SleepTime);
+                        Swaps++;
                         swapped = true;
                     }
                 }
-                start = start + 1;
+                start += 1;
             }
-        }
-        public override string getName()
-        {
-            return name;
-        }
 
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

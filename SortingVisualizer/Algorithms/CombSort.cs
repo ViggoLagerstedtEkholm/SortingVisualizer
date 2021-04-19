@@ -1,6 +1,7 @@
 ﻿using SortingVisualizer.Draw;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,7 +21,9 @@ namespace SortingVisualizer.Algorithms
 
         public override void Sort()
         {
-            int n = window.getLength();
+            sw.Start();
+
+            int n = Window.GetLength();
 
             // initialize gap 
             int gap = n;
@@ -34,7 +37,7 @@ namespace SortingVisualizer.Algorithms
             while (gap != 1 || swapped == true)
             {
                 // Find next gap 
-                gap = getNextGap(gap);
+                gap = GetNextGap(gap);
 
                 // Initialize swapped as false so that we can 
                 // check if swap happened or not 
@@ -43,38 +46,26 @@ namespace SortingVisualizer.Algorithms
                 // Compare all elements with current gap 
                 for (int i = 0; i < n - gap; i++)
                 {
-                    if (window.getIndex(i) > window.getIndex(i + gap))
+                    if (Window.GetIndex(i) > Window.GetIndex(i + gap))
                     {
                         // Swap arr[i] and arr[i+gap] 
-                        window.swap(i, i + 1, sleepTime);
+                        Window.Swap(i, i + 1, SleepTime);
+                        Swaps++;
                         // Set swapped 
                         swapped = true;
                     }
                 }
             }
+            sw.Stop();
+            ExecutionTime = sw.ElapsedMilliseconds;
         }
-        static int getNextGap(int gap)
+        static int GetNextGap(int gap)
         {
             // Shrink gap by Shrink factor 
             gap = (gap * 10) / 13;
             if (gap < 1)
                 return 1;
             return gap;
-        }
-
-        public override string getName()
-        {
-            return name;
-        }
-
-        public override int GetSleepTime()
-        {
-            return sleepTime;
-        }
-
-        public override void setSleep(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
         }
     }
 }
