@@ -11,83 +11,106 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Draw
 {
     public class Window : Form
     {
+
         private readonly Vector2D SCREENDIMENSIONS;
+
         private int[] array;
         private int[] colors;
+
+        private bool showInfo;
+
         private readonly int AMOUNT_OF_PILLARS;
-        private readonly int MIN_PILLAR_HEIGHT;
-        private readonly int MAX_PILLAR_HEIGHT;
+        private readonly double BAR_HEIGHT_PERCENT = 1080.0 / 1920.0;
+
         private readonly string FORM_TITLE;
-        private int sleepTime = 0;
-        private string Name = "";
-        private int iterations;
-        private ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
-        private generationType generateArrayType;
 
-        public Window(string title, int amountOfBars, int min, int max, Vector2D dimensions, generationType generateArrayType)
+        private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
+
+        private readonly GenerationType generateArrayType;
+        private SortingHandler _sortingHandler;
+
+        public Window(string title, int amountOfBars, Vector2D dimensions, GenerationType generateArrayType)
         {
-            this.AMOUNT_OF_PILLARS = amountOfBars;
-            this.MIN_PILLAR_HEIGHT = min;
-            this.MAX_PILLAR_HEIGHT = max;
-            this.FORM_TITLE = title;
-            this.SCREENDIMENSIONS = dimensions;
+            InitializeComponent();
+
+            AMOUNT_OF_PILLARS = amountOfBars;
+            FORM_TITLE = title;
+            SCREENDIMENSIONS = dimensions;
             this.generateArrayType = generateArrayType;
+            showInfo = true;
 
-            createData(amountOfBars);
-            populateLists();
+            CreateArrays(amountOfBars);
+            PopulateLists();
 
-            this.DoubleBuffered = true;
-            this.Text = FORM_TITLE;
-            this.Size = new Size((int)SCREENDIMENSIONS.X, (int)SCREENDIMENSIONS.Y);
+            DoubleBuffered = true;
+            Text = FORM_TITLE;
+            Size = new Size(SCREENDIMENSIONS.X, SCREENDIMENSIONS.Y);
             
-            this.Paint += Renderer;
-        }    
-
-        public void SET_FULLSCREEN()
-        {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-            Cursor.Hide();
+            Paint += Renderer;
         }
+
+        #region SHUFFLE
         public void ShuffleAfterSorted()
         {
-            Random random = new Random();
             for(int i = 0; i < array.Length; i++)
             {
-                swapSingle(random.Next(MIN_PILLAR_HEIGHT, MAX_PILLAR_HEIGHT), i, 5);
+                SwapSingle(i, i, 5);
             }
         }
+
+        public void RunWhenFinallySorted()
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                colors[i] = 100;
+                SwapSingle(array[i], i, 10);
+            }
+        }
+
         public void ShuffleWhenStarted()
         {
-            switch (generateArrayType)
+            Random random = new Random();
+
+            for(int i = 0; i < array.Length; i++)
             {
-                case generationType.REGULAR:
-                    this.array = GenerateData.GenerateSineArray(AMOUNT_OF_PILLARS, array);
-                    break;
-                case generationType.SINE_WAVE:
-                    this.array = GenerateData.GenerateRandomArray(AMOUNT_OF_PILLARS, MIN_PILLAR_HEIGHT, MAX_PILLAR_HEIGHT, array);
-                    break;
+                int index = random.Next(array.Length - 1);
+                Swap(i, index, 2);
+                colors[i] = 0;
             }
         }
-        private void createData(int amountOfBars)
+        #endregion
+
+        #region RESET/POPULATE
+        private void CreateArrays(int amountOfBars)
         {
             array = new int[amountOfBars];
             colors = new int[amountOfBars];
         }
 
-        private void populateLists()
+        private void PopulateLists()
         {
-            this.array = GenerateData.GenerateArray(AMOUNT_OF_PILLARS, array);
-            this.colors = GenerateData.GenerateArray(AMOUNT_OF_PILLARS, colors);
+            array = GenerateData.GenerateArray(AMOUNT_OF_PILLARS, array);
+            colors = GenerateData.GenerateArray(AMOUNT_OF_PILLARS, colors);
         }
 
+        public void ResetColor()
+        {
+            for (int i = 0; i < colors.Length; i++)
+            {
+                colors[i] = 0;
+            }
+        }
+        #endregion
+
+        #region SWAP
         //All algorithms should use this method for swapping indices.
-        public void swap(int indexA, int indexB, int sleepTime)
+        public void Swap(int indexA, int indexB, int sleepTime)
         {
             int temp = array[indexA];
             array[indexA] = array[indexB];
@@ -98,7 +121,7 @@ namespace SortingVisualizer.Draw
 
             Sleep(sleepTime);
         }
-        public int swapSingle(int index, int value, int sleepTime)
+        public int SwapSingle(int index, int value, int sleepTime)
         {
             int temp = index;
             index = array[value];
@@ -110,146 +133,209 @@ namespace SortingVisualizer.Draw
 
             return index;
         }
-        public void swapSingleElement(int index, int value, int sleepTime)
+        public void SwapSingleElement(int index, int value, int sleepTime)
         {
             array[index] = value;
-
             colors[index] = 100;
 
             Sleep(sleepTime);
         }
+
+        #endregion
+
+        #region VISUALIZE
         private void Sleep(int sleepTime)
         {
             //Repaint screen.
-            this.Invalidate();
+            Invalidate();
 
             //Try to sleep, otherwise pause the current thread.
             try
             {
                 Thread.Sleep(sleepTime);
             }
-            catch(ThreadInterruptedException e)
+            catch(ThreadInterruptedException)
             {
                 Thread.CurrentThread.Interrupt();
             }
 
-            this.iterations++;
-            this.setSleepTime(sleepTime);
-
             _manualResetEvent.WaitOne();
         }
+        #endregion
 
-        public void runWhenFinallySorted()
-        {
-            for(int i = 0; i < array.Length; i++)
-            {
-                colors[i] = 100;
-                swapSingle(array[i], i, 10);
-            }
-        }
-        public void ResetColor()
-        {
-            for (int i = 0; i < this.colors.Length; i++)
-            {
-                this.colors[i] = 0;
-            }
-        }
+        #region RENDER
         private void Renderer(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
             //Draw information about the algorithm.
-            g.DrawString("Iterations: " + iterations, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
-            g.DrawString("Algorithm: " + Name, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100);
-            g.DrawString("Sleep time: " + sleepTime + " ms", new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 150);
+            if (showInfo)
+            {
+                Handler currentAlgorithm = GetCurrentAlgorithm();
+                if(currentAlgorithm.Swaps == 0)
+                {
+                    g.DrawString("SHUFFELING...", new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
+                }
+                else
+                {
+                    g.DrawString("Swaps: " + currentAlgorithm.Swaps, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
+                    g.DrawString("Algorithm: " + currentAlgorithm.Name, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100);
+                    g.DrawString("Sleep time: " + currentAlgorithm.SleepTime + " ms", new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 150);
+                    g.DrawString("Counter: " + _sortingHandler.GetSortingIndex() + "/" + _sortingHandler.GetCount(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 200);
+                    g.DrawString("Amount of bars: " + AMOUNT_OF_PILLARS, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 250);
+                    g.DrawString("Generation type: " + GenerationType.SINE_WAVE, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 300);
+                    g.DrawString("Execution time: " + currentAlgorithm.ElapsedTime + " ms", new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 350);
+                }
+            }
 
             //Draw the bars.
             RenderBars(g);
-
-            this.Invalidate();
         }
         private void RenderBars(Graphics g)
         {
-            g.TranslateTransform(0, SCREENDIMENSIONS.Y);
-            g.ScaleTransform(1, -1);
 
-            int BAR_WIDTH = SCREENDIMENSIONS.X / array.Length;
+            float BAR_WIDTH = SCREENDIMENSIONS.X / (float) AMOUNT_OF_PILLARS;
 
             for (int i = 0; i < AMOUNT_OF_PILLARS; i++)
             {
-                int x = i + (BAR_WIDTH) * i;
-                int y = 0;
-                int width = BAR_WIDTH;
-                int height = getIndex(i);
+                float currentVal = GetIndex(i);
+                double percentOfMax = currentVal / GetMax();
+                double heightPercentOfPanel = percentOfMax * BAR_HEIGHT_PERCENT;
+
+                float height = (float)(heightPercentOfPanel * (float)SCREENDIMENSIONS.Y);
+                float xCoord = i + (BAR_WIDTH - 1) * i;
+                float yCoord = SCREENDIMENSIONS.Y - height;
 
                 int colorValue = colors[i] * 2;
 
                 Brush brush;
-
-                if(colorValue > 190)
+                if(!(colorValue > 255) && !(colorValue < 0))
                 {
-                    brush = new SolidBrush(Color.FromArgb(255 - colorValue, 255, 255 - colorValue));
-                }
-                else
-                {
-                    brush = new SolidBrush(Color.FromArgb(255, 255 - colorValue, 255 - colorValue));
-                }
+                    if (colorValue > 190)
+                    {
+                        brush = new SolidBrush(Color.FromArgb(255 - colorValue, 255, 255 - colorValue));
+                    }
+                    else
+                    {
+                        brush = new SolidBrush(Color.FromArgb(255, 255 - colorValue, 255 - colorValue));
+                    }
+                    g.FillRectangle(brush, new RectangleF(xCoord, yCoord, BAR_WIDTH, height));
 
-                g.FillRectangle(brush, new Rectangle(x, y, width, height));
-
-                if (colors[i] > 0)
-                {
-                    colors[i] -= 1;
+                    if (colors[i] > 0)
+                    {
+                        colors[i] -= 1;
+                    }
                 }
             }
-            this.Invalidate();
+            Invalidate();
+        }
+        #endregion
+
+        #region GETTERS/SETTERS
+        public int GetMax()
+        {
+            int max = array[0];
+            for(int i = 0; i < array.Length; i++)
+            {
+                if(array[i] > max)
+                {
+                    max = array[i];
+                }
+            }
+
+            if(max == array[0])
+            {
+                return int.MinValue;
+            }
+
+            return max;
         }
 
-        public void setPause()
+        public void Toggle_FULLSCREEN()
+        {
+            if (!WindowState.Equals(FormWindowState.Maximized))
+            {
+                SetFullscreen();
+            }
+            else
+            {
+                WindowState = FormWindowState.Normal;
+                FormBorderStyle = FormBorderStyle.FixedSingle;
+            }
+        }
+
+        public void Toggle_Info()
+        {
+            if (showInfo)
+            {
+                showInfo = false;
+            }
+            else
+            {
+                showInfo = true;
+            }
+            Console.WriteLine(showInfo);
+        }
+
+        public void SetFullscreen()
+        {
+            WindowState = FormWindowState.Maximized;
+            FormBorderStyle = FormBorderStyle.None;
+        }
+
+        public void SetSortingHandler(SortingHandler sortingHandler)
+        {
+            _sortingHandler = sortingHandler;
+        }
+
+        public SortingHandler GetSortingHandler()
+        {
+            return _sortingHandler;
+        }
+
+        public Handler GetCurrentAlgorithm()
+        {
+            return _sortingHandler.GetCurrentSortingItem();
+        }
+
+        public void StopSorting()
+        {
+            _sortingHandler.SomeEvent += () => Invoke(new Action(() => Close()));
+        }
+
+        public void SetPause()
         {
             _manualResetEvent.Reset();
         }
-        public void setResume()
+        public void SetResume()
         {
             _manualResetEvent.Set();
         }
-        public void setSleepTime(int sleepTime)
-        {
-            this.sleepTime = sleepTime;
-        }
-		public void setAlgorithmName(string name)
-		{
-			this.Name = name;
-		}
-        public int[] getArray()
+
+        public int[] GetArray()
         {
             return array;
         }
-        public void setIndex(int index,int value)
-        {
-            this.array[index] = value;
-        }
-        public int getLength()
+        public int GetLength()
         {
             return array.Length;
         }
-        public int getIndex(int index)
+        public int GetIndex(int index)
         {
             return array[index];
         }
-        public int getColor(int index)
+
+        #endregion
+        private void InitializeComponent()
         {
-            return colors[index];
+            SuspendLayout();
+            // 
+            // Window
+            // 
+            ClientSize = new System.Drawing.Size(1237, 514);
+            Name = "Window";
+            ResumeLayout(false);
         }
-        public int getIterations()
-        {
-            return iterations;
-        }
-		
-		public void setIterations()
-		{
-			this.iterations = 0;
-		}
     }
 }
