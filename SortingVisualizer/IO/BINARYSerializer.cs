@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp2.IO
 {
-    class BINARYSerializer<T> : ISerializers<T>
+    class BINARYSerializer<T>
     {
         private BinaryFormatter formatter;
         public BINARYSerializer()
         {
             formatter = new BinaryFormatter();
         }
-        public void Serialize<T>(T serializeObject, string filePath, bool append, string fileName)
+        public void Serialize(T serializeObject, string filePath, bool append, string fileName)
         {
             using(FileStream outFile = new FileStream(filePath + fileName + ".bin", FileMode.Create, FileAccess.Write))
             {

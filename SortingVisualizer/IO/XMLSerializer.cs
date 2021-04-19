@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace WindowsFormsApp2.IO
 {
-    public class XMLSerializer<T> : ISerializers<T>
+    public class XMLSerializer<T>
     {
         public XMLSerializer()
         {}
@@ -20,7 +20,7 @@ namespace WindowsFormsApp2.IO
         /// <typeparam name="T"></typeparam>
         /// <param name="serializeObject">Object to serialize</param>
         /// <param name="fileName">Name of the file we want to save.</param>
-        public void Serialize<T>(T serializeObject, string filePath, bool append, string fileName)
+        public void Serialize(T serializeObject, string filePath, bool append, string fileName)
         {
             if (serializeObject == null) { return; }
             string submittedFilePath = filePath + fileName + ".txt";
@@ -69,7 +69,7 @@ namespace WindowsFormsApp2.IO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Exception handling here.
             }

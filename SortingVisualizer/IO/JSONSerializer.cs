@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp2.IO
 {
-    class JSONSerializer<T> : ISerializers<T>
+    class JSONSerializer<T>
     {
         private JsonSerializer jsonSerializer;
         private JsonSerializerSettings settings;
@@ -28,7 +28,7 @@ namespace WindowsFormsApp2.IO
         /// <typeparam name="T"></typeparam>
         /// <param name="serializeObject">Object to serialize</param>
         /// <param name="fileName">Name of the file we want to save.</param>
-        public void Serialize<T>(T serializeObject, string filePath, bool append, string fileName)
+        public void Serialize(T serializeObject, string filePath, bool append, string fileName)
         {
             string jsonData = JsonConvert.SerializeObject(serializeObject, settings);
 
