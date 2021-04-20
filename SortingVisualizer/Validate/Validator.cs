@@ -66,7 +66,6 @@ namespace SortingVisualizer.Validate
 
             for (int i = 0; i < list.Items.Count; i++)
             {
-                Console.WriteLine(hasCheckedItems);
                 if (list.GetItemChecked(i))
                 {
                     hasCheckedItems = true;

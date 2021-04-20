@@ -16,7 +16,7 @@ namespace SortingVisualizer.Algorithms
         /// SELECTION-SORT
         /// https://en.wikipedia.org/wiki/Selection_sort
         /// </summary>
-        public SelectionSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public SelectionSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
 
         public override void Sort()

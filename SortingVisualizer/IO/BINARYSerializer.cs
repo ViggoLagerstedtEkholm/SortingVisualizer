@@ -10,7 +10,7 @@ namespace WindowsFormsApp2.IO
 {
     class BINARYSerializer<T>
     {
-        private BinaryFormatter formatter;
+        private readonly BinaryFormatter formatter;
         public BINARYSerializer()
         {
             formatter = new BinaryFormatter();

@@ -16,7 +16,7 @@ namespace SortingVisualizer.Algorithms
         /// CYCLE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cycle-sort/
         /// </summary>
-        public CycleSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public CycleSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
 
         public override void Sort()

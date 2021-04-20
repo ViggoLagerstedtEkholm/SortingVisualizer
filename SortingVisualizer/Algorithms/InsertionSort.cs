@@ -14,7 +14,7 @@ namespace WindowsFormsApp2.Algorithms
         /// INSERTION-SORT
         /// https://en.wikipedia.org/wiki/Insertion_sort
         /// </summary>
-        public InsertionSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public InsertionSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
 
         public override void Sort()

@@ -10,9 +10,7 @@ namespace WindowsFormsApp2.Draw
     {
         public string Name { get; set; }
         public int Iterations { get; set; }
-        public int[] SortedArray { get; set; }
-        public int[] UnsortedArray { get; set; }
-
+        public long ExecutionTime { get; set; }
         public SortSummary()
         {}
     }

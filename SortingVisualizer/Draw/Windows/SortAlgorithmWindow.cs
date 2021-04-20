@@ -17,8 +17,7 @@ namespace SortingVisualizer.Draw
 {
     public class Window : Form
     {
-
-        private readonly Vector2D SCREENDIMENSIONS;
+        public Vector2D SCREENDIMENSIONS { get; set; }
 
         private int[] array;
         private int[] colors;
@@ -39,9 +38,11 @@ namespace SortingVisualizer.Draw
         {
             InitializeComponent();
 
+            SCREENDIMENSIONS = dimensions;
+            Width = dimensions.X;
+            Height = dimensions.Y;
             AMOUNT_OF_PILLARS = amountOfBars;
             FORM_TITLE = title;
-            SCREENDIMENSIONS = dimensions;
             this.generateArrayType = generateArrayType;
             showInfo = true;
 
@@ -69,7 +70,7 @@ namespace SortingVisualizer.Draw
             for (int i = 0; i < array.Length; i++)
             {
                 colors[i] = 100;
-                SwapSingle(array[i], i, 10);
+                SwapSingle(array[i], i, 5);
             }
         }
 
@@ -169,33 +170,7 @@ namespace SortingVisualizer.Draw
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
-            //Draw information about the algorithm.
-            if (showInfo)
-            {
-                Handler currentAlgorithm = GetCurrentAlgorithm();
-                if(currentAlgorithm.Swaps == 0)
-                {
-                    g.DrawString("SHUFFELING...", new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
-                }
-                else
-                {
-                    g.DrawString("Swaps: " + currentAlgorithm.Swaps, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 50);
-                    g.DrawString("Algorithm: " + currentAlgorithm.Name, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 100);
-                    g.DrawString("Sleep time: " + currentAlgorithm.SleepTime + " ms", new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 150);
-                    g.DrawString("Counter: " + _sortingHandler.GetSortingIndex() + "/" + _sortingHandler.GetCount(), new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 200);
-                    g.DrawString("Amount of bars: " + AMOUNT_OF_PILLARS, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 250);
-                    g.DrawString("Generation type: " + GenerationType.SINE_WAVE, new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 300);
-                    g.DrawString("Execution time: " + currentAlgorithm.ElapsedTime + " ms", new Font("Arial", 24, FontStyle.Bold), new SolidBrush(Color.White), 100, 350);
-                }
-            }
-
-            //Draw the bars.
-            RenderBars(g);
-        }
-        private void RenderBars(Graphics g)
-        {
-
-            float BAR_WIDTH = SCREENDIMENSIONS.X / (float) AMOUNT_OF_PILLARS;
+            float BAR_WIDTH = SCREENDIMENSIONS.X / (float)AMOUNT_OF_PILLARS;
 
             for (int i = 0; i < AMOUNT_OF_PILLARS; i++)
             {
@@ -210,7 +185,7 @@ namespace SortingVisualizer.Draw
                 int colorValue = colors[i] * 2;
 
                 Brush brush;
-                if(!(colorValue > 255) && !(colorValue < 0))
+                if (!(colorValue > 255) && !(colorValue < 0))
                 {
                     if (colorValue > 190)
                     {
@@ -265,6 +240,11 @@ namespace SortingVisualizer.Draw
             }
         }
 
+        public void RemoveFrame()
+        {
+            FormBorderStyle = FormBorderStyle.None;
+        }
+
         public void Toggle_Info()
         {
             if (showInfo)
@@ -299,11 +279,6 @@ namespace SortingVisualizer.Draw
             return _sortingHandler.GetCurrentSortingItem();
         }
 
-        public void StopSorting()
-        {
-            _sortingHandler.SomeEvent += () => Invoke(new Action(() => Close()));
-        }
-
         public void SetPause()
         {
             _manualResetEvent.Reset();
@@ -329,13 +304,14 @@ namespace SortingVisualizer.Draw
         #endregion
         private void InitializeComponent()
         {
-            SuspendLayout();
+            this.SuspendLayout();
             // 
             // Window
             // 
-            ClientSize = new System.Drawing.Size(1237, 514);
-            Name = "Window";
-            ResumeLayout(false);
+            this.ClientSize = new System.Drawing.Size(1252, 562);
+            this.Name = "Window";
+            this.ResumeLayout(false);
+
         }
     }
 }

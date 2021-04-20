@@ -6,85 +6,73 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using WindowsFormsApp2.Draw;
 
 namespace WindowsFormsApp2.IO
 {
-    public class XMLSerializer<T>
+    public class XMLSerializer
     {
+        private readonly string designatedFileFolder;
         public XMLSerializer()
-        {}
-
-        /// <summary>
-        /// Serializes a given object into a XML file.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serializeObject">Object to serialize</param>
-        /// <param name="fileName">Name of the file we want to save.</param>
-        public void Serialize(T serializeObject, string filePath, bool append, string fileName)
         {
-            if (serializeObject == null) { return; }
-            string submittedFilePath = filePath + fileName + ".txt";
-            TextWriter writer = null;
-            try
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+            designatedFileFolder = projectDirectory + @"\SavedFiles";
+        }
+
+        public void Serialize(SortSummary serializeObject, string name, string path)
+        {
+            Type type = serializeObject.GetType();
+            XmlSerializer serializer = new XmlSerializer(type);
+
+            using (FileStream outFile = new FileStream(path + @"\" + name + ".xml",
+                FileMode.Create, FileAccess.Write))
             {
-                var serializer = new XmlSerializer(typeof(T));
-                writer = new StreamWriter(submittedFilePath, append);
-                serializer.Serialize(writer, serializeObject);
-            }
-            finally
-            {
-                if (writer != null)
-                    writer.Close();
+                serializer.Serialize(outFile, serializeObject);
             }
         }
 
-        /// <summary>
-        /// Deserializes a XML file into a object list.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public T Deserialize(string path)
+        public void Serialize(SortSummary serializeObject, string name)
         {
-            if (string.IsNullOrEmpty(path)) { return default(T); }
-
-            string submittedFilePath =
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Path\\myFile.txt.";
-
-            T objectOut = default(T);
-
-            try
+            Type type = serializeObject.GetType();
+            XmlSerializer serializer = new XmlSerializer(type);
+            if (!Directory.Exists(designatedFileFolder))
+                Directory.CreateDirectory(designatedFileFolder);
+            Console.WriteLine(designatedFileFolder);
+            using (FileStream outFile = new FileStream(designatedFileFolder + @"\" + name + ".xml",
+                FileMode.Create, FileAccess.Write))
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(submittedFilePath);
-                string xmlString = xmlDocument.OuterXml;
+                serializer.Serialize(outFile, serializeObject);
+            }
+        }
+        public List<SortSummary> DeserializeList(string[] names)
+        {
+            List<SortSummary> objects = new List<SortSummary>();
 
-                using (StringReader read = new StringReader(xmlString))
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<SortSummary>));
+            for(int i = 0; i < names.Length; i++)
+            {
+                using (FileStream inFile = new FileStream(names[i], FileMode.Open, FileAccess.Read))
                 {
-                    Type outType = typeof(T);
-
-                    XmlSerializer serializer = new XmlSerializer(outType);
-                    using (XmlReader reader = new XmlTextReader(read))
-                    {
-                        objectOut = (T)serializer.Deserialize(reader);
-                    }
+                    objects.Add((SortSummary)xmlSerializer.Deserialize(inFile));
                 }
             }
-            catch (Exception)
+
+            return objects;
+        }
+
+        public SortSummary DeserializeSingle(string path)
+        {
+            SortSummary objects;
+
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(SortSummary));
+            using (FileStream inFile = new FileStream(path,
+                FileMode.Open, FileAccess.Read))
             {
-                //Exception handling here.
+                objects = (SortSummary)xmlSerializer.Deserialize(inFile);
             }
 
-            return objectOut;
-        }
-
-        public T[] DeserializeList()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T[] SerializeList(List<T> list)
-        {
-            throw new NotImplementedException();
+            return objects;
         }
     }
 }

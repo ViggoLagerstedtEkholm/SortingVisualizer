@@ -16,7 +16,7 @@ namespace SortingVisualizer.Algorithms
         /// COCKTAIL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cocktail-sort/
         /// </summary>
-        public CocktailSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public CocktailSort(int sleepTime, Window window) : base(sleepTime, window)
         {}
 
         public override void Sort()

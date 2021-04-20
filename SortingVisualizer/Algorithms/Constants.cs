@@ -8,6 +8,7 @@ namespace WindowsFormsApp2.Algorithms
 {
     public enum ALGORITHM_TYPE
     {
+        BUBBLE,
         COCKTAIL,
         COMB,
         CYCLE,
@@ -20,7 +21,6 @@ namespace WindowsFormsApp2.Algorithms
         SHELL,
         STOOGE
     }
-
     public enum FileType
     {
         XML,

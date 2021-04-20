@@ -16,7 +16,7 @@ namespace SortingVisualizer.Algorithms
         /// STOOGE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/stooge-sort/
         /// </summary>
-        public StoogeSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public StoogeSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
         public override void Sort()
         {

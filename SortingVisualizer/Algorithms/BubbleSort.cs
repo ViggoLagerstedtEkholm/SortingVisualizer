@@ -18,7 +18,7 @@ namespace SortingVisualizer.Algorithms
         /// https://sv.wikipedia.org/wiki/Bubbelsortering
         /// </summary>
 
-        public BubbleSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public BubbleSort(int sleepTime, Window window) : base(sleepTime, window)
         {}
 
         public override void Sort()

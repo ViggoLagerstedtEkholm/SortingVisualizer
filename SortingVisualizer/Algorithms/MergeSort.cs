@@ -16,7 +16,7 @@ namespace SortingVisualizer.Algorithms
         /// MERGE-SORT
         /// Help with implementation - http://csharpexamples.com/c-merge-sort-algorithm-implementation/
         /// </summary>
-        public MergeSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public MergeSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
         public override void Sort()
         {

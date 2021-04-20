@@ -16,7 +16,7 @@ namespace SortingVisualizer.Algorithms
         /// SHELL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/shellsort/
         /// </summary>
-        public ShellSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public ShellSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
 
         public override void Sort()

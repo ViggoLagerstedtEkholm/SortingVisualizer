@@ -17,7 +17,7 @@ namespace SortingVisualizer.Algorithms
         /// https://en.wikipedia.org/wiki/Gnome_sort
         /// </summary>
 
-        public GnomeSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public GnomeSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
 
         public override void Sort()

@@ -16,7 +16,7 @@ namespace SortingVisualizer.Algorithms
         /// HEAP-SORT	
         /// Help with implementation - https://www.geeksforgeeks.org/heap-sort/	
         /// </summary>	
-        public HeapSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public HeapSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
         public override void Sort()
         {

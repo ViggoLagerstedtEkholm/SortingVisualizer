@@ -22,12 +22,6 @@ namespace WindowsFormsApp2.IO
             settings = new JsonSerializerSettings { Formatting = Newtonsoft.Json.Formatting.Indented };
         }
 
-        /// <summary>
-        /// Serializes a given object into a XML file.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serializeObject">Object to serialize</param>
-        /// <param name="fileName">Name of the file we want to save.</param>
         public void Serialize(T serializeObject, string filePath, bool append, string fileName)
         {
             string jsonData = JsonConvert.SerializeObject(serializeObject, settings);

@@ -16,7 +16,7 @@ namespace SortingVisualizer.Algorithms
         /// QUICK-SORT
         /// Help with implementation - http://csharpexamples.com/c-quick-sort-algorithm-implementation/
         /// </summary>
-        public QuickSort(int sleepTime, Window window, string name) : base(sleepTime, window, name)
+        public QuickSort(int sleepTime, Window window) : base(sleepTime, window)
         { }
         public override void Sort()
         {
