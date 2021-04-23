@@ -21,13 +21,13 @@ namespace WindowsFormsApp2.Algorithms
         SHELL,
         STOOGE
     }
-    public enum FileType
+    public enum FILE_TYPE
     {
         XML,
         BINARY,
         JSON
     };
-    public enum GenerationType
+    public enum GENERATION_TYPE
     {
         REGULAR,
         SINE_WAVE

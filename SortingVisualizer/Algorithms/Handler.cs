@@ -20,21 +20,9 @@ namespace WindowsFormsApp2.Algorithms
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private string name;
+        public string Name { get; set; }
 
-        public string Name 
-        { 
-            get {return name;} 
-            set {
-                if (value != name)
-                {
-                    name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-        }
-
-        public int sleepTime;
+        private int sleepTime;
 
         public int SleepTime
         {
