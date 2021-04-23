@@ -9,30 +9,6 @@ namespace SortingVisualizer.Validate
 {
     public static class Validator
     {
-
-        public static bool MinMax(int min, int max)
-        {
-            bool isGreater = false;
-
-            if(max > min)
-            {
-                isGreater = true;
-            }
-
-            return isGreater;
-        }
-        public static bool TxfHasContent(TextBox txfBox)
-        {
-            bool hasValue = false;
-
-            if(txfBox.Text != "" || txfBox.TextLength != 0)
-            {
-                hasValue = true;
-            }
-
-            return hasValue;
-        }
-
         public static bool TxfHasInteger(TextBox txfBox)
         {
             bool hasInteger = false;
@@ -59,7 +35,6 @@ namespace SortingVisualizer.Validate
             }
             return res;
         }
-
         public static bool CheckBoxListHasValue(CheckedListBox list)
         {
             bool hasCheckedItems = false;
