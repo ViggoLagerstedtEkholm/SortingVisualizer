@@ -9,48 +9,39 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp2.Draw;
 
 namespace WindowsFormsApp2.IO
 {
-    class JSONSerializer<T>
+    class JSONSerializer : Serialize
     {
-        private JsonSerializer jsonSerializer;
-        private JsonSerializerSettings settings;
+        private readonly JsonSerializer jsonSerializer;
+        private readonly JsonSerializerSettings settings;
         public JSONSerializer()
         {
             jsonSerializer = new JsonSerializer();
-            settings = new JsonSerializerSettings { Formatting = Newtonsoft.Json.Formatting.Indented };
+            settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
         }
 
-        public void Serialize(T serializeObject, string filePath, bool append, string fileName)
+        public override void SerializeObjects(SortSummary serializeObject, string name, string path)
         {
             string jsonData = JsonConvert.SerializeObject(serializeObject, settings);
 
-            using (StreamWriter writer = new StreamWriter(filePath + fileName + ".json"))
+            using (StreamWriter writer = new StreamWriter(path + name + ".json"))
             {
                 writer.Write(jsonData);
             }
         }
-        public T Deserialize(string path)
+        public override List<SortSummary> DeSerializeObjects(List<string> names)
         {
-            T objectReturned;
+            List<SortSummary> objectReturned = new List<SortSummary>();
 
             using(StreamReader reader = File.OpenText("SortedData.json"))
             {
-                objectReturned = (T)jsonSerializer.Deserialize(reader, typeof(T));
+                objectReturned.Add((SortSummary)jsonSerializer.Deserialize(reader, typeof(SortSummary)));
             }
 
             return objectReturned;
-        }
-
-        public T[] DeserializeList()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T[] SerializeList(List<T> list)
-        {
-            throw new NotImplementedException();
         }
     }
 }

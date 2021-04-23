@@ -5,44 +5,35 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using WindowsFormsApp2.Draw;
 
 namespace WindowsFormsApp2.IO
 {
-    class BINARYSerializer<T>
+    class BINARYSerializer : Serialize
     {
         private readonly BinaryFormatter formatter;
         public BINARYSerializer()
         {
             formatter = new BinaryFormatter();
         }
-        public void Serialize(T serializeObject, string filePath, bool append, string fileName)
+        public override void SerializeObjects(SortSummary serializeObject, string name, string path)
         {
-            using(FileStream outFile = new FileStream(filePath + fileName + ".bin", FileMode.Create, FileAccess.Write))
+            using(FileStream outFile = new FileStream(path + name + ".bin", FileMode.Create, FileAccess.Write))
             {
                 formatter.Serialize(outFile, serializeObject);
             }
         }
 
-        public T Deserialize(string path)
+        public override List<SortSummary> DeSerializeObjects(List<string> names)
         {
-            T objectReturned;
+            List<SortSummary> objectReturned = new List<SortSummary>();
 
             using (FileStream outFile = new FileStream("SortedData.bin", FileMode.Open, FileAccess.Read))
             {
-                objectReturned = (T)formatter.Deserialize(outFile);
+                objectReturned.Add((SortSummary)formatter.Deserialize(outFile));
             }
 
             return objectReturned;
-        }
-
-        public T[] DeserializeList()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T[] SerializeList(List<T> list)
-        {
-            throw new NotImplementedException();
         }
     }
 }
