@@ -30,23 +30,29 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.tbPath = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.lblFileName = new System.Windows.Forms.Label();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
             this.XMLRadioBtn = new System.Windows.Forms.RadioButton();
             this.BINARYRadioBtn = new System.Windows.Forms.RadioButton();
             this.JSONRadioBtn = new System.Windows.Forms.RadioButton();
             this.FileChooseBtn = new System.Windows.Forms.Button();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.regularArray = new System.Windows.Forms.RadioButton();
-            this.sineWave = new System.Windows.Forms.RadioButton();
+            this.checkBoxSelectAll = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.AlgorithmsList = new System.Windows.Forms.CheckedListBox();
             this.selectedAlgorithmListBox = new System.Windows.Forms.ListBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.textBoxShuffleSpeed = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxSleepStart = new System.Windows.Forms.TextBox();
             this.BarAmount = new System.Windows.Forms.Label();
             this.BarCountTxf = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -60,6 +66,8 @@
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.shuffleSleepTimeBar = new System.Windows.Forms.TrackBar();
             this.label3 = new System.Windows.Forms.Label();
             this.sleepTimeBar = new System.Windows.Forms.TrackBar();
             this.InfoCheckBox = new System.Windows.Forms.CheckBox();
@@ -68,19 +76,19 @@
             this.ResumeBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.LblAlgorithmName = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.LblElapsedTime = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.LblAmountOfBars = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.LblVisualize = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.LblSleep = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.LblSwaps = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.LblSleep = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.LblVisualize = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.LblAmountOfBars = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.LblAlgorithmName = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.LblShuffleSpeed = new System.Windows.Forms.Label();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -88,6 +96,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.shuffleSleepTimeBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sleepTimeBar)).BeginInit();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -95,31 +104,55 @@
             // panel5
             // 
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.tbPath);
             this.panel5.Controls.Add(this.label10);
             this.panel5.Controls.Add(this.textBox1);
-            this.panel5.Controls.Add(this.label1);
+            this.panel5.Controls.Add(this.lblFileName);
             this.panel5.Controls.Add(this.radioButton4);
             this.panel5.Controls.Add(this.radioButton3);
             this.panel5.Controls.Add(this.radioButton2);
-            this.panel5.Controls.Add(this.button1);
             this.panel5.Location = new System.Drawing.Point(13, 109);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(242, 194);
+            this.panel5.Size = new System.Drawing.Size(242, 165);
             this.panel5.TabIndex = 2;
             // 
-            // label1
+            // tbPath
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 40);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "No path detected";
+            this.tbPath.Location = new System.Drawing.Point(9, 25);
+            this.tbPath.Name = "tbPath";
+            this.tbPath.Size = new System.Drawing.Size(224, 20);
+            this.tbPath.TabIndex = 7;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(6, 48);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(52, 13);
+            this.label10.TabIndex = 6;
+            this.label10.Text = "File name";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(8, 64);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(225, 20);
+            this.textBox1.TabIndex = 5;
+            // 
+            // lblFileName
+            // 
+            this.lblFileName.AutoSize = true;
+            this.lblFileName.Location = new System.Drawing.Point(5, 9);
+            this.lblFileName.Name = "lblFileName";
+            this.lblFileName.Size = new System.Drawing.Size(56, 13);
+            this.lblFileName.TabIndex = 4;
+            this.lblFileName.Text = "Save path";
             // 
             // radioButton4
             // 
             this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(9, 158);
+            this.radioButton4.Location = new System.Drawing.Point(9, 136);
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(53, 17);
             this.radioButton4.TabIndex = 3;
@@ -131,7 +164,7 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(9, 135);
+            this.radioButton3.Location = new System.Drawing.Point(9, 113);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(47, 17);
             this.radioButton3.TabIndex = 2;
@@ -143,7 +176,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(8, 112);
+            this.radioButton2.Location = new System.Drawing.Point(9, 90);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(54, 17);
             this.radioButton2.TabIndex = 1;
@@ -151,16 +184,6 @@
             this.radioButton2.Text = "Binary";
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.BINARYRadioBtn_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(5, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(228, 34);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Save path";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.FileChooseBtn_Click);
             // 
             // XMLRadioBtn
             // 
@@ -228,43 +251,39 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.regularArray);
-            this.panel3.Controls.Add(this.sineWave);
+            this.panel3.Controls.Add(this.checkBoxSelectAll);
+            this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.AlgorithmsList);
             this.panel3.Controls.Add(this.selectedAlgorithmListBox);
-            this.panel3.Location = new System.Drawing.Point(13, 309);
+            this.panel3.Location = new System.Drawing.Point(13, 280);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(242, 392);
+            this.panel3.Size = new System.Drawing.Size(242, 421);
             this.panel3.TabIndex = 1;
             // 
-            // regularArray
+            // checkBoxSelectAll
             // 
-            this.regularArray.AutoSize = true;
-            this.regularArray.Location = new System.Drawing.Point(15, 356);
-            this.regularArray.Name = "regularArray";
-            this.regularArray.Size = new System.Drawing.Size(62, 17);
-            this.regularArray.TabIndex = 3;
-            this.regularArray.TabStop = true;
-            this.regularArray.Text = "Regular";
-            this.regularArray.UseVisualStyleBackColor = true;
-            this.regularArray.Click += new System.EventHandler(this.RegularArray_Click);
+            this.checkBoxSelectAll.AutoSize = true;
+            this.checkBoxSelectAll.Location = new System.Drawing.Point(9, 32);
+            this.checkBoxSelectAll.Name = "checkBoxSelectAll";
+            this.checkBoxSelectAll.Size = new System.Drawing.Size(69, 17);
+            this.checkBoxSelectAll.TabIndex = 3;
+            this.checkBoxSelectAll.Text = "Select all";
+            this.checkBoxSelectAll.UseVisualStyleBackColor = true;
+            this.checkBoxSelectAll.CheckedChanged += new System.EventHandler(this.CheckBoxSelectAll_CheckedChanged);
             // 
-            // sineWave
+            // label1
             // 
-            this.sineWave.AutoSize = true;
-            this.sineWave.Location = new System.Drawing.Point(15, 333);
-            this.sineWave.Name = "sineWave";
-            this.sineWave.Size = new System.Drawing.Size(75, 17);
-            this.sineWave.TabIndex = 2;
-            this.sineWave.TabStop = true;
-            this.sineWave.Text = "Sine wave";
-            this.sineWave.UseVisualStyleBackColor = true;
-            this.sineWave.Click += new System.EventHandler(this.SineWave_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Algorithms";
             // 
             // AlgorithmsList
             // 
             this.AlgorithmsList.FormattingEnabled = true;
-            this.AlgorithmsList.Location = new System.Drawing.Point(9, 18);
+            this.AlgorithmsList.Location = new System.Drawing.Point(8, 55);
             this.AlgorithmsList.Name = "AlgorithmsList";
             this.AlgorithmsList.Size = new System.Drawing.Size(224, 169);
             this.AlgorithmsList.TabIndex = 1;
@@ -273,9 +292,9 @@
             // selectedAlgorithmListBox
             // 
             this.selectedAlgorithmListBox.FormattingEnabled = true;
-            this.selectedAlgorithmListBox.Location = new System.Drawing.Point(8, 193);
+            this.selectedAlgorithmListBox.Location = new System.Drawing.Point(8, 230);
             this.selectedAlgorithmListBox.Name = "selectedAlgorithmListBox";
-            this.selectedAlgorithmListBox.Size = new System.Drawing.Size(225, 134);
+            this.selectedAlgorithmListBox.Size = new System.Drawing.Size(225, 186);
             this.selectedAlgorithmListBox.TabIndex = 1;
             // 
             // btnStart
@@ -291,6 +310,10 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.textBoxShuffleSpeed);
+            this.panel2.Controls.Add(this.label11);
+            this.panel2.Controls.Add(this.label5);
+            this.panel2.Controls.Add(this.textBoxSleepStart);
             this.panel2.Controls.Add(this.BarAmount);
             this.panel2.Controls.Add(this.BarCountTxf);
             this.panel2.Location = new System.Drawing.Point(12, 31);
@@ -298,13 +321,45 @@
             this.panel2.Size = new System.Drawing.Size(243, 72);
             this.panel2.TabIndex = 8;
             // 
+            // textBoxShuffleSpeed
+            // 
+            this.textBoxShuffleSpeed.Location = new System.Drawing.Point(168, 38);
+            this.textBoxShuffleSpeed.Name = "textBoxShuffleSpeed";
+            this.textBoxShuffleSpeed.Size = new System.Drawing.Size(66, 20);
+            this.textBoxShuffleSpeed.TabIndex = 8;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(165, 18);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(72, 13);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "Shuffle speed";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(82, 18);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(57, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Start sleep";
+            // 
+            // textBoxSleepStart
+            // 
+            this.textBoxSleepStart.Location = new System.Drawing.Point(85, 38);
+            this.textBoxSleepStart.Name = "textBoxSleepStart";
+            this.textBoxSleepStart.Size = new System.Drawing.Size(76, 20);
+            this.textBoxSleepStart.TabIndex = 5;
+            // 
             // BarAmount
             // 
             this.BarAmount.AutoSize = true;
-            this.BarAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BarAmount.Location = new System.Drawing.Point(3, 10);
+            this.BarAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BarAmount.Location = new System.Drawing.Point(7, 18);
             this.BarAmount.Name = "BarAmount";
-            this.BarAmount.Size = new System.Drawing.Size(104, 25);
+            this.BarAmount.Size = new System.Drawing.Size(53, 13);
             this.BarAmount.TabIndex = 4;
             this.BarAmount.Text = "Bar count";
             // 
@@ -312,7 +367,7 @@
             // 
             this.BarCountTxf.Location = new System.Drawing.Point(9, 38);
             this.BarCountTxf.Name = "BarCountTxf";
-            this.BarCountTxf.Size = new System.Drawing.Size(220, 20);
+            this.BarCountTxf.Size = new System.Drawing.Size(70, 20);
             this.BarCountTxf.TabIndex = 2;
             // 
             // contextMenuStrip1
@@ -371,13 +426,15 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.loadToolStripMenuItem.Text = "Load";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label12);
+            this.panel1.Controls.Add(this.shuffleSleepTimeBar);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.sleepTimeBar);
             this.panel1.Controls.Add(this.InfoCheckBox);
@@ -389,25 +446,45 @@
             this.panel1.Size = new System.Drawing.Size(1244, 72);
             this.panel1.TabIndex = 11;
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(844, 4);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(62, 13);
+            this.label12.TabIndex = 26;
+            this.label12.Text = "Shuffle time";
+            // 
+            // shuffleSleepTimeBar
+            // 
+            this.shuffleSleepTimeBar.Location = new System.Drawing.Point(847, 22);
+            this.shuffleSleepTimeBar.Maximum = 100;
+            this.shuffleSleepTimeBar.Minimum = 1;
+            this.shuffleSleepTimeBar.Name = "shuffleSleepTimeBar";
+            this.shuffleSleepTimeBar.Size = new System.Drawing.Size(333, 45);
+            this.shuffleSleepTimeBar.TabIndex = 25;
+            this.shuffleSleepTimeBar.Value = 1;
+            this.shuffleSleepTimeBar.Scroll += new System.EventHandler(this.ShuffleSleepTimeBar_Scroll);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(565, 18);
+            this.label3.Location = new System.Drawing.Point(516, 7);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(84, 20);
+            this.label3.Size = new System.Drawing.Size(56, 13);
             this.label3.TabIndex = 24;
             this.label3.Text = "Sleep time";
             // 
             // sleepTimeBar
             // 
-            this.sleepTimeBar.Location = new System.Drawing.Point(655, 10);
+            this.sleepTimeBar.Location = new System.Drawing.Point(509, 26);
             this.sleepTimeBar.Maximum = 100;
             this.sleepTimeBar.Minimum = 1;
             this.sleepTimeBar.Name = "sleepTimeBar";
-            this.sleepTimeBar.Size = new System.Drawing.Size(584, 45);
+            this.sleepTimeBar.Size = new System.Drawing.Size(329, 45);
             this.sleepTimeBar.TabIndex = 23;
             this.sleepTimeBar.Value = 1;
             this.sleepTimeBar.Scroll += new System.EventHandler(this.SleepTimeBar_Scroll);
@@ -419,9 +496,9 @@
             this.InfoCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.InfoCheckBox.Location = new System.Drawing.Point(375, 18);
             this.InfoCheckBox.Name = "InfoCheckBox";
-            this.InfoCheckBox.Size = new System.Drawing.Size(44, 17);
+            this.InfoCheckBox.Size = new System.Drawing.Size(115, 17);
             this.InfoCheckBox.TabIndex = 22;
-            this.InfoCheckBox.Text = "Info";
+            this.InfoCheckBox.Text = "Show elapsed time";
             this.InfoCheckBox.UseVisualStyleBackColor = true;
             this.InfoCheckBox.CheckedChanged += new System.EventHandler(this.InfoCheckBox_CheckedChanged);
             // 
@@ -471,6 +548,10 @@
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.LblShuffleSpeed);
+            this.panel4.Controls.Add(this.label15);
+            this.panel4.Controls.Add(this.label14);
+            this.panel4.Controls.Add(this.label13);
             this.panel4.Controls.Add(this.LblSwaps);
             this.panel4.Controls.Add(this.label8);
             this.panel4.Controls.Add(this.LblSleep);
@@ -479,8 +560,6 @@
             this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.LblAmountOfBars);
             this.panel4.Controls.Add(this.label6);
-            this.panel4.Controls.Add(this.LblElapsedTime);
-            this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.LblAlgorithmName);
             this.panel4.Controls.Add(this.label2);
             this.panel4.Location = new System.Drawing.Point(262, 707);
@@ -488,133 +567,135 @@
             this.panel4.Size = new System.Drawing.Size(1244, 43);
             this.panel4.TabIndex = 13;
             // 
-            // LblAlgorithmName
-            // 
-            this.LblAlgorithmName.AutoSize = true;
-            this.LblAlgorithmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblAlgorithmName.Location = new System.Drawing.Point(79, 10);
-            this.LblAlgorithmName.Name = "LblAlgorithmName";
-            this.LblAlgorithmName.Size = new System.Drawing.Size(161, 18);
-            this.LblAlgorithmName.TabIndex = 13;
-            this.LblAlgorithmName.Text = "ALGORITHM_NAME";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(246, 10);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(93, 18);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "Elapsed time";
-            // 
-            // LblElapsedTime
-            // 
-            this.LblElapsedTime.AutoSize = true;
-            this.LblElapsedTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblElapsedTime.Location = new System.Drawing.Point(345, 10);
-            this.LblElapsedTime.Name = "LblElapsedTime";
-            this.LblElapsedTime.Size = new System.Drawing.Size(131, 18);
-            this.LblElapsedTime.TabIndex = 15;
-            this.LblElapsedTime.Text = "ELAPSED_TIME";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(482, 9);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(39, 18);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Bars";
-            // 
-            // LblAmountOfBars
-            // 
-            this.LblAmountOfBars.AutoSize = true;
-            this.LblAmountOfBars.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblAmountOfBars.Location = new System.Drawing.Point(527, 10);
-            this.LblAmountOfBars.Name = "LblAmountOfBars";
-            this.LblAmountOfBars.Size = new System.Drawing.Size(164, 18);
-            this.LblAmountOfBars.TabIndex = 17;
-            this.LblAmountOfBars.Text = "AMOUNT_OF_BARS";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(697, 10);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(155, 18);
-            this.label7.TabIndex = 18;
-            this.label7.Text = "Algorithms to visualize";
-            // 
-            // LblVisualize
-            // 
-            this.LblVisualize.AutoSize = true;
-            this.LblVisualize.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblVisualize.Location = new System.Drawing.Point(858, 10);
-            this.LblVisualize.Name = "LblVisualize";
-            this.LblVisualize.Size = new System.Drawing.Size(121, 18);
-            this.LblVisualize.TabIndex = 19;
-            this.LblVisualize.Text = "TO_VISUALIZE";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(985, 10);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(45, 18);
-            this.label9.TabIndex = 20;
-            this.label9.Text = "Sleep";
-            // 
-            // LblSleep
-            // 
-            this.LblSleep.AutoSize = true;
-            this.LblSleep.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblSleep.Location = new System.Drawing.Point(1036, 10);
-            this.LblSleep.Name = "LblSleep";
-            this.LblSleep.Size = new System.Drawing.Size(61, 18);
-            this.LblSleep.TabIndex = 21;
-            this.LblSleep.Text = "SLEEP";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(1103, 9);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 18);
-            this.label8.TabIndex = 22;
-            this.label8.Text = "Swaps";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
-            // 
             // LblSwaps
             // 
             this.LblSwaps.AutoSize = true;
             this.LblSwaps.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblSwaps.Location = new System.Drawing.Point(1162, 9);
+            this.LblSwaps.Location = new System.Drawing.Point(1011, 10);
             this.LblSwaps.Name = "LblSwaps";
             this.LblSwaps.Size = new System.Drawing.Size(67, 18);
             this.LblSwaps.TabIndex = 23;
             this.LblSwaps.Text = "SWAPS";
             // 
-            // textBox1
+            // label8
             // 
-            this.textBox1.Location = new System.Drawing.Point(5, 86);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(220, 20);
-            this.textBox1.TabIndex = 5;
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(952, 10);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 18);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Swaps";
             // 
-            // label10
+            // LblSleep
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(3, 70);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(61, 13);
-            this.label10.TabIndex = 6;
-            this.label10.Text = "File name";
+            this.LblSleep.AutoSize = true;
+            this.LblSleep.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblSleep.Location = new System.Drawing.Point(645, 10);
+            this.LblSleep.Name = "LblSleep";
+            this.LblSleep.Size = new System.Drawing.Size(61, 18);
+            this.LblSleep.TabIndex = 21;
+            this.LblSleep.Text = "SLEEP";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(566, 10);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(75, 18);
+            this.label9.TabIndex = 20;
+            this.label9.Text = "Sort sleep";
+            // 
+            // LblVisualize
+            // 
+            this.LblVisualize.AutoSize = true;
+            this.LblVisualize.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblVisualize.Location = new System.Drawing.Point(481, 10);
+            this.LblVisualize.Name = "LblVisualize";
+            this.LblVisualize.Size = new System.Drawing.Size(79, 18);
+            this.LblVisualize.TabIndex = 19;
+            this.LblVisualize.Text = "AMOUNT";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(320, 10);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(155, 18);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Algorithms to visualize";
+            // 
+            // LblAmountOfBars
+            // 
+            this.LblAmountOfBars.AutoSize = true;
+            this.LblAmountOfBars.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblAmountOfBars.Location = new System.Drawing.Point(235, 10);
+            this.LblAmountOfBars.Name = "LblAmountOfBars";
+            this.LblAmountOfBars.Size = new System.Drawing.Size(79, 18);
+            this.LblAmountOfBars.TabIndex = 17;
+            this.LblAmountOfBars.Text = "AMOUNT";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(190, 10);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 18);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Bars";
+            // 
+            // LblAlgorithmName
+            // 
+            this.LblAlgorithmName.AutoSize = true;
+            this.LblAlgorithmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblAlgorithmName.Location = new System.Drawing.Point(78, 10);
+            this.LblAlgorithmName.Name = "LblAlgorithmName";
+            this.LblAlgorithmName.Size = new System.Drawing.Size(105, 18);
+            this.LblAlgorithmName.TabIndex = 13;
+            this.LblAlgorithmName.Text = "ALGORITHM";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(712, 10);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(29, 18);
+            this.label13.TabIndex = 24;
+            this.label13.Text = "ms";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(747, 10);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(97, 18);
+            this.label14.TabIndex = 25;
+            this.label14.Text = "Shuffle speed";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(906, 10);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(29, 18);
+            this.label15.TabIndex = 26;
+            this.label15.Text = "ms";
+            // 
+            // LblShuffleSpeed
+            // 
+            this.LblShuffleSpeed.AutoSize = true;
+            this.LblShuffleSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblShuffleSpeed.Location = new System.Drawing.Point(844, 10);
+            this.LblShuffleSpeed.Name = "LblShuffleSpeed";
+            this.LblShuffleSpeed.Size = new System.Drawing.Size(61, 18);
+            this.LblShuffleSpeed.TabIndex = 27;
+            this.LblShuffleSpeed.Text = "SLEEP";
             // 
             // Start
             // 
@@ -645,6 +726,7 @@
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.shuffleSleepTimeBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sleepTimeBar)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -662,8 +744,6 @@
         private System.Windows.Forms.TextBox BarCountTxf;
         private System.Windows.Forms.ListBox selectedAlgorithmListBox;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.RadioButton regularArray;
-        private System.Windows.Forms.RadioButton sineWave;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Button FileChooseBtn;
@@ -674,11 +754,10 @@
         private System.Windows.Forms.RadioButton JSONRadioBtn;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblFileName;
         private System.Windows.Forms.Panel SHOWCASE_PANEL;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -698,14 +777,25 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label LblAmountOfBars;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label LblElapsedTime;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label LblAlgorithmName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label LblSwaps;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbPath;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBoxSelectAll;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBoxSleepStart;
+        private System.Windows.Forms.TextBox textBoxShuffleSpeed;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TrackBar shuffleSleepTimeBar;
+        private System.Windows.Forms.Label LblShuffleSpeed;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
     }
 }
 

@@ -1,6 +1,5 @@
 ﻿using SortingVisualizer.Validate;
 using SortingVisualizer.Algorithms;
-using SortingVisualizer.Maths;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -8,6 +7,8 @@ using SortingVisualizer.Draw.Windows;
 using WindowsFormsApp2.Algorithms;
 using System.ComponentModel;
 using WindowsFormsApp2.Draw.Windows;
+using System.Drawing;
+using System.IO;
 
 namespace SortingVisualizer.Draw
 {
@@ -20,10 +21,10 @@ namespace SortingVisualizer.Draw
         private Window window;
         private string selectedFolderPath;
         private int amountOfPillars;
-        private FileType Type;
-        private GenerationType GenerationType;
+        private FILE_TYPE Type;
         private int WIDTH => SHOWCASE_PANEL.Width;
         private int HEIGHT => SHOWCASE_PANEL.Height;
+        private Handler CurrentAlgorithm { get; set; }
         public Start()
         {
             InitializeComponent();
@@ -43,14 +44,22 @@ namespace SortingVisualizer.Draw
             FullscreenCheckBox.Enabled = false;
             sleepTimeBar.Enabled = false;
 
-            radioButtons.Add(regularArray);
-            radioButtons.Add(sineWave);
+            tbPath.Text = GetDirectoryPath();
+
             radioButtonsFiles.Add(XMLRadioBtn);
             radioButtonsFiles.Add(JSONRadioBtn);
             radioButtonsFiles.Add(BINARYRadioBtn);
 
             LblSleep.Text = "2";
             LblSwaps.Text = "0";
+            LblShuffleSpeed.Text = "0";
+        }
+
+        private string GetDirectoryPath()
+        {
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+            return projectDirectory + @"\SavedFiles";
         }
 
         private void Start_Load(object sender, EventArgs e)
@@ -64,10 +73,6 @@ namespace SortingVisualizer.Draw
             {
                 MessageBox.Show("Select atleast 1 algorithm!", "SortingVisaulizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (!Validator.CheckRadioBtnHasSelected(radioButtons))
-            {
-                MessageBox.Show("Select a data generation type.", "SortingVisaulizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
             else if (Validator.CheckRadioBtnHasSelected(radioButtonsFiles))
             {
                 MessageBox.Show("Select a file type (XMLM JSON, BINARY)", "SortingVisaulizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -76,17 +81,26 @@ namespace SortingVisualizer.Draw
             {
                 MessageBox.Show("Enter a valid bar count.", "SortingVisaulizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            else if (!Validator.TxfHasInteger(textBoxSleepStart) || !Validator.TxfHasInteger(textBoxShuffleSpeed))
+            {
+                MessageBox.Show("Enter sleep times.", "SortingVisaulizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else
             {
                 amountOfPillars = Int32.Parse(BarCountTxf.Text);
+                int sleep = Int32.Parse(textBoxSleepStart.Text);
+                int shuffleSleep = Int32.Parse(textBoxShuffleSpeed.Text);
+                sleepTimeBar.Value = sleep;
+                shuffleSleepTimeBar.Value = shuffleSleep;
                 CreateWindowInstance();
             }
         }
         private void CreateWindowInstance()
         {
             btnStart.Enabled = false;
+            int SHUFFLE_SPEED = Int32.Parse(textBoxShuffleSpeed.Text);
 
-            window = new Window("SortingVisualizer", amountOfPillars, new Vector2D(WIDTH, HEIGHT), GenerationType);
+            window = new Window("SortingVisualizer", amountOfPillars, new Size(WIDTH, HEIGHT), SHUFFLE_SPEED);
             sortingHandler = new SortingHandler(queueHandler, window, Type, selectedFolderPath);
             window.SetSortingHandler(sortingHandler);
             window.TopLevel = false;
@@ -94,20 +108,34 @@ namespace SortingVisualizer.Draw
             window.Width = WIDTH;
             window.Height = HEIGHT;
 
-            FillAlgotihms();
+            int SLEEP = Int32.Parse(textBoxSleepStart.Text);
+            FillAlgotihms(SLEEP);
             CreateInformation();
 
             LblVisualize.Text = sortingHandler.Remaining().ToString();
             SHOWCASE_PANEL.Controls.Add(window);
             window.Show();
 
-            sortingHandler.InitiateSorting();
+            sortingHandler.InitiateSorting(GetCurrentAlgorithm);
 
-            PauseBtn.Enabled = true;
-            ResumeBtn.Enabled = true;
             InfoCheckBox.Enabled = true;
+            PauseBtn.Enabled = true;
             FullscreenCheckBox.Enabled = true;
             sleepTimeBar.Enabled = true;
+        }
+
+        private void GetCurrentAlgorithm(Handler algorithm)
+        {
+            CurrentAlgorithm = algorithm;
+            LblAlgorithmName.BeginInvoke(new Action(() =>
+            {
+                LblAlgorithmName.Text = algorithm.Name;
+            }));
+
+            LblSleep.BeginInvoke(new Action(() =>
+            {
+                LblSleep.Text = algorithm.SleepTime.ToString();
+            }));
         }
 
         private void PopUpFullScreen()
@@ -116,125 +144,102 @@ namespace SortingVisualizer.Draw
             int width = Screen.PrimaryScreen.Bounds.Width;
             int height = Screen.PrimaryScreen.Bounds.Height;
             window.TopLevel = true;
-            window.SCREENDIMENSIONS = new Vector2D(width, height);
+            window.SCREENDIMENSIONS = new Size(width, height);
             window.Show();
             window.Toggle_FULLSCREEN(); 
         }
         private void CreateInformation()
         {
-            Handler item = sortingHandler.GetCurrentSortingItem();
-
-            item.PropertyChanged += AlgorithmPropertyChangedHandler;
+            sortingHandler.GetCurrentSortingItem().PropertyChanged += AlgorithmPropertyChangedHandler;
             LblAmountOfBars.Text = amountOfPillars.ToString();
         }
         private void AlgorithmPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-        {
-            Handler item = sortingHandler.GetCurrentSortingItem();
-            
+        {            
             switch (e.PropertyName)
             {
                 case nameof(Handler.SleepTime):
                     LblSleep.BeginInvoke(new Action(() =>
                    {
-                       LblSleep.Text = item.SleepTime.ToString();
+                       LblSleep.Text = CurrentAlgorithm.SleepTime.ToString();
                    })); 
                     break;
                 case nameof(Handler.Swaps):
                     LblSwaps.BeginInvoke(new Action(() =>
                     {
-                        LblSwaps.Text = item.Swaps.ToString();
-                    }));
-                    break;
-                case nameof(Handler.ElapsedTime):
-                    LblElapsedTime.BeginInvoke(new Action(() =>
-                    {
-                        LblElapsedTime.Text = item.ElapsedTime.ToString();
-                    }));
-                    break;
-                case nameof(Handler.Name):
-                    LblAlgorithmName.BeginInvoke(new Action(() =>
-                    {
-                        Console.WriteLine(item.Name.ToString());
-
-                        LblAlgorithmName.Text = item.Name.ToString();
+                        LblSwaps.Text = CurrentAlgorithm.Swaps.ToString();
                     }));
                     break;
             }
         }
 
-        void PropertyChangedInMyClass(object sender, PropertyChangedEventArgs e)
-        {
-            Console.WriteLine(sortingHandler.GetCurrentSortingItem().Name);
-        }
-
-        private void FillAlgotihms()
+        private void FillAlgotihms(int SLEEP)
         {
             foreach (object itemChecked in AlgorithmsList.CheckedItems)
             {
                 switch (itemChecked.ToString())
                 {
                     case "BUBBLE":
-                        BubbleSort bubble = new BubbleSort(2, window);
+                        BubbleSort bubble = new BubbleSort(SLEEP, window);
                         queueHandler.Enqueue(bubble);
                         AddEventHandler(bubble);
                         bubble.Name = "Bubble sort";
                         break;
                     case "SELECTION":
-                        SelectionSort selction = new SelectionSort(2, window);
+                        SelectionSort selction = new SelectionSort(SLEEP, window);
                         queueHandler.Enqueue(selction);
                         AddEventHandler(selction);
                         selction.Name = "Selection sort";
                         break;
                     case "HEAP":
-                        HeapSort heap = new HeapSort(2, window);
+                        HeapSort heap = new HeapSort(SLEEP, window);
                         queueHandler.Enqueue(heap);
                         AddEventHandler(heap);
                         heap.Name = "Heap sort";
                         break;
                     case "MERGE":
-                        MergeSort merge = new MergeSort(2, window);
+                        MergeSort merge = new MergeSort(SLEEP, window);
                         queueHandler.Enqueue(merge);
                         AddEventHandler(merge);
                         merge.Name = "Merge sort";
                         break;
                     case "QUICK":
-                        QuickSort quick = new QuickSort(2, window);
+                        QuickSort quick = new QuickSort(SLEEP, window);
                         queueHandler.Enqueue(quick);
                         AddEventHandler(quick);
                         quick.Name = "Quick sort";
                         break;
                     case "INSERTION":
-                        InsertionSort insertion = new InsertionSort(2, window);
+                        InsertionSort insertion = new InsertionSort(SLEEP, window);
                         queueHandler.Enqueue(insertion);
                         AddEventHandler(insertion);
                         insertion.Name = "Insertion sort";
                         break;
                     case "COCKTAIL":
-                        CocktailSort cocktail = new CocktailSort(2, window);
+                        CocktailSort cocktail = new CocktailSort(SLEEP, window);
                         queueHandler.Enqueue(cocktail);
                         AddEventHandler(cocktail);
                         cocktail.Name = "Cocktail sort";
                         break;
                     case "SHELL":
-                        ShellSort shell = new ShellSort(2, window);
+                        ShellSort shell = new ShellSort(SLEEP, window);
                         queueHandler.Enqueue(shell);
                         AddEventHandler(shell);
                         shell.Name = "Shell sort";
                         break;
                     case "COMB":
-                        CombSort comb = new CombSort(2, window);
+                        CombSort comb = new CombSort(SLEEP, window);
                         queueHandler.Enqueue(comb);
                         AddEventHandler(comb);
                         comb.Name = "Comb sort";
                         break;
                     case "CYCLE":
-                        CycleSort cycle = new CycleSort(2, window);
+                        CycleSort cycle = new CycleSort(SLEEP, window);
                         queueHandler.Enqueue(cycle);
                         AddEventHandler(cycle);
                         cycle.Name = "Cycle sort";
                         break;
                     case "STOOGE":
-                        StoogeSort stooge = new StoogeSort(2, window);
+                        StoogeSort stooge = new StoogeSort(SLEEP, window);
                         queueHandler.Enqueue(stooge);
                         AddEventHandler(stooge);
                         stooge.Name = "Stooge sort";
@@ -270,21 +275,21 @@ namespace SortingVisualizer.Draw
         {
             XMLRadioBtn.Checked = false;
             JSONRadioBtn.Checked = false;
-            Type = FileType.BINARY;
+            Type = FILE_TYPE.BINARY;
         }
 
         private void XMLRadioBtn_Click(object sender, EventArgs e)
         {
             BINARYRadioBtn.Checked = false;
             JSONRadioBtn.Checked = false;
-            Type = FileType.BINARY;
+            Type = FILE_TYPE.BINARY;
         }
 
         private void JSONRadioBtn_Click(object sender, EventArgs e)
         {
             BINARYRadioBtn.Checked = false;
             XMLRadioBtn.Checked = false;
-            Type = FileType.JSON;
+            Type = FILE_TYPE.JSON;
         }
 
         private void RadioButton1_Click(object sender, EventArgs e)
@@ -297,16 +302,6 @@ namespace SortingVisualizer.Draw
             {
                 panel5.Visible = false;
             }
-        }
-        private void SineWave_Click(object sender, EventArgs e)
-        {
-            regularArray.Checked = false;
-            GenerationType = GenerationType.REGULAR;
-        }
-        private void RegularArray_Click(object sender, EventArgs e)
-        {
-            sineWave.Checked = false;
-            GenerationType = GenerationType.SINE_WAVE;
         }
 
         private void PauseBtn_Click(object sender, EventArgs e)
@@ -338,15 +333,35 @@ namespace SortingVisualizer.Draw
             window.GetCurrentAlgorithm().SleepTime = sleepTimeBar.Value;
         }
 
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialogForm openFileDialog = new OpenFileDialogForm();
             openFileDialog.Show();
+        }
+
+        private void CheckBoxSelectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxSelectAll.Checked)
+            {
+                for (int i = 0; i < AlgorithmsList.Items.Count; i++)
+                {
+                    AlgorithmsList.SetItemChecked(i, true);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < AlgorithmsList.Items.Count; i++)
+                {
+                    AlgorithmsList.SetItemChecked(i, false);
+                }
+            }
+
+        }
+
+        private void ShuffleSleepTimeBar_Scroll(object sender, EventArgs e)
+        {
+            window.SetShuffleSpeed(shuffleSleepTimeBar.Value);
+            LblShuffleSpeed.Text = window.GetShuffleSpeed().ToString();
         }
     }
 }

@@ -15,7 +15,6 @@ namespace WindowsFormsApp2.Draw.Windows
     {
         private Button BtnChooseSummary;
         private readonly OpenFileDialog openFileDialog1;
-
         public OpenFileDialogForm()
         {
             InitializeComponent();
@@ -59,7 +58,7 @@ namespace WindowsFormsApp2.Draw.Windows
             this.BtnChooseSummary.Name = "BtnChooseSummary";
             this.BtnChooseSummary.Size = new System.Drawing.Size(209, 55);
             this.BtnChooseSummary.TabIndex = 0;
-            this.BtnChooseSummary.Text = "Choose summary/summaries";
+            this.BtnChooseSummary.Text = "Load";
             this.BtnChooseSummary.UseVisualStyleBackColor = true;
             this.BtnChooseSummary.Click += new System.EventHandler(this.BtnChooseSummary_Click);
             // 

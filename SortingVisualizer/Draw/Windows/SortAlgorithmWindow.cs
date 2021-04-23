@@ -1,6 +1,5 @@
 ﻿using SortingVisualizer.Algorithms;
 using SortingVisualizer.Draw.Windows;
-using SortingVisualizer.Maths;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,12 +11,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp2.Algorithms;
+using WindowsFormsApp2.Draw;
 
 namespace SortingVisualizer.Draw
 {
     public class Window : Form
     {
-        public Vector2D SCREENDIMENSIONS { get; set; }
+        public Size SCREENDIMENSIONS { get; set; }
 
         private int[] array;
         private int[] colors;
@@ -25,34 +25,34 @@ namespace SortingVisualizer.Draw
         private bool showInfo;
 
         private readonly int AMOUNT_OF_PILLARS;
+        private int SHUFFLE_SPEED;
         private readonly double BAR_HEIGHT_PERCENT = 1080.0 / 1920.0;
 
         private readonly string FORM_TITLE;
 
         private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
 
-        private readonly GenerationType generateArrayType;
         private SortingHandler _sortingHandler;
 
-        public Window(string title, int amountOfBars, Vector2D dimensions, GenerationType generateArrayType)
+        public Window(string title, int amountOfBars, Size DIMENSIONS, int SHUFFLE_SPEED)
         {
             InitializeComponent();
 
-            SCREENDIMENSIONS = dimensions;
-            Width = dimensions.X;
-            Height = dimensions.Y;
+            SCREENDIMENSIONS = DIMENSIONS;
+            Width = DIMENSIONS.Width;
+            Height = DIMENSIONS.Height;
             AMOUNT_OF_PILLARS = amountOfBars;
             FORM_TITLE = title;
-            this.generateArrayType = generateArrayType;
             showInfo = true;
+            this.SHUFFLE_SPEED = SHUFFLE_SPEED;
 
             CreateArrays(amountOfBars);
             PopulateLists();
 
             DoubleBuffered = true;
             Text = FORM_TITLE;
-            Size = new Size(SCREENDIMENSIONS.X, SCREENDIMENSIONS.Y);
-            
+            Size = DIMENSIONS;
+
             Paint += Renderer;
         }
 
@@ -61,7 +61,7 @@ namespace SortingVisualizer.Draw
         {
             for(int i = 0; i < array.Length; i++)
             {
-                SwapSingle(i, i, 5);
+                SwapSingle(i, i, SHUFFLE_SPEED);
             }
         }
 
@@ -70,7 +70,7 @@ namespace SortingVisualizer.Draw
             for (int i = 0; i < array.Length; i++)
             {
                 colors[i] = 100;
-                SwapSingle(array[i], i, 5);
+                SwapSingle(array[i], i, SHUFFLE_SPEED);
             }
         }
 
@@ -81,7 +81,7 @@ namespace SortingVisualizer.Draw
             for(int i = 0; i < array.Length; i++)
             {
                 int index = random.Next(array.Length - 1);
-                Swap(i, index, 2);
+                Swap(i, index, SHUFFLE_SPEED);
                 colors[i] = 0;
             }
         }
@@ -96,8 +96,19 @@ namespace SortingVisualizer.Draw
 
         private void PopulateLists()
         {
-            array = GenerateData.GenerateArray(AMOUNT_OF_PILLARS, array);
-            colors = GenerateData.GenerateArray(AMOUNT_OF_PILLARS, colors);
+            array = GenerateArray(AMOUNT_OF_PILLARS, array);
+            colors = GenerateArray(AMOUNT_OF_PILLARS, colors);
+        }
+
+        private static int[] GenerateArray(int amountOfPillars, int[] array)
+        {
+            Random random = new Random();
+
+            for (int i = 0; i < amountOfPillars; i++)
+            {
+                array[i] = random.Next(array.Length - 1);
+            }
+            return array;
         }
 
         public void ResetColor()
@@ -147,8 +158,6 @@ namespace SortingVisualizer.Draw
         #region VISUALIZE
         private void Sleep(int sleepTime)
         {
-            //Repaint screen.
-            Invalidate();
 
             //Try to sleep, otherwise pause the current thread.
             try
@@ -170,7 +179,15 @@ namespace SortingVisualizer.Draw
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
-            float BAR_WIDTH = SCREENDIMENSIONS.X / (float)AMOUNT_OF_PILLARS;
+            if (showInfo)
+            {
+                if(_sortingHandler.GetCurrentSortingItem() != null)
+                {
+                    g.DrawString("Elapsed time: " + _sortingHandler.GetCurrentSortingItem().ElapsedTime + " ms", new Font("Arial", 12, FontStyle.Italic), new SolidBrush(Color.White), 20, 20);
+                }
+            }
+
+            float BAR_WIDTH = SCREENDIMENSIONS.Width / (float)AMOUNT_OF_PILLARS;
 
             for (int i = 0; i < AMOUNT_OF_PILLARS; i++)
             {
@@ -178,9 +195,9 @@ namespace SortingVisualizer.Draw
                 double percentOfMax = currentVal / GetMax();
                 double heightPercentOfPanel = percentOfMax * BAR_HEIGHT_PERCENT;
 
-                float height = (float)(heightPercentOfPanel * (float)SCREENDIMENSIONS.Y);
+                float height = (float)(heightPercentOfPanel * (float)SCREENDIMENSIONS.Height);
                 float xCoord = i + (BAR_WIDTH - 1) * i;
-                float yCoord = SCREENDIMENSIONS.Y - height;
+                float yCoord = SCREENDIMENSIONS.Height - height;
 
                 int colorValue = colors[i] * 2;
 
@@ -258,6 +275,14 @@ namespace SortingVisualizer.Draw
             Console.WriteLine(showInfo);
         }
 
+        public void SetShuffleSpeed(int sleep)
+        {
+            SHUFFLE_SPEED = sleep;
+        }
+        public int GetShuffleSpeed()
+        {
+            return SHUFFLE_SPEED;
+        }
         public void SetFullscreen()
         {
             WindowState = FormWindowState.Maximized;
@@ -311,7 +336,6 @@ namespace SortingVisualizer.Draw
             this.ClientSize = new System.Drawing.Size(1252, 562);
             this.Name = "Window";
             this.ResumeLayout(false);
-
         }
     }
 }

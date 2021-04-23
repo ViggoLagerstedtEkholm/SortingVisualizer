@@ -14,30 +14,23 @@ using WindowsFormsApp2.IO;
 
 namespace SortingVisualizer.Draw.Windows
 {
-    public delegate void Finish();
     public class SortingHandler 
     {
-        private readonly Finish _finishCallback = new Finish(FinishScreen);
-
+        public delegate void CurrentAlgortihm(Handler handler);
         private readonly Queue<Handler> algorithms;
         private readonly Window window;
         private Thread thread;
-        private readonly FileType fileType;
+        private readonly SerializeHandler serializeHandler;
         private readonly string path;
         private readonly bool shouldSave;
 
-        public SortingHandler(Queue<Handler> algorithms, Window window, FileType fileType, string path)
+        public SortingHandler(Queue<Handler> algorithms, Window window, FILE_TYPE fileType, string path)
         {
             this.algorithms = algorithms;
             this.window = window;
-            this.fileType = fileType;
+            serializeHandler = new SerializeHandler(fileType);
             this.path = path;
             shouldSave = true;
-        }
-
-        public static void FinishScreen()
-        {
-            Application.Exit();
         }
         private void Sleep(int sleepTime)
         {
@@ -51,14 +44,13 @@ namespace SortingVisualizer.Draw.Windows
             }
 
         }
-        public void InitiateSorting()
+        public void InitiateSorting(CurrentAlgortihm currentAlgortihm)
         {
-            ThreadStart starter = Sort;
-            thread = new Thread(starter) {IsBackground = true };
+            thread = new Thread(() => Sort(currentAlgortihm));
             thread.Start();
         }
 
-        private void Sort()
+        private void Sort(CurrentAlgortihm currentAlgortihm)
         {
             try
             {
@@ -71,14 +63,14 @@ namespace SortingVisualizer.Draw.Windows
 
             foreach (Handler algorithm in algorithms.ToArray())
             {
+                currentAlgortihm(algorithm);
                 window.ShuffleWhenStarted();
                 algorithm.Sort();
-                Sleep(300);
+                Sleep(100);
                 window.RunWhenFinallySorted();
-                Sleep(300);
+                Sleep(100);
                 window.ResetColor();
-                window.ShuffleAfterSorted();
-                Sleep(300);
+                Sleep(100);
 
                 if (shouldSave)
                 {
@@ -95,17 +87,21 @@ namespace SortingVisualizer.Draw.Windows
                 if (algorithms.Any())
                 {
                     algorithms.Dequeue();
+                    if (algorithms.Any())
+                    {
+                        window.ShuffleAfterSorted();
+                    }
                 }
                 else
                 {
-                    _finishCallback.Invoke();
+                    thread.Abort();
                 }
             }
         }
 
-        private void Serialize(SortSummary summary)
+        private void Serialize(SortSummary Summary)
         {
-            new XMLSerializer().Serialize(summary, path);
+            serializeHandler.Serialize(Summary, "Test", "path", true);
         }
 
         public int Remaining()
