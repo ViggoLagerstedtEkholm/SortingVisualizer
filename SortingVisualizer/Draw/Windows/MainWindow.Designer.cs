@@ -76,6 +76,10 @@
             this.ResumeBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.LblShuffleSpeed = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.LblSwaps = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.LblSleep = new System.Windows.Forms.Label();
@@ -85,10 +89,7 @@
             this.LblAmountOfBars = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.LblAlgorithmName = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.LblShuffleSpeed = new System.Windows.Forms.Label();
+            this.checkBoxSerialize = new System.Windows.Forms.CheckBox();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -104,6 +105,7 @@
             // panel5
             // 
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.checkBoxSerialize);
             this.panel5.Controls.Add(this.tbPath);
             this.panel5.Controls.Add(this.label10);
             this.panel5.Controls.Add(this.textBox1);
@@ -164,7 +166,7 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(9, 113);
+            this.radioButton3.Location = new System.Drawing.Point(68, 136);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(47, 17);
             this.radioButton3.TabIndex = 2;
@@ -176,7 +178,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(9, 90);
+            this.radioButton2.Location = new System.Drawing.Point(121, 136);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(54, 17);
             this.radioButton2.TabIndex = 1;
@@ -567,6 +569,46 @@
             this.panel4.Size = new System.Drawing.Size(1244, 43);
             this.panel4.TabIndex = 13;
             // 
+            // LblShuffleSpeed
+            // 
+            this.LblShuffleSpeed.AutoSize = true;
+            this.LblShuffleSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblShuffleSpeed.Location = new System.Drawing.Point(844, 10);
+            this.LblShuffleSpeed.Name = "LblShuffleSpeed";
+            this.LblShuffleSpeed.Size = new System.Drawing.Size(61, 18);
+            this.LblShuffleSpeed.TabIndex = 27;
+            this.LblShuffleSpeed.Text = "SLEEP";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(906, 10);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(29, 18);
+            this.label15.TabIndex = 26;
+            this.label15.Text = "ms";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(747, 10);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(97, 18);
+            this.label14.TabIndex = 25;
+            this.label14.Text = "Shuffle speed";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(712, 10);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(29, 18);
+            this.label13.TabIndex = 24;
+            this.label13.Text = "ms";
+            // 
             // LblSwaps
             // 
             this.LblSwaps.AutoSize = true;
@@ -657,45 +699,16 @@
             this.LblAlgorithmName.TabIndex = 13;
             this.LblAlgorithmName.Text = "ALGORITHM";
             // 
-            // label13
+            // checkBoxSerialize
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(712, 10);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(29, 18);
-            this.label13.TabIndex = 24;
-            this.label13.Text = "ms";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(747, 10);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(97, 18);
-            this.label14.TabIndex = 25;
-            this.label14.Text = "Shuffle speed";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(906, 10);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(29, 18);
-            this.label15.TabIndex = 26;
-            this.label15.Text = "ms";
-            // 
-            // LblShuffleSpeed
-            // 
-            this.LblShuffleSpeed.AutoSize = true;
-            this.LblShuffleSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblShuffleSpeed.Location = new System.Drawing.Point(844, 10);
-            this.LblShuffleSpeed.Name = "LblShuffleSpeed";
-            this.LblShuffleSpeed.Size = new System.Drawing.Size(61, 18);
-            this.LblShuffleSpeed.TabIndex = 27;
-            this.LblShuffleSpeed.Text = "SLEEP";
+            this.checkBoxSerialize.AutoSize = true;
+            this.checkBoxSerialize.Location = new System.Drawing.Point(8, 113);
+            this.checkBoxSerialize.Name = "checkBoxSerialize";
+            this.checkBoxSerialize.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxSerialize.TabIndex = 8;
+            this.checkBoxSerialize.Text = "Serialize";
+            this.checkBoxSerialize.UseVisualStyleBackColor = true;
+            this.checkBoxSerialize.CheckedChanged += new System.EventHandler(this.CheckBoxSerialize_CheckedChanged);
             // 
             // Start
             // 
@@ -796,6 +809,7 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox checkBoxSerialize;
     }
 }
 

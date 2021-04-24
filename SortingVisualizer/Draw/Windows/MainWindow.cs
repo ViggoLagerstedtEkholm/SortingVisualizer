@@ -16,7 +16,6 @@ namespace SortingVisualizer.Draw
     {
         private SortingHandler sortingHandler;
         private readonly Queue<Handler> queueHandler;
-        private readonly List<RadioButton> radioButtons;
         private readonly List<RadioButton> radioButtonsFiles;
         private Window window;
         private string selectedFolderPath;
@@ -28,21 +27,37 @@ namespace SortingVisualizer.Draw
         public Start()
         {
             InitializeComponent();
-            radioButtons = new List<RadioButton>();
             radioButtonsFiles = new List<RadioButton>();
             queueHandler = new Queue<Handler>();
             InitializeState();
         }
+        private void AddEventHandler(Handler handler)
+        {
+            handler.PropertyChanged += AlgorithmPropertyChangedHandler;
+        }
+
+        public void RestartWindowState(object sender, EventArgs e)
+        {
+            Console.WriteLine("Called to main.");
+            SHOWCASE_PANEL.Controls.Clear();
+            SHOWCASE_PANEL.Invalidate();
+            ShowMessage("Sorting finished.");
+            DisableUIControlElements();
+            EnableSideHud();
+        }
+
+        private void ShowMessage(string message)
+        {
+            MessageBox.Show(message, "SYSTEM_MESSAGE");
+        }
+
+        #region SIDEBAR/UI_CONTROLS
         private void InitializeState()
         {
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
 
-            PauseBtn.Enabled = false;
-            ResumeBtn.Enabled = false;
-            InfoCheckBox.Enabled = false;
-            FullscreenCheckBox.Enabled = false;
-            sleepTimeBar.Enabled = false;
+            DisableUIControlElements();
 
             tbPath.Text = GetDirectoryPath();
 
@@ -54,6 +69,37 @@ namespace SortingVisualizer.Draw
             LblSwaps.Text = "0";
             LblShuffleSpeed.Text = "0";
         }
+        
+        private void DisableSideHud()
+        {
+            btnStart.Enabled = false;
+        }
+
+        private void EnableSideHud()
+        {
+            btnStart.Enabled = true;
+        }
+
+        private void DisableUIControlElements()
+        {
+            PauseBtn.Enabled = false;
+            ResumeBtn.Enabled = false;
+            InfoCheckBox.Enabled = false;
+            FullscreenCheckBox.Enabled = false;
+            sleepTimeBar.Enabled = false;
+            shuffleSleepTimeBar.Enabled = false;
+        }
+
+        private void EnableUIControlElements()
+        {
+            PauseBtn.Enabled = true;
+            ResumeBtn.Enabled = true;
+            InfoCheckBox.Enabled = true;
+            FullscreenCheckBox.Enabled = true;
+            sleepTimeBar.Enabled = true;
+            shuffleSleepTimeBar.Enabled = true;
+        }
+        #endregion
 
         private string GetDirectoryPath()
         {
@@ -97,31 +143,28 @@ namespace SortingVisualizer.Draw
         }
         private void CreateWindowInstance()
         {
-            btnStart.Enabled = false;
+            int SLEEP = Int32.Parse(textBoxSleepStart.Text);
             int SHUFFLE_SPEED = Int32.Parse(textBoxShuffleSpeed.Text);
 
             window = new Window("SortingVisualizer", amountOfPillars, new Size(WIDTH, HEIGHT), SHUFFLE_SPEED);
             sortingHandler = new SortingHandler(queueHandler, window, Type, selectedFolderPath);
             window.SetSortingHandler(sortingHandler);
+            sortingHandler.RestartWindowState += RestartWindowState;
             window.TopLevel = false;
-            window.RemoveFrame();
+            window.FormBorderStyle = FormBorderStyle.None;
             window.Width = WIDTH;
             window.Height = HEIGHT;
 
-            int SLEEP = Int32.Parse(textBoxSleepStart.Text);
+            LblAmountOfBars.Text = amountOfPillars.ToString();
+            LblVisualize.Text = sortingHandler.Remaining.ToString();
             FillAlgotihms(SLEEP);
-            CreateInformation();
 
-            LblVisualize.Text = sortingHandler.Remaining().ToString();
+            DisableSideHud();
+            EnableUIControlElements();
+
             SHOWCASE_PANEL.Controls.Add(window);
             window.Show();
-
             sortingHandler.InitiateSorting(GetCurrentAlgorithm);
-
-            InfoCheckBox.Enabled = true;
-            PauseBtn.Enabled = true;
-            FullscreenCheckBox.Enabled = true;
-            sleepTimeBar.Enabled = true;
         }
 
         private void GetCurrentAlgorithm(Handler algorithm)
@@ -147,11 +190,6 @@ namespace SortingVisualizer.Draw
             window.SCREENDIMENSIONS = new Size(width, height);
             window.Show();
             window.Toggle_FULLSCREEN(); 
-        }
-        private void CreateInformation()
-        {
-            sortingHandler.GetCurrentSortingItem().PropertyChanged += AlgorithmPropertyChangedHandler;
-            LblAmountOfBars.Text = amountOfPillars.ToString();
         }
         private void AlgorithmPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
         {            
@@ -248,10 +286,6 @@ namespace SortingVisualizer.Draw
             }
         }
 
-        private void AddEventHandler(Handler handler)
-        {
-            handler.PropertyChanged += AlgorithmPropertyChangedHandler;
-        }
         private void AlgorithmsList_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedAlgorithmListBox.Items.Clear();
@@ -320,7 +354,14 @@ namespace SortingVisualizer.Draw
 
         private void InfoCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            window.Toggle_Info();
+            if (InfoCheckBox.Checked)
+            {
+                window.ShowInfo = true;
+            }
+            else
+            {
+                window.ShowInfo = false;
+            }
         }
 
         private void FullscreenCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -330,7 +371,7 @@ namespace SortingVisualizer.Draw
 
         private void SleepTimeBar_Scroll(object sender, EventArgs e)
         {
-            window.GetCurrentAlgorithm().SleepTime = sleepTimeBar.Value;
+            CurrentAlgorithm.SleepTime = sleepTimeBar.Value;
         }
 
         private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -355,13 +396,22 @@ namespace SortingVisualizer.Draw
                     AlgorithmsList.SetItemChecked(i, false);
                 }
             }
-
         }
 
         private void ShuffleSleepTimeBar_Scroll(object sender, EventArgs e)
         {
-            window.SetShuffleSpeed(shuffleSleepTimeBar.Value);
-            LblShuffleSpeed.Text = window.GetShuffleSpeed().ToString();
+            window.SHUFFLE_SPEED = shuffleSleepTimeBar.Value;
+            LblShuffleSpeed.Text = window.SHUFFLE_SPEED.ToString();
+        }
+
+        private void CheckBoxSerialize_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxSerialize.Checked)
+            {
+                BINARYRadioBtn.Enabled = false;
+                JSONRadioBtn.Enabled = false;
+                XMLRadioBtn.Enabled = false;
+            }
         }
     }
 }

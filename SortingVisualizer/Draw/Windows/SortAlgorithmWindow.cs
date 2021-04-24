@@ -18,14 +18,14 @@ namespace SortingVisualizer.Draw
     public class Window : Form
     {
         public Size SCREENDIMENSIONS { get; set; }
-
-        private int[] array;
-        private int[] colors;
-
-        private bool showInfo;
+        public int[] Array { get; set; }
+        public int ArrayLength => Array.Length;
+        public int[] Colors { get; set; }
+        public int SHUFFLE_SPEED { get; set; }
+        public bool ShowInfo { get; set; }
 
         private readonly int AMOUNT_OF_PILLARS;
-        private int SHUFFLE_SPEED;
+
         private readonly double BAR_HEIGHT_PERCENT = 1080.0 / 1920.0;
 
         private readonly string FORM_TITLE;
@@ -43,10 +43,10 @@ namespace SortingVisualizer.Draw
             Height = DIMENSIONS.Height;
             AMOUNT_OF_PILLARS = amountOfBars;
             FORM_TITLE = title;
-            showInfo = true;
+            ShowInfo = true;
             this.SHUFFLE_SPEED = SHUFFLE_SPEED;
 
-            CreateArrays(amountOfBars);
+            CreateArrays();
             PopulateLists();
 
             DoubleBuffered = true;
@@ -59,7 +59,7 @@ namespace SortingVisualizer.Draw
         #region SHUFFLE
         public void ShuffleAfterSorted()
         {
-            for(int i = 0; i < array.Length; i++)
+            for(int i = 0; i < Array.Length; i++)
             {
                 SwapSingle(i, i, SHUFFLE_SPEED);
             }
@@ -67,10 +67,10 @@ namespace SortingVisualizer.Draw
 
         public void RunWhenFinallySorted()
         {
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < Array.Length; i++)
             {
-                colors[i] = 100;
-                SwapSingle(array[i], i, SHUFFLE_SPEED);
+                Colors[i] = 100;
+                SwapSingle(Array[i], i, SHUFFLE_SPEED);
             }
         }
 
@@ -78,26 +78,26 @@ namespace SortingVisualizer.Draw
         {
             Random random = new Random();
 
-            for(int i = 0; i < array.Length; i++)
+            for(int i = 0; i < Array.Length; i++)
             {
-                int index = random.Next(array.Length - 1);
+                int index = random.Next(Array.Length - 1);
                 Swap(i, index, SHUFFLE_SPEED);
-                colors[i] = 0;
+                Colors[i] = 0;
             }
         }
         #endregion
 
         #region RESET/POPULATE
-        private void CreateArrays(int amountOfBars)
+        private void CreateArrays()
         {
-            array = new int[amountOfBars];
-            colors = new int[amountOfBars];
+            Array = new int[AMOUNT_OF_PILLARS];
+            Colors = new int[AMOUNT_OF_PILLARS];
         }
 
         private void PopulateLists()
         {
-            array = GenerateArray(AMOUNT_OF_PILLARS, array);
-            colors = GenerateArray(AMOUNT_OF_PILLARS, colors);
+            Array = GenerateArray(AMOUNT_OF_PILLARS, Array);
+            Colors = GenerateArray(AMOUNT_OF_PILLARS, Colors);
         }
 
         private static int[] GenerateArray(int amountOfPillars, int[] array)
@@ -113,9 +113,9 @@ namespace SortingVisualizer.Draw
 
         public void ResetColor()
         {
-            for (int i = 0; i < colors.Length; i++)
+            for (int i = 0; i < Colors.Length; i++)
             {
-                colors[i] = 0;
+                Colors[i] = 0;
             }
         }
         #endregion
@@ -124,22 +124,22 @@ namespace SortingVisualizer.Draw
         //All algorithms should use this method for swapping indices.
         public void Swap(int indexA, int indexB, int sleepTime)
         {
-            int temp = array[indexA];
-            array[indexA] = array[indexB];
-            array[indexB] = temp;
+            int temp = Array[indexA];
+            Array[indexA] = Array[indexB];
+            Array[indexB] = temp;
 
-            colors[indexA] = 100;
-            colors[indexB] = 100;
+            Colors[indexA] = 100;
+            Colors[indexB] = 100;
 
             Sleep(sleepTime);
         }
         public int SwapSingle(int index, int value, int sleepTime)
         {
             int temp = index;
-            index = array[value];
-            array[value] = temp;
+            index = Array[value];
+            Array[value] = temp;
 
-            colors[value] = 100;
+            Colors[value] = 100;
 
             Sleep(sleepTime);
 
@@ -147,8 +147,8 @@ namespace SortingVisualizer.Draw
         }
         public void SwapSingleElement(int index, int value, int sleepTime)
         {
-            array[index] = value;
-            colors[index] = 100;
+            Array[index] = value;
+            Colors[index] = 100;
 
             Sleep(sleepTime);
         }
@@ -158,7 +158,6 @@ namespace SortingVisualizer.Draw
         #region VISUALIZE
         private void Sleep(int sleepTime)
         {
-
             //Try to sleep, otherwise pause the current thread.
             try
             {
@@ -179,7 +178,7 @@ namespace SortingVisualizer.Draw
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
-            if (showInfo)
+            if (ShowInfo)
             {
                 if(_sortingHandler.GetCurrentSortingItem() != null)
                 {
@@ -199,7 +198,7 @@ namespace SortingVisualizer.Draw
                 float xCoord = i + (BAR_WIDTH - 1) * i;
                 float yCoord = SCREENDIMENSIONS.Height - height;
 
-                int colorValue = colors[i] * 2;
+                int colorValue = Colors[i] * 2;
 
                 Brush brush;
                 if (!(colorValue > 255) && !(colorValue < 0))
@@ -214,9 +213,9 @@ namespace SortingVisualizer.Draw
                     }
                     g.FillRectangle(brush, new RectangleF(xCoord, yCoord, BAR_WIDTH, height));
 
-                    if (colors[i] > 0)
+                    if (Colors[i] > 0)
                     {
-                        colors[i] -= 1;
+                        Colors[i] -= 1;
                     }
                 }
             }
@@ -224,31 +223,34 @@ namespace SortingVisualizer.Draw
         }
         #endregion
 
-        #region GETTERS/SETTERS
         public int GetMax()
         {
-            int max = array[0];
-            for(int i = 0; i < array.Length; i++)
+            int max = Array[0];
+
+            for (int i = 0; i < Array.Length; i++)
             {
-                if(array[i] > max)
+                if (Array[i] > max)
                 {
-                    max = array[i];
+                    max = Array[i];
                 }
             }
 
-            if(max == array[0])
+            if (max == Array[0])
             {
                 return int.MinValue;
             }
-
             return max;
         }
+
+
+        #region GETTERS/SETTERS
 
         public void Toggle_FULLSCREEN()
         {
             if (!WindowState.Equals(FormWindowState.Maximized))
             {
-                SetFullscreen();
+                WindowState = FormWindowState.Maximized;
+                FormBorderStyle = FormBorderStyle.None;
             }
             else
             {
@@ -257,51 +259,9 @@ namespace SortingVisualizer.Draw
             }
         }
 
-        public void RemoveFrame()
-        {
-            FormBorderStyle = FormBorderStyle.None;
-        }
-
-        public void Toggle_Info()
-        {
-            if (showInfo)
-            {
-                showInfo = false;
-            }
-            else
-            {
-                showInfo = true;
-            }
-            Console.WriteLine(showInfo);
-        }
-
-        public void SetShuffleSpeed(int sleep)
-        {
-            SHUFFLE_SPEED = sleep;
-        }
-        public int GetShuffleSpeed()
-        {
-            return SHUFFLE_SPEED;
-        }
-        public void SetFullscreen()
-        {
-            WindowState = FormWindowState.Maximized;
-            FormBorderStyle = FormBorderStyle.None;
-        }
-
         public void SetSortingHandler(SortingHandler sortingHandler)
         {
             _sortingHandler = sortingHandler;
-        }
-
-        public SortingHandler GetSortingHandler()
-        {
-            return _sortingHandler;
-        }
-
-        public Handler GetCurrentAlgorithm()
-        {
-            return _sortingHandler.GetCurrentSortingItem();
         }
 
         public void SetPause()
@@ -313,17 +273,9 @@ namespace SortingVisualizer.Draw
             _manualResetEvent.Set();
         }
 
-        public int[] GetArray()
-        {
-            return array;
-        }
-        public int GetLength()
-        {
-            return array.Length;
-        }
         public int GetIndex(int index)
         {
-            return array[index];
+            return Array[index];
         }
 
         #endregion
