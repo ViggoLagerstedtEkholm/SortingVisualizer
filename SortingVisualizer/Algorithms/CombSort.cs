@@ -23,7 +23,7 @@ namespace SortingVisualizer.Algorithms
         {
             sw.Start();
 
-            int n = Window.GetLength();
+            int n = Window.ArrayLength;
 
             // initialize gap 
             int gap = n;

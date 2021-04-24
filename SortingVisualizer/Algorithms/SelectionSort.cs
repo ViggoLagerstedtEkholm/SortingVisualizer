@@ -24,13 +24,13 @@ namespace SortingVisualizer.Algorithms
             sw.Start();
 
             int smallest;
-            for (int i = 0; i < Window.GetLength() - 1; i++)
+            for (int i = 0; i < Window.ArrayLength - 1; i++)
             {
                 smallest = i;
 
-                for (int index = i + 1; index < Window.GetLength(); index++)
+                for (int index = i + 1; index < Window.ArrayLength; index++)
                 {
-                    if (Window.GetArray()[index] < Window.GetArray()[smallest])
+                    if (Window.Array[index] < Window.Array[smallest])
                     {
                         smallest = index;
                     }

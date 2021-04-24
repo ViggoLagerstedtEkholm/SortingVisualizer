@@ -22,7 +22,7 @@ namespace SortingVisualizer.Algorithms
         {
             sw.Start();
 
-            Sort(Window.GetArray(), 0, Window.GetLength() - 1);
+            Sort(Window.Array, 0, Window.ArrayLength - 1);
 
             sw.Stop();
             ExecutionTime = sw.ElapsedMilliseconds;

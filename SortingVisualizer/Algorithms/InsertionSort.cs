@@ -21,17 +21,17 @@ namespace WindowsFormsApp2.Algorithms
         {
             sw.Start();
 
-            for (int i = 1; i < Window.GetLength(); i++)
+            for (int i = 1; i < Window.ArrayLength; i++)
             {
                 int key = Window.GetIndex(i);
                 int j = i - 1;
 
                 while(j >= 0 && Window.GetIndex(j) > key)
                 {
-                    Window.GetArray()[j + 1] = Window.GetArray()[j];
+                    Window.Array[j + 1] = Window.Array[j];
                     j -= 1;
                 }
-                Window.GetArray()[j + 1] = key;
+                Window.Array[j + 1] = key;
             }
 
             sw.Stop();

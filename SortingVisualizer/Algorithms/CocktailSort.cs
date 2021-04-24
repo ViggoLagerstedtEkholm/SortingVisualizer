@@ -25,7 +25,7 @@ namespace SortingVisualizer.Algorithms
 
             bool swapped = true;
             int start = 0;
-            int end = Window.GetLength();
+            int end = Window.ArrayLength;
 
             while (swapped == true)
             {

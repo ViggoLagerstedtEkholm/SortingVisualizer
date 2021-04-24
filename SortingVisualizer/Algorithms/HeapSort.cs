@@ -22,15 +22,15 @@ namespace SortingVisualizer.Algorithms
         {
             sw.Start();
 
-            int n = Window.GetLength();
+            int n = Window.ArrayLength;
             for (int i = n / 2 - 1; i >= 0; i--)
             {
-                Heap(Window.GetArray(), n, i);
+                Heap(Window.Array, n, i);
             }
             for (int i = n - 1; i >= 0; i--)
             {
                 Window.Swap(0, i, SleepTime);
-                Heap(Window.GetArray(), i, 0);
+                Heap(Window.Array, i, 0);
             }
 
             sw.Stop();

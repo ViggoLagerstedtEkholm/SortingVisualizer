@@ -22,7 +22,7 @@ namespace SortingVisualizer.Algorithms
         {
             sw.Start();
 
-            Sort(0, Window.GetLength() - 1);
+            Sort(0, Window.ArrayLength - 1);
 
             sw.Stop();
             ExecutionTime = sw.ElapsedMilliseconds;
@@ -43,8 +43,8 @@ namespace SortingVisualizer.Algorithms
             int[] leftArray = new int[middle - left + 1];
             int[] rightArray = new int[right - middle];
 
-            Array.Copy(Window.GetArray(), left, leftArray, 0, middle - left + 1);
-            Array.Copy(Window.GetArray(), middle + 1, rightArray, 0, right - middle);
+            Array.Copy(Window.Array, left, leftArray, 0, middle - left + 1);
+            Array.Copy(Window.Array, middle + 1, rightArray, 0, right - middle);
 
             int i = 0;
             int j = 0;

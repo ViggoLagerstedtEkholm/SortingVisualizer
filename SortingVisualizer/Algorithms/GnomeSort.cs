@@ -25,7 +25,7 @@ namespace SortingVisualizer.Algorithms
             sw.Start();
 
             int index = 0;
-            int n = Window.GetLength();
+            int n = Window.ArrayLength;
             while (index < n)
             {
                 if (index == 0)

@@ -25,9 +25,9 @@ namespace SortingVisualizer.Algorithms
         {
             sw.Start();
 
-            for (int i = 0; i < Window.GetLength(); i++)
+            for (int i = 0; i < Window.ArrayLength; i++)
             {
-                for (int j = 0; j < Window.GetLength() - 1; j++)
+                for (int j = 0; j < Window.ArrayLength - 1; j++)
                 {
                     if (Window.GetIndex(j) > Window.GetIndex(j + 1))
                     {

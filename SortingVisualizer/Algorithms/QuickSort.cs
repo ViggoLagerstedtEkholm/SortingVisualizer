@@ -22,7 +22,7 @@ namespace SortingVisualizer.Algorithms
         {
             sw.Start();
 
-            Sort(0, Window.GetLength() - 1);
+            Sort(0, Window.ArrayLength - 1);
 
             sw.Stop();
             ExecutionTime = sw.ElapsedMilliseconds;
@@ -40,12 +40,12 @@ namespace SortingVisualizer.Algorithms
         }
         private int Partition(int start, int end)
         {
-            int p = Window.GetArray()[end];
+            int p = Window.Array[end];
             int i = start - 1;
 
             for (int j = start; j <= end - 1; j++)
             {
-                if (Window.GetArray()[j] <= p)
+                if (Window.Array[j] <= p)
                 {
                     i++;
                     Window.Swap(i, j, SleepTime);

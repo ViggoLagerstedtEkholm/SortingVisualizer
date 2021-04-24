@@ -23,19 +23,19 @@ namespace SortingVisualizer.Algorithms
         {
             sw.Start();
 
-            int n = Window.GetLength();
+            int n = Window.ArrayLength;
 
             for (int gap = n / 2; gap > 0; gap /= 2)
             {
                 for (int i = gap; i < n; i += 1)
                 {
-                    int temp = Window.GetArray()[i];
+                    int temp = Window.Array[i];
 
                     int j;
-                    for (j = i; j >= gap && Window.GetArray()[j - gap] > temp; j -= gap)
+                    for (j = i; j >= gap && Window.Array[j - gap] > temp; j -= gap)
                     {
-                        //sortingStarter.getArray()[j] = sortingStarter.getArray()[j - gap];
-                        Window.SwapSingleElement(j, Window.GetArray()[j - gap], SleepTime);
+                        //sortingStarter.Array[j] = sortingStarter.Array[j - gap];
+                        Window.SwapSingleElement(j, Window.Array[j - gap], SleepTime);
                         Swaps++;
                     }
 
