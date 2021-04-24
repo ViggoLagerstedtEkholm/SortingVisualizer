@@ -2,6 +2,7 @@
 using SortingVisualizer.Draw.Windows;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,21 +18,24 @@ namespace SortingVisualizer.Draw.Windows
     public class SortingHandler 
     {
         public delegate void CurrentAlgortihm(Handler handler);
+        public event EventHandler RestartWindowState;
+
         private readonly Queue<Handler> algorithms;
         private readonly Window window;
-        private Thread thread;
+        private BackgroundWorker backgroundWorker;
         private readonly SerializeHandler serializeHandler;
-        private readonly string path;
+        private readonly string Name;
         private readonly bool shouldSave;
-
-        public SortingHandler(Queue<Handler> algorithms, Window window, FILE_TYPE fileType, string path)
+        public int Remaining => algorithms.Count;
+        public SortingHandler(Queue<Handler> algorithms, Window window, FILE_TYPE fileType, string name)
         {
             this.algorithms = algorithms;
             this.window = window;
             serializeHandler = new SerializeHandler(fileType);
-            this.path = path;
+            Name = name;
             shouldSave = true;
         }
+
         private void Sleep(int sleepTime)
         {
             try
@@ -42,16 +46,19 @@ namespace SortingVisualizer.Draw.Windows
             {
                 Thread.CurrentThread.Interrupt();
             }
-
         }
+
         public void InitiateSorting(CurrentAlgortihm currentAlgortihm)
         {
-            thread = new Thread(() => Sort(currentAlgortihm));
-            thread.Start();
+            backgroundWorker = new BackgroundWorker();
+            backgroundWorker.DoWork += new DoWorkEventHandler(BackgroundWorker1_DoWork);
+            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BackgroundWorker1_RunWorkerCompleted);
+            backgroundWorker.RunWorkerAsync(argument: currentAlgortihm);
         }
 
-        private void Sort(CurrentAlgortihm currentAlgortihm)
+        private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            CurrentAlgortihm currentAlgortihm = (CurrentAlgortihm)e.Argument;
             try
             {
                 Thread.Sleep(300);
@@ -80,7 +87,7 @@ namespace SortingVisualizer.Draw.Windows
                         Name = algorithm.Name,
                         ExecutionTime = algorithm.ExecutionTime
                     };
-
+                    Console.WriteLine(algorithm.ExecutionTime);
                     Serialize(summary);
                 }
 
@@ -92,21 +99,18 @@ namespace SortingVisualizer.Draw.Windows
                         window.ShuffleAfterSorted();
                     }
                 }
-                else
-                {
-                    thread.Abort();
-                }
             }
+        }
+
+        private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Console.WriteLine("Thread completed.");
+            RestartWindowState?.Invoke(this, null);
         }
 
         private void Serialize(SortSummary Summary)
         {
-            serializeHandler.Serialize(Summary, "Test", "path", true);
-        }
-
-        public int Remaining()
-        {
-            return algorithms.Count;
+            serializeHandler.Serialize(Summary, Name, "path", true);
         }
 
         public Handler GetCurrentSortingItem()
@@ -121,7 +125,6 @@ namespace SortingVisualizer.Draw.Windows
         public void Stop()
         {
             Console.WriteLine("stop");
-            thread.Abort();
             Application.Exit();
         }
     }
