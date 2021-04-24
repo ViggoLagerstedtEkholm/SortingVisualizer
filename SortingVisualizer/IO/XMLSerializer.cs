@@ -16,9 +16,6 @@ namespace WindowsFormsApp2.IO
         {
             Type type = serializeObject.GetType();
             XmlSerializer serializer = new XmlSerializer(type);
-            if (!Directory.Exists(DirectoryPath))
-                Directory.CreateDirectory(DirectoryPath);
-            Console.WriteLine(DirectoryPath);
             using (FileStream outFile = new FileStream(DirectoryPath + @"\" + name + ".xml",
                 FileMode.Create, FileAccess.Write))
             {
