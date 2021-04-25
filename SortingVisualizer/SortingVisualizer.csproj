@@ -155,10 +155,16 @@
     <Compile Include="Algorithms\SelectionSort.cs" />
     <Compile Include="Algorithms\ShellSort.cs" />
     <Compile Include="Algorithms\StoogeSort.cs" />
-    <Compile Include="Draw\SerializeHandler.cs" />
+    <Compile Include="Draw\Session.cs" />
     <Compile Include="Draw\SortingHandler.cs" />
     <Compile Include="Draw\SortSummary.cs" />
-    <Compile Include="Draw\Windows\OpenFileDialog.cs">
+    <Compile Include="Draw\Windows\Summaries.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Draw\Windows\Summaries.Designer.cs">
+      <DependentUpon>Summaries.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Draw\Windows\SessionViewer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Draw\Windows\SortAlgorithmWindow.cs">
@@ -170,21 +176,22 @@
     <Compile Include="Draw\Windows\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="IO\BINARYSerializer.cs" />
-    <Compile Include="IO\JSONSerializer.cs" />
     <Compile Include="IO\Serialize.cs" />
     <Compile Include="IO\XMLSerializer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validate\Validator.cs" />
-    <EmbeddedResource Include="Draw\Windows\OpenFileDialog.resx">
-      <DependentUpon>OpenFileDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Draw\Windows\SessionViewer.resx">
+      <DependentUpon>SessionViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Draw\Windows\SortAlgorithmWindow.resx">
       <DependentUpon>SortAlgorithmWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Draw\Windows\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Draw\Windows\Summaries.resx">
+      <DependentUpon>Summaries.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

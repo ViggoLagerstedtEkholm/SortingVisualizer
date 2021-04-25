@@ -11,13 +11,11 @@ namespace WindowsFormsApp2.IO
     public abstract class Serialize
     {
         public string DirectoryPath { get; set; }
-        public Serialize()
+        public Serialize(string path)
         {
-            string workingDirectory = Environment.CurrentDirectory;
-            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-            DirectoryPath = projectDirectory + @"\SavedFiles";
+            DirectoryPath = path;
         }
-        public abstract void SerializeObjects(SortSummary serializeObject, string name, string path);
-        public abstract List<SortSummary> DeSerializeObjects(List<string> names);
+        public abstract void SerializeObjects(Session serializeObject, string name, string path);
+        public abstract List<Session> DeSerializeObjects(List<string> names);
     }
 }

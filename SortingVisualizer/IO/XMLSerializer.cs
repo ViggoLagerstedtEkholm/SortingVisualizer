@@ -12,7 +12,8 @@ namespace WindowsFormsApp2.IO
 {
     public class XMLSerializer : Serialize
     {
-        public override void SerializeObjects(SortSummary serializeObject, string name, string path)
+        public XMLSerializer(string Directory) : base(Directory) { }
+        public override void SerializeObjects(Session serializeObject, string name, string path)
         {
             Type type = serializeObject.GetType();
             XmlSerializer serializer = new XmlSerializer(type);
@@ -22,16 +23,16 @@ namespace WindowsFormsApp2.IO
                 serializer.Serialize(outFile, serializeObject);
             }
         }
-        public override List<SortSummary> DeSerializeObjects(List<string> names)
+        public override List<Session> DeSerializeObjects(List<string> names)
         {
-            List<SortSummary> objects = new List<SortSummary>();
+            List<Session> objects = new List<Session>();
 
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<SortSummary>));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Session));
             for(int i = 0; i < names.Count; i++)
             {
                 using (FileStream inFile = new FileStream(names[i], FileMode.Open, FileAccess.Read))
                 {
-                    objects.Add((SortSummary)xmlSerializer.Deserialize(inFile));
+                    objects.Add((Session)xmlSerializer.Deserialize(inFile));
                 }
             }
 
