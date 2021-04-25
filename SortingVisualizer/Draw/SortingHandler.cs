@@ -3,6 +3,7 @@ using SortingVisualizer.Draw.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,20 +21,22 @@ namespace SortingVisualizer.Draw.Windows
         public delegate void CurrentAlgortihm(Handler handler);
         public event EventHandler RestartWindowState;
 
-        private readonly Queue<Handler> algorithms;
-        private readonly Window window;
-        private BackgroundWorker backgroundWorker;
-        private readonly SerializeHandler serializeHandler;
+        private readonly Queue<Handler> Algorithms;
+        private readonly SortingWindow Window;
+        private readonly BackgroundWorker BackgroundWorker = new BackgroundWorker();
+        private readonly Serialize Serializer;
+        private readonly List<SortSummary> SortSummaries;
         private readonly string Name;
-        private readonly bool shouldSave;
-        public int Remaining => algorithms.Count;
-        public SortingHandler(Queue<Handler> algorithms, Window window, FILE_TYPE fileType, string name)
+        public bool ShouldSave { get; set; }
+        public int Remaining => Algorithms.Count;
+        public SortingHandler(Queue<Handler> algorithms, Serialize serialiser, SortingWindow Window, string name, bool save)
         {
-            this.algorithms = algorithms;
-            this.window = window;
-            serializeHandler = new SerializeHandler(fileType);
+            Algorithms = algorithms;
+            this.Window = Window;
+            Serializer = serialiser;
+            SortSummaries = new List<SortSummary>();
             Name = name;
-            shouldSave = true;
+            ShouldSave = save;
         }
 
         private void Sleep(int sleepTime)
@@ -50,10 +53,9 @@ namespace SortingVisualizer.Draw.Windows
 
         public void InitiateSorting(CurrentAlgortihm currentAlgortihm)
         {
-            backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += new DoWorkEventHandler(BackgroundWorker1_DoWork);
-            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BackgroundWorker1_RunWorkerCompleted);
-            backgroundWorker.RunWorkerAsync(argument: currentAlgortihm);
+            BackgroundWorker.DoWork += new DoWorkEventHandler(BackgroundWorker1_DoWork);
+            BackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BackgroundWorker1_RunWorkerCompleted);
+            BackgroundWorker.RunWorkerAsync(argument: currentAlgortihm);
         }
 
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -68,35 +70,38 @@ namespace SortingVisualizer.Draw.Windows
                 Console.WriteLine("Thread Interrupted" + exception);
             }
 
-            foreach (Handler algorithm in algorithms.ToArray())
+            foreach (Handler algorithm in Algorithms.ToArray())
             {
                 currentAlgortihm(algorithm);
-                window.ShuffleWhenStarted();
+                Window.ShuffleWhenStarted();
+                int[] unsortedArray = new int[Window.ArrayLength];
+                Array.Copy(Window.Array, unsortedArray, Window.ArrayLength);
                 algorithm.Sort();
                 Sleep(100);
-                window.RunWhenFinallySorted();
+                Window.RunWhenFinallySorted();
                 Sleep(100);
-                window.ResetColor();
+                Window.ResetColor();
                 Sleep(100);
 
-                if (shouldSave)
+                if (ShouldSave)
                 {
                     SortSummary summary = new SortSummary
                     {
                         Iterations = algorithm.Swaps,
                         Name = algorithm.Name,
-                        ExecutionTime = algorithm.ExecutionTime
+                        SortedArray = Window.Array,
+                        UnsortedArray = unsortedArray
                     };
-                    Console.WriteLine(algorithm.ExecutionTime);
-                    Serialize(summary);
+                    SortSummaries.Add(summary);
                 }
 
-                if (algorithms.Any())
+                if (Algorithms.Any())
                 {
-                    algorithms.Dequeue();
-                    if (algorithms.Any())
+                    Algorithms.Dequeue();
+                    if (Algorithms.Any())
                     {
-                        window.ShuffleAfterSorted();
+                        Window.ShuffleAfterSorted();
+                        Window.Invalidate();
                     }
                 }
             }
@@ -105,19 +110,23 @@ namespace SortingVisualizer.Draw.Windows
         private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Console.WriteLine("Thread completed.");
+            if (ShouldSave)
+            {
+                Serialize(new Session(SortSummaries, Name));
+            }
             RestartWindowState?.Invoke(this, null);
         }
 
-        private void Serialize(SortSummary Summary)
+        private void Serialize(Session session)
         {
-            serializeHandler.Serialize(Summary, Name, "path", true);
+            Serializer.SerializeObjects(session, Name, "path");
         }
 
         public Handler GetCurrentSortingItem()
         {
-            if (algorithms.Any())
+            if (Algorithms.Any())
             {
-                return algorithms.Peek();
+                return Algorithms.Peek();
             }
             return null; //should not happen.
         }
