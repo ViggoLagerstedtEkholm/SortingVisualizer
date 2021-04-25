@@ -16,16 +16,11 @@ namespace SortingVisualizer.Algorithms
         /// STOOGE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/stooge-sort/
         /// </summary>
-        public StoogeSort(int sleepTime, Window window) : base(sleepTime, window)
+        public StoogeSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
         public override void Sort()
         {
-            sw.Start();
-
             Sort(Window.Array, 0, Window.ArrayLength - 1);
-
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
 
         public void Sort(int[] arr, int l, int h)

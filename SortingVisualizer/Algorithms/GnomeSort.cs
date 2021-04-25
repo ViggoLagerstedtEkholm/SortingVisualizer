@@ -17,13 +17,11 @@ namespace SortingVisualizer.Algorithms
         /// https://en.wikipedia.org/wiki/Gnome_sort
         /// </summary>
 
-        public GnomeSort(int sleepTime, Window window) : base(sleepTime, window)
+        public GnomeSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
 
         public override void Sort()
         {
-            sw.Start();
-
             int index = 0;
             int n = Window.ArrayLength;
             while (index < n)
@@ -39,8 +37,6 @@ namespace SortingVisualizer.Algorithms
                     index--;
                 }
             }
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

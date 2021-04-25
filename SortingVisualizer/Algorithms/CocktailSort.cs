@@ -16,13 +16,11 @@ namespace SortingVisualizer.Algorithms
         /// COCKTAIL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cocktail-sort/
         /// </summary>
-        public CocktailSort(int sleepTime, Window window) : base(sleepTime, window)
+        public CocktailSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         {}
 
         public override void Sort()
         {
-            sw.Start();
-
             bool swapped = true;
             int start = 0;
             int end = Window.ArrayLength;
@@ -60,9 +58,6 @@ namespace SortingVisualizer.Algorithms
                 }
                 start += 1;
             }
-
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

@@ -16,13 +16,11 @@ namespace SortingVisualizer.Algorithms
         /// CYCLE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cycle-sort/
         /// </summary>
-        public CycleSort(int sleepTime, Window window) : base(sleepTime, window)
+        public CycleSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
 
         public override void Sort()
         {
-            sw.Start();
-
             int writes = 0;
             int n = Window.ArrayLength;
             // traverse array elements and  
@@ -83,8 +81,6 @@ namespace SortingVisualizer.Algorithms
                     }
                 }
             }
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

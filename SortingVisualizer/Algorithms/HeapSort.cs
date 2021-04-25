@@ -16,12 +16,10 @@ namespace SortingVisualizer.Algorithms
         /// HEAP-SORT	
         /// Help with implementation - https://www.geeksforgeeks.org/heap-sort/	
         /// </summary>	
-        public HeapSort(int sleepTime, Window window) : base(sleepTime, window)
+        public HeapSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
         public override void Sort()
         {
-            sw.Start();
-
             int n = Window.ArrayLength;
             for (int i = n / 2 - 1; i >= 0; i--)
             {
@@ -32,9 +30,6 @@ namespace SortingVisualizer.Algorithms
                 Window.Swap(0, i, SleepTime);
                 Heap(Window.Array, i, 0);
             }
-
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
 
         private void Heap(int[] array, int n, int i)

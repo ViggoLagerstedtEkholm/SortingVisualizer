@@ -30,13 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.LblHasBeenUsed = new System.Windows.Forms.Label();
+            this.checkBoxSerialize = new System.Windows.Forms.CheckBox();
             this.tbPath = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxFileName = new System.Windows.Forms.TextBox();
             this.lblFileName = new System.Windows.Forms.Label();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.XMLRadioBtn = new System.Windows.Forms.RadioButton();
             this.BINARYRadioBtn = new System.Windows.Forms.RadioButton();
             this.JSONRadioBtn = new System.Windows.Forms.RadioButton();
@@ -61,9 +60,6 @@
             this.fileSystemWatcher2 = new System.IO.FileSystemWatcher();
             this.label4 = new System.Windows.Forms.Label();
             this.SHOWCASE_PANEL = new System.Windows.Forms.Panel();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
@@ -76,26 +72,24 @@
             this.ResumeBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.LblShuffleSpeed = new System.Windows.Forms.Label();
+            this.textBoxAlgorithmName = new System.Windows.Forms.TextBox();
+            this.textBoxAmountOfBars = new System.Windows.Forms.TextBox();
+            this.textBoxVisualize = new System.Windows.Forms.TextBox();
+            this.textBoxSleep = new System.Windows.Forms.TextBox();
+            this.textBoxShuffleSp = new System.Windows.Forms.TextBox();
+            this.textBoxSwaps = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.LblSwaps = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.LblSleep = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.LblVisualize = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.LblAmountOfBars = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.LblAlgorithmName = new System.Windows.Forms.Label();
-            this.checkBoxSerialize = new System.Windows.Forms.CheckBox();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).BeginInit();
-            this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.shuffleSleepTimeBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sleepTimeBar)).BeginInit();
@@ -105,22 +99,40 @@
             // panel5
             // 
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.LblHasBeenUsed);
             this.panel5.Controls.Add(this.checkBoxSerialize);
             this.panel5.Controls.Add(this.tbPath);
             this.panel5.Controls.Add(this.label10);
-            this.panel5.Controls.Add(this.textBox1);
+            this.panel5.Controls.Add(this.textBoxFileName);
             this.panel5.Controls.Add(this.lblFileName);
-            this.panel5.Controls.Add(this.radioButton4);
-            this.panel5.Controls.Add(this.radioButton3);
-            this.panel5.Controls.Add(this.radioButton2);
-            this.panel5.Location = new System.Drawing.Point(13, 109);
+            this.panel5.Location = new System.Drawing.Point(13, 90);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(242, 165);
+            this.panel5.Size = new System.Drawing.Size(242, 135);
             this.panel5.TabIndex = 2;
+            // 
+            // LblHasBeenUsed
+            // 
+            this.LblHasBeenUsed.AutoSize = true;
+            this.LblHasBeenUsed.Location = new System.Drawing.Point(139, 86);
+            this.LblHasBeenUsed.Name = "LblHasBeenUsed";
+            this.LblHasBeenUsed.Size = new System.Drawing.Size(61, 13);
+            this.LblHasBeenUsed.TabIndex = 9;
+            this.LblHasBeenUsed.Text = "Enter name";
+            // 
+            // checkBoxSerialize
+            // 
+            this.checkBoxSerialize.AutoSize = true;
+            this.checkBoxSerialize.Location = new System.Drawing.Point(8, 14);
+            this.checkBoxSerialize.Name = "checkBoxSerialize";
+            this.checkBoxSerialize.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxSerialize.TabIndex = 8;
+            this.checkBoxSerialize.Text = "Serialize";
+            this.checkBoxSerialize.UseVisualStyleBackColor = true;
+            this.checkBoxSerialize.CheckedChanged += new System.EventHandler(this.CheckBoxSerialize_CheckedChanged);
             // 
             // tbPath
             // 
-            this.tbPath.Location = new System.Drawing.Point(9, 25);
+            this.tbPath.Location = new System.Drawing.Point(8, 63);
             this.tbPath.Name = "tbPath";
             this.tbPath.Size = new System.Drawing.Size(224, 20);
             this.tbPath.TabIndex = 7;
@@ -129,102 +141,49 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(6, 48);
+            this.label10.Location = new System.Drawing.Point(5, 86);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(52, 13);
             this.label10.TabIndex = 6;
             this.label10.Text = "File name";
             // 
-            // textBox1
+            // textBoxFileName
             // 
-            this.textBox1.Location = new System.Drawing.Point(8, 64);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(225, 20);
-            this.textBox1.TabIndex = 5;
+            this.textBoxFileName.Location = new System.Drawing.Point(9, 102);
+            this.textBoxFileName.Name = "textBoxFileName";
+            this.textBoxFileName.Size = new System.Drawing.Size(225, 20);
+            this.textBoxFileName.TabIndex = 5;
+            this.textBoxFileName.TextChanged += new System.EventHandler(this.TextBoxFileName_TextChanged);
             // 
             // lblFileName
             // 
             this.lblFileName.AutoSize = true;
-            this.lblFileName.Location = new System.Drawing.Point(5, 9);
+            this.lblFileName.Location = new System.Drawing.Point(5, 47);
             this.lblFileName.Name = "lblFileName";
             this.lblFileName.Size = new System.Drawing.Size(56, 13);
             this.lblFileName.TabIndex = 4;
             this.lblFileName.Text = "Save path";
             // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(9, 136);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(53, 17);
-            this.radioButton4.TabIndex = 3;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "JSON";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            this.radioButton4.CheckedChanged += new System.EventHandler(this.JSONRadioBtn_Click);
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(68, 136);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(47, 17);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "XML";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.CheckedChanged += new System.EventHandler(this.XMLRadioBtn_Click);
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(121, 136);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(54, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Binary";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.BINARYRadioBtn_Click);
-            // 
             // XMLRadioBtn
             // 
-            this.XMLRadioBtn.AutoSize = true;
-            this.XMLRadioBtn.Location = new System.Drawing.Point(9, 147);
-            this.XMLRadioBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.XMLRadioBtn.Location = new System.Drawing.Point(0, 0);
             this.XMLRadioBtn.Name = "XMLRadioBtn";
-            this.XMLRadioBtn.Size = new System.Drawing.Size(47, 17);
-            this.XMLRadioBtn.TabIndex = 8;
-            this.XMLRadioBtn.TabStop = true;
-            this.XMLRadioBtn.Text = "XML";
-            this.XMLRadioBtn.UseVisualStyleBackColor = true;
-            this.XMLRadioBtn.Click += new System.EventHandler(this.XMLRadioBtn_Click);
+            this.XMLRadioBtn.Size = new System.Drawing.Size(104, 24);
+            this.XMLRadioBtn.TabIndex = 0;
             // 
             // BINARYRadioBtn
             // 
-            this.BINARYRadioBtn.AutoSize = true;
-            this.BINARYRadioBtn.Location = new System.Drawing.Point(9, 125);
-            this.BINARYRadioBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.BINARYRadioBtn.Location = new System.Drawing.Point(0, 0);
             this.BINARYRadioBtn.Name = "BINARYRadioBtn";
-            this.BINARYRadioBtn.Size = new System.Drawing.Size(54, 17);
-            this.BINARYRadioBtn.TabIndex = 7;
-            this.BINARYRadioBtn.TabStop = true;
-            this.BINARYRadioBtn.Text = "Binary";
-            this.BINARYRadioBtn.UseVisualStyleBackColor = true;
-            this.BINARYRadioBtn.Click += new System.EventHandler(this.BINARYRadioBtn_Click);
+            this.BINARYRadioBtn.Size = new System.Drawing.Size(104, 24);
+            this.BINARYRadioBtn.TabIndex = 0;
             // 
             // JSONRadioBtn
             // 
-            this.JSONRadioBtn.AutoSize = true;
-            this.JSONRadioBtn.Location = new System.Drawing.Point(9, 103);
-            this.JSONRadioBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.JSONRadioBtn.Location = new System.Drawing.Point(0, 0);
             this.JSONRadioBtn.Name = "JSONRadioBtn";
-            this.JSONRadioBtn.Size = new System.Drawing.Size(53, 17);
-            this.JSONRadioBtn.TabIndex = 6;
-            this.JSONRadioBtn.TabStop = true;
-            this.JSONRadioBtn.Text = "JSON";
-            this.JSONRadioBtn.UseVisualStyleBackColor = true;
-            this.JSONRadioBtn.Click += new System.EventHandler(this.JSONRadioBtn_Click);
+            this.JSONRadioBtn.Size = new System.Drawing.Size(104, 24);
+            this.JSONRadioBtn.TabIndex = 0;
             // 
             // FileChooseBtn
             // 
@@ -257,9 +216,9 @@
             this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.AlgorithmsList);
             this.panel3.Controls.Add(this.selectedAlgorithmListBox);
-            this.panel3.Location = new System.Drawing.Point(13, 280);
+            this.panel3.Location = new System.Drawing.Point(13, 231);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(242, 421);
+            this.panel3.Size = new System.Drawing.Size(242, 451);
             this.panel3.TabIndex = 1;
             // 
             // checkBoxSelectAll
@@ -287,21 +246,21 @@
             this.AlgorithmsList.FormattingEnabled = true;
             this.AlgorithmsList.Location = new System.Drawing.Point(8, 55);
             this.AlgorithmsList.Name = "AlgorithmsList";
-            this.AlgorithmsList.Size = new System.Drawing.Size(224, 169);
+            this.AlgorithmsList.Size = new System.Drawing.Size(224, 199);
             this.AlgorithmsList.TabIndex = 1;
             this.AlgorithmsList.SelectedIndexChanged += new System.EventHandler(this.AlgorithmsList_SelectedIndexChanged);
             // 
             // selectedAlgorithmListBox
             // 
             this.selectedAlgorithmListBox.FormattingEnabled = true;
-            this.selectedAlgorithmListBox.Location = new System.Drawing.Point(8, 230);
+            this.selectedAlgorithmListBox.Location = new System.Drawing.Point(9, 260);
             this.selectedAlgorithmListBox.Name = "selectedAlgorithmListBox";
             this.selectedAlgorithmListBox.Size = new System.Drawing.Size(225, 186);
             this.selectedAlgorithmListBox.TabIndex = 1;
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(13, 707);
+            this.btnStart.Location = new System.Drawing.Point(13, 688);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(242, 43);
             this.btnStart.TabIndex = 0;
@@ -318,7 +277,7 @@
             this.panel2.Controls.Add(this.textBoxSleepStart);
             this.panel2.Controls.Add(this.BarAmount);
             this.panel2.Controls.Add(this.BarCountTxf);
-            this.panel2.Location = new System.Drawing.Point(12, 31);
+            this.panel2.Location = new System.Drawing.Point(12, 12);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(243, 72);
             this.panel2.TabIndex = 8;
@@ -402,35 +361,10 @@
             // SHOWCASE_PANEL
             // 
             this.SHOWCASE_PANEL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SHOWCASE_PANEL.Location = new System.Drawing.Point(262, 109);
+            this.SHOWCASE_PANEL.Location = new System.Drawing.Point(262, 90);
             this.SHOWCASE_PANEL.Name = "SHOWCASE_PANEL";
             this.SHOWCASE_PANEL.Size = new System.Drawing.Size(1244, 592);
             this.SHOWCASE_PANEL.TabIndex = 9;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1518, 24);
-            this.menuStrip1.TabIndex = 10;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // loadToolStripMenuItem
-            // 
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.loadToolStripMenuItem.Text = "Load";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -443,7 +377,7 @@
             this.panel1.Controls.Add(this.FullscreenCheckBox);
             this.panel1.Controls.Add(this.PauseBtn);
             this.panel1.Controls.Add(this.ResumeBtn);
-            this.panel1.Location = new System.Drawing.Point(262, 31);
+            this.panel1.Location = new System.Drawing.Point(262, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1244, 72);
             this.panel1.TabIndex = 11;
@@ -496,7 +430,7 @@
             this.InfoCheckBox.AutoSize = true;
             this.InfoCheckBox.Checked = true;
             this.InfoCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.InfoCheckBox.Location = new System.Drawing.Point(375, 18);
+            this.InfoCheckBox.Location = new System.Drawing.Point(375, 7);
             this.InfoCheckBox.Name = "InfoCheckBox";
             this.InfoCheckBox.Size = new System.Drawing.Size(115, 17);
             this.InfoCheckBox.TabIndex = 22;
@@ -507,7 +441,7 @@
             // FullscreenCheckBox
             // 
             this.FullscreenCheckBox.AutoSize = true;
-            this.FullscreenCheckBox.Location = new System.Drawing.Point(375, 41);
+            this.FullscreenCheckBox.Location = new System.Drawing.Point(375, 30);
             this.FullscreenCheckBox.Name = "FullscreenCheckBox";
             this.FullscreenCheckBox.Size = new System.Drawing.Size(74, 17);
             this.FullscreenCheckBox.TabIndex = 21;
@@ -550,34 +484,72 @@
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Controls.Add(this.LblShuffleSpeed);
+            this.panel4.Controls.Add(this.textBoxAlgorithmName);
+            this.panel4.Controls.Add(this.textBoxAmountOfBars);
+            this.panel4.Controls.Add(this.textBoxVisualize);
+            this.panel4.Controls.Add(this.textBoxSleep);
+            this.panel4.Controls.Add(this.textBoxShuffleSp);
+            this.panel4.Controls.Add(this.textBoxSwaps);
             this.panel4.Controls.Add(this.label15);
             this.panel4.Controls.Add(this.label14);
             this.panel4.Controls.Add(this.label13);
-            this.panel4.Controls.Add(this.LblSwaps);
             this.panel4.Controls.Add(this.label8);
-            this.panel4.Controls.Add(this.LblSleep);
             this.panel4.Controls.Add(this.label9);
-            this.panel4.Controls.Add(this.LblVisualize);
             this.panel4.Controls.Add(this.label7);
-            this.panel4.Controls.Add(this.LblAmountOfBars);
             this.panel4.Controls.Add(this.label6);
-            this.panel4.Controls.Add(this.LblAlgorithmName);
             this.panel4.Controls.Add(this.label2);
-            this.panel4.Location = new System.Drawing.Point(262, 707);
+            this.panel4.Location = new System.Drawing.Point(262, 688);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1244, 43);
             this.panel4.TabIndex = 13;
             // 
-            // LblShuffleSpeed
+            // textBoxAlgorithmName
             // 
-            this.LblShuffleSpeed.AutoSize = true;
-            this.LblShuffleSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblShuffleSpeed.Location = new System.Drawing.Point(844, 10);
-            this.LblShuffleSpeed.Name = "LblShuffleSpeed";
-            this.LblShuffleSpeed.Size = new System.Drawing.Size(61, 18);
-            this.LblShuffleSpeed.TabIndex = 27;
-            this.LblShuffleSpeed.Text = "SLEEP";
+            this.textBoxAlgorithmName.Enabled = false;
+            this.textBoxAlgorithmName.Location = new System.Drawing.Point(79, 10);
+            this.textBoxAlgorithmName.Name = "textBoxAlgorithmName";
+            this.textBoxAlgorithmName.Size = new System.Drawing.Size(100, 20);
+            this.textBoxAlgorithmName.TabIndex = 33;
+            // 
+            // textBoxAmountOfBars
+            // 
+            this.textBoxAmountOfBars.Enabled = false;
+            this.textBoxAmountOfBars.Location = new System.Drawing.Point(235, 10);
+            this.textBoxAmountOfBars.Name = "textBoxAmountOfBars";
+            this.textBoxAmountOfBars.Size = new System.Drawing.Size(65, 20);
+            this.textBoxAmountOfBars.TabIndex = 32;
+            // 
+            // textBoxVisualize
+            // 
+            this.textBoxVisualize.Enabled = false;
+            this.textBoxVisualize.Location = new System.Drawing.Point(481, 10);
+            this.textBoxVisualize.Name = "textBoxVisualize";
+            this.textBoxVisualize.Size = new System.Drawing.Size(79, 20);
+            this.textBoxVisualize.TabIndex = 31;
+            // 
+            // textBoxSleep
+            // 
+            this.textBoxSleep.Enabled = false;
+            this.textBoxSleep.Location = new System.Drawing.Point(647, 10);
+            this.textBoxSleep.Name = "textBoxSleep";
+            this.textBoxSleep.Size = new System.Drawing.Size(59, 20);
+            this.textBoxSleep.TabIndex = 30;
+            // 
+            // textBoxShuffleSp
+            // 
+            this.textBoxShuffleSp.Enabled = false;
+            this.textBoxShuffleSp.Location = new System.Drawing.Point(847, 10);
+            this.textBoxShuffleSp.Name = "textBoxShuffleSp";
+            this.textBoxShuffleSp.Size = new System.Drawing.Size(50, 20);
+            this.textBoxShuffleSp.TabIndex = 29;
+            // 
+            // textBoxSwaps
+            // 
+            this.textBoxSwaps.Enabled = false;
+            this.textBoxSwaps.Location = new System.Drawing.Point(1011, 11);
+            this.textBoxSwaps.Name = "textBoxSwaps";
+            this.textBoxSwaps.Size = new System.Drawing.Size(83, 20);
+            this.textBoxSwaps.TabIndex = 28;
             // 
             // label15
             // 
@@ -609,16 +581,6 @@
             this.label13.TabIndex = 24;
             this.label13.Text = "ms";
             // 
-            // LblSwaps
-            // 
-            this.LblSwaps.AutoSize = true;
-            this.LblSwaps.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblSwaps.Location = new System.Drawing.Point(1011, 10);
-            this.LblSwaps.Name = "LblSwaps";
-            this.LblSwaps.Size = new System.Drawing.Size(67, 18);
-            this.LblSwaps.TabIndex = 23;
-            this.LblSwaps.Text = "SWAPS";
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -628,16 +590,6 @@
             this.label8.Size = new System.Drawing.Size(53, 18);
             this.label8.TabIndex = 22;
             this.label8.Text = "Swaps";
-            // 
-            // LblSleep
-            // 
-            this.LblSleep.AutoSize = true;
-            this.LblSleep.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblSleep.Location = new System.Drawing.Point(645, 10);
-            this.LblSleep.Name = "LblSleep";
-            this.LblSleep.Size = new System.Drawing.Size(61, 18);
-            this.LblSleep.TabIndex = 21;
-            this.LblSleep.Text = "SLEEP";
             // 
             // label9
             // 
@@ -649,16 +601,6 @@
             this.label9.TabIndex = 20;
             this.label9.Text = "Sort sleep";
             // 
-            // LblVisualize
-            // 
-            this.LblVisualize.AutoSize = true;
-            this.LblVisualize.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblVisualize.Location = new System.Drawing.Point(481, 10);
-            this.LblVisualize.Name = "LblVisualize";
-            this.LblVisualize.Size = new System.Drawing.Size(79, 18);
-            this.LblVisualize.TabIndex = 19;
-            this.LblVisualize.Text = "AMOUNT";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -668,16 +610,6 @@
             this.label7.Size = new System.Drawing.Size(155, 18);
             this.label7.TabIndex = 18;
             this.label7.Text = "Algorithms to visualize";
-            // 
-            // LblAmountOfBars
-            // 
-            this.LblAmountOfBars.AutoSize = true;
-            this.LblAmountOfBars.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblAmountOfBars.Location = new System.Drawing.Point(235, 10);
-            this.LblAmountOfBars.Name = "LblAmountOfBars";
-            this.LblAmountOfBars.Size = new System.Drawing.Size(79, 18);
-            this.LblAmountOfBars.TabIndex = 17;
-            this.LblAmountOfBars.Text = "AMOUNT";
             // 
             // label6
             // 
@@ -689,27 +621,6 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Bars";
             // 
-            // LblAlgorithmName
-            // 
-            this.LblAlgorithmName.AutoSize = true;
-            this.LblAlgorithmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblAlgorithmName.Location = new System.Drawing.Point(78, 10);
-            this.LblAlgorithmName.Name = "LblAlgorithmName";
-            this.LblAlgorithmName.Size = new System.Drawing.Size(105, 18);
-            this.LblAlgorithmName.TabIndex = 13;
-            this.LblAlgorithmName.Text = "ALGORITHM";
-            // 
-            // checkBoxSerialize
-            // 
-            this.checkBoxSerialize.AutoSize = true;
-            this.checkBoxSerialize.Location = new System.Drawing.Point(8, 113);
-            this.checkBoxSerialize.Name = "checkBoxSerialize";
-            this.checkBoxSerialize.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxSerialize.TabIndex = 8;
-            this.checkBoxSerialize.Text = "Serialize";
-            this.checkBoxSerialize.UseVisualStyleBackColor = true;
-            this.checkBoxSerialize.CheckedChanged += new System.EventHandler(this.CheckBoxSerialize_CheckedChanged);
-            // 
             // Start
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -718,15 +629,14 @@
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.SHOWCASE_PANEL);
-            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.btnStart);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Start";
-            this.Text = "Form1";
+            this.Text = "SortingVisualizer";
             this.Load += new System.EventHandler(this.Start_Load);
+            this.DoubleClick += new System.EventHandler(this.Start_DoubleClick);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -735,8 +645,6 @@
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.shuffleSleepTimeBar)).EndInit();
@@ -744,7 +652,6 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -767,14 +674,8 @@
         private System.Windows.Forms.RadioButton JSONRadioBtn;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Label lblFileName;
         private System.Windows.Forms.Panel SHOWCASE_PANEL;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox InfoCheckBox;
@@ -784,18 +685,13 @@
         private System.Windows.Forms.TrackBar sleepTimeBar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label LblSleep;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label LblVisualize;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label LblAmountOfBars;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label LblAlgorithmName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label LblSwaps;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxFileName;
         private System.Windows.Forms.TextBox tbPath;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBoxSelectAll;
@@ -805,11 +701,17 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TrackBar shuffleSleepTimeBar;
-        private System.Windows.Forms.Label LblShuffleSpeed;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox checkBoxSerialize;
+        private System.Windows.Forms.TextBox textBoxSwaps;
+        private System.Windows.Forms.TextBox textBoxShuffleSp;
+        private System.Windows.Forms.TextBox textBoxSleep;
+        private System.Windows.Forms.TextBox textBoxVisualize;
+        private System.Windows.Forms.TextBox textBoxAmountOfBars;
+        private System.Windows.Forms.TextBox textBoxAlgorithmName;
+        private System.Windows.Forms.Label LblHasBeenUsed;
     }
 }
 

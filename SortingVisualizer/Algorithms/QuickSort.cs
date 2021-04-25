@@ -16,16 +16,11 @@ namespace SortingVisualizer.Algorithms
         /// QUICK-SORT
         /// Help with implementation - http://csharpexamples.com/c-quick-sort-algorithm-implementation/
         /// </summary>
-        public QuickSort(int sleepTime, Window window) : base(sleepTime, window)
+        public QuickSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
         public override void Sort()
         {
-            sw.Start();
-
             Sort(0, Window.ArrayLength - 1);
-
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
         public void Sort(int start, int end)
         {

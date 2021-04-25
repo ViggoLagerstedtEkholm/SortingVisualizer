@@ -16,13 +16,11 @@ namespace SortingVisualizer.Algorithms
         /// SELECTION-SORT
         /// https://en.wikipedia.org/wiki/Selection_sort
         /// </summary>
-        public SelectionSort(int sleepTime, Window window) : base(sleepTime, window)
+        public SelectionSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
 
         public override void Sort()
         {
-            sw.Start();
-
             int smallest;
             for (int i = 0; i < Window.ArrayLength - 1; i++)
             {
@@ -38,9 +36,6 @@ namespace SortingVisualizer.Algorithms
                 Swap(i, smallest);
                 Swaps++;
             }
-
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
         public void Swap(int first, int second)
         {

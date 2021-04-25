@@ -16,13 +16,11 @@ namespace SortingVisualizer.Algorithms
         /// SHELL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/shellsort/
         /// </summary>
-        public ShellSort(int sleepTime, Window window) : base(sleepTime, window)
+        public ShellSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
 
         public override void Sort()
         {
-            sw.Start();
-
             int n = Window.ArrayLength;
 
             for (int gap = n / 2; gap > 0; gap /= 2)
@@ -44,9 +42,6 @@ namespace SortingVisualizer.Algorithms
                     //sortingStarter.swapSingle(sortingStarter.getArray()[j], temp, sleepTime);
                 }
             }
-
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

@@ -15,26 +15,27 @@ using WindowsFormsApp2.Draw;
 
 namespace SortingVisualizer.Draw
 {
-    public class Window : Form
+    public class SortingWindow : Form
     {
+        public event EventHandler MinimizeScreen;
         public Size SCREENDIMENSIONS { get; set; }
         public int[] Array { get; set; }
         public int ArrayLength => Array.Length;
         public int[] Colors { get; set; }
         public int SHUFFLE_SPEED { get; set; }
         public bool ShowInfo { get; set; }
+        public bool MeasureTime { get; set; }
 
         private readonly int AMOUNT_OF_PILLARS;
 
         private readonly double BAR_HEIGHT_PERCENT = 1080.0 / 1920.0;
 
-        private readonly string FORM_TITLE;
-
         private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
 
         private SortingHandler _sortingHandler;
+        public bool Fullscreen { get; set; }
 
-        public Window(string title, int amountOfBars, Size DIMENSIONS, int SHUFFLE_SPEED)
+        public SortingWindow(int amountOfBars, Size DIMENSIONS, int SHUFFLE_SPEED)
         {
             InitializeComponent();
 
@@ -42,7 +43,6 @@ namespace SortingVisualizer.Draw
             Width = DIMENSIONS.Width;
             Height = DIMENSIONS.Height;
             AMOUNT_OF_PILLARS = amountOfBars;
-            FORM_TITLE = title;
             ShowInfo = true;
             this.SHUFFLE_SPEED = SHUFFLE_SPEED;
 
@@ -50,7 +50,6 @@ namespace SortingVisualizer.Draw
             PopulateLists();
 
             DoubleBuffered = true;
-            Text = FORM_TITLE;
             Size = DIMENSIONS;
 
             Paint += Renderer;
@@ -131,7 +130,8 @@ namespace SortingVisualizer.Draw
             Colors[indexA] = 100;
             Colors[indexB] = 100;
 
-            Sleep(sleepTime);
+            if(!MeasureTime)
+                Sleep(sleepTime);
         }
         public int SwapSingle(int index, int value, int sleepTime)
         {
@@ -141,7 +141,8 @@ namespace SortingVisualizer.Draw
 
             Colors[value] = 100;
 
-            Sleep(sleepTime);
+            if (!MeasureTime)
+                Sleep(sleepTime);
 
             return index;
         }
@@ -150,7 +151,8 @@ namespace SortingVisualizer.Draw
             Array[index] = value;
             Colors[index] = 100;
 
-            Sleep(sleepTime);
+            if (!MeasureTime)
+                Sleep(sleepTime);
         }
 
         #endregion
@@ -175,51 +177,58 @@ namespace SortingVisualizer.Draw
         #region RENDER
         private void Renderer(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-            g.Clear(Color.Black);
-
-            if (ShowInfo)
+            if (!MeasureTime)
             {
-                if(_sortingHandler.GetCurrentSortingItem() != null)
+                Graphics g = e.Graphics;
+                g.Clear(Color.Black);
+
+                if (ShowInfo)
                 {
-                    g.DrawString("Elapsed time: " + _sortingHandler.GetCurrentSortingItem().ElapsedTime + " ms", new Font("Arial", 12, FontStyle.Italic), new SolidBrush(Color.White), 20, 20);
-                }
-            }
-
-            float BAR_WIDTH = SCREENDIMENSIONS.Width / (float)AMOUNT_OF_PILLARS;
-
-            for (int i = 0; i < AMOUNT_OF_PILLARS; i++)
-            {
-                float currentVal = GetIndex(i);
-                double percentOfMax = currentVal / GetMax();
-                double heightPercentOfPanel = percentOfMax * BAR_HEIGHT_PERCENT;
-
-                float height = (float)(heightPercentOfPanel * (float)SCREENDIMENSIONS.Height);
-                float xCoord = i + (BAR_WIDTH - 1) * i;
-                float yCoord = SCREENDIMENSIONS.Height - height;
-
-                int colorValue = Colors[i] * 2;
-
-                Brush brush;
-                if (!(colorValue > 255) && !(colorValue < 0))
-                {
-                    if (colorValue > 190)
+                    if (_sortingHandler.GetCurrentSortingItem() != null)
                     {
-                        brush = new SolidBrush(Color.FromArgb(255 - colorValue, 255, 255 - colorValue));
-                    }
-                    else
-                    {
-                        brush = new SolidBrush(Color.FromArgb(255, 255 - colorValue, 255 - colorValue));
-                    }
-                    g.FillRectangle(brush, new RectangleF(xCoord, yCoord, BAR_WIDTH, height));
-
-                    if (Colors[i] > 0)
-                    {
-                        Colors[i] -= 1;
+                        g.DrawString("Real world elapsed time: " + _sortingHandler.GetCurrentSortingItem().ElapsedTime + " ms", new Font("Arial", 12, FontStyle.Italic), new SolidBrush(Color.White), 20, 20);
                     }
                 }
+
+                if (Fullscreen){
+                    g.DrawString("Double click to exit full screen.", new Font("Arial", 12, FontStyle.Italic), new SolidBrush(Color.White), 20, 40);
+                }
+
+                float BAR_WIDTH = SCREENDIMENSIONS.Width / (float)AMOUNT_OF_PILLARS;
+
+                for (int i = 0; i < AMOUNT_OF_PILLARS; i++)
+                {
+                    float currentVal = GetIndex(i);
+                    double percentOfMax = currentVal / GetMax();
+                    double heightPercentOfPanel = percentOfMax * BAR_HEIGHT_PERCENT;
+
+                    float height = (float)(heightPercentOfPanel * (float)SCREENDIMENSIONS.Height);
+                    float xCoord = i + (BAR_WIDTH - 1) * i;
+                    float yCoord = SCREENDIMENSIONS.Height - height;
+
+                    int colorValue = Colors[i] * 2;
+
+                    Brush brush;
+                    if (!(colorValue > 255) && !(colorValue < 0))
+                    {
+                        if (colorValue > 190)
+                        {
+                            brush = new SolidBrush(Color.FromArgb(11, 255 - colorValue, 153));
+                        }
+                        else
+                        {
+                            brush = new SolidBrush(Color.FromArgb(255 - colorValue, 121, 232));
+                        }
+                        g.FillRectangle(brush, new RectangleF(xCoord, yCoord, BAR_WIDTH, height));
+
+                        if (Colors[i] > 0)
+                        {
+                            Colors[i] -= 1;
+                        }
+                    }
+                }
+                Invalidate();
             }
-            Invalidate();
         }
         #endregion
 
@@ -277,17 +286,27 @@ namespace SortingVisualizer.Draw
         {
             return Array[index];
         }
+        private void SortingWindow_DoubleClick(object sender, EventArgs e)
+        {
+            Hide();
+            Fullscreen = false;
+            MinimizeScreen?.Invoke(this, null);
+        }
 
         #endregion
         private void InitializeComponent()
         {
             this.SuspendLayout();
             // 
-            // Window
+            // SortingWindow
             // 
-            this.ClientSize = new System.Drawing.Size(1252, 562);
-            this.Name = "Window";
+            this.ClientSize = new System.Drawing.Size(1252, 0);
+            this.MaximumSize = new System.Drawing.Size(1920, 1080);
+            this.Name = "SortingWindow";
+            this.Text = "Sorting window";
+            this.DoubleClick += new System.EventHandler(this.SortingWindow_DoubleClick);
             this.ResumeLayout(false);
+
         }
     }
 }

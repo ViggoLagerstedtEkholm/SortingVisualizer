@@ -18,13 +18,11 @@ namespace SortingVisualizer.Algorithms
         /// https://sv.wikipedia.org/wiki/Bubbelsortering
         /// </summary>
 
-        public BubbleSort(int sleepTime, Window window) : base(sleepTime, window)
+        public BubbleSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         {}
 
         public override void Sort()
         {
-            sw.Start();
-
             for (int i = 0; i < Window.ArrayLength; i++)
             {
                 for (int j = 0; j < Window.ArrayLength - 1; j++)
@@ -36,9 +34,6 @@ namespace SortingVisualizer.Algorithms
                     }
                 }
             }
-
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }

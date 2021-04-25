@@ -16,13 +16,11 @@ namespace SortingVisualizer.Algorithms
         /// COMB-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/comb-sort/
         /// </summary>
-        public CombSort(int sleepTime, Window window) : base(sleepTime, window)
+        public CombSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
 
         public override void Sort()
         {
-            sw.Start();
-
             int n = Window.ArrayLength;
 
             // initialize gap 
@@ -56,8 +54,6 @@ namespace SortingVisualizer.Algorithms
                     }
                 }
             }
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
         static int GetNextGap(int gap)
         {

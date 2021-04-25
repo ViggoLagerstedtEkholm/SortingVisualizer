@@ -36,7 +36,7 @@ namespace WindowsFormsApp2.Algorithms
                 }
             }
         }
-        public Window Window { get; set; }
+        public SortingWindow Window { get; set; }
 
         public int swaps;
 
@@ -53,31 +53,29 @@ namespace WindowsFormsApp2.Algorithms
                 }
             }
         }
-        public long ExecutionTime { get; set; }
+        public double ExecutionTime { get; set; }
 
-        private long elapsedTime;
-
-        public long ElapsedTime
+        public double ElapsedTime
         {
-            get { return sw.ElapsedMilliseconds; }
-            set
-            {
-                if (value != elapsedTime)
-                {
-                    elapsedTime = sw.ElapsedMilliseconds;
-                    OnPropertyChanged(nameof(ElapsedTime));
-                }
-            }
+            get { return sw.Elapsed.TotalMilliseconds; }
         }
 
         public Stopwatch sw = new Stopwatch();
 
-        public Handler(int sleepTime, Window window)
+        public Handler(int sleepTime, SortingWindow window)
         {
             Window = window;
             SleepTime = sleepTime;
         }
-
+        public void Start()
+        {
+            sw.Start();
+        }
+        public void Stop()
+        {
+            sw.Stop();
+            ExecutionTime = sw.Elapsed.TotalMilliseconds;
+        }
         public abstract void Sort();
     }
 }

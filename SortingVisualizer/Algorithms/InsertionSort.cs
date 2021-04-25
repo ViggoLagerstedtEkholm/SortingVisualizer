@@ -14,13 +14,11 @@ namespace WindowsFormsApp2.Algorithms
         /// INSERTION-SORT
         /// https://en.wikipedia.org/wiki/Insertion_sort
         /// </summary>
-        public InsertionSort(int sleepTime, Window window) : base(sleepTime, window)
+        public InsertionSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
         { }
 
         public override void Sort()
         {
-            sw.Start();
-
             for (int i = 1; i < Window.ArrayLength; i++)
             {
                 int key = Window.GetIndex(i);
@@ -28,14 +26,11 @@ namespace WindowsFormsApp2.Algorithms
 
                 while(j >= 0 && Window.GetIndex(j) > key)
                 {
-                    Window.Array[j + 1] = Window.Array[j];
+                    Window.Swap(j, j + 1, SleepTime);
                     j -= 1;
                 }
-                Window.Array[j + 1] = key;
+                Window.SwapSingleElement(j + 1, key, SleepTime);
             }
-
-            sw.Stop();
-            ExecutionTime = sw.ElapsedMilliseconds;
         }
     }
 }
