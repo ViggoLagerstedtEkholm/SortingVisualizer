@@ -1,4 +1,3 @@
-
 # SortingVisualizer
 Visualize different soring algorithms!
 ![sorting_1](https://user-images.githubusercontent.com/60555651/116021604-d10bce00-a648-11eb-8a5d-e87336f8879f.PNG)
@@ -6,6 +5,8 @@ Visualize different soring algorithms!
 ![sorting_3](https://user-images.githubusercontent.com/60555651/116021654-e7198e80-a648-11eb-9010-78759c2428fd.PNG)
 ![sorting_4](https://user-images.githubusercontent.com/60555651/116021657-e8e35200-a648-11eb-935c-a6f2e217ea48.PNG)
 
+Full screen enabled.
+![sorting_5](https://user-images.githubusercontent.com/60555651/116021942-8474c280-a649-11eb-88d5-e17ce00fa8f8.PNG)
 
 Older visualization.
 https://www.youtube.com/watch?v=i845p47_5kA&feature=youtu.be
