@@ -1,4 +1,6 @@
-﻿namespace SortingVisualizer.Draw
+﻿using System.Windows.Forms;
+
+namespace SortingVisualizer.Draw
 {
     partial class Start
     {
@@ -59,7 +61,6 @@
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.fileSystemWatcher2 = new System.IO.FileSystemWatcher();
             this.label4 = new System.Windows.Forms.Label();
-            this.SHOWCASE_PANEL = new System.Windows.Forms.Panel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
@@ -67,7 +68,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.sleepTimeBar = new System.Windows.Forms.TrackBar();
             this.InfoCheckBox = new System.Windows.Forms.CheckBox();
-            this.FullscreenCheckBox = new System.Windows.Forms.CheckBox();
             this.PauseBtn = new System.Windows.Forms.Button();
             this.ResumeBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -85,6 +85,11 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.SHOWCASE_PANEL = new System.Windows.Forms.Panel();
+            this.checkBoxBlack = new System.Windows.Forms.CheckBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.checkBoxGray = new System.Windows.Forms.CheckBox();
+            this.checkBoxDarkBlue = new System.Windows.Forms.CheckBox();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -358,14 +363,6 @@
             this.label4.Size = new System.Drawing.Size(100, 23);
             this.label4.TabIndex = 0;
             // 
-            // SHOWCASE_PANEL
-            // 
-            this.SHOWCASE_PANEL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SHOWCASE_PANEL.Location = new System.Drawing.Point(262, 90);
-            this.SHOWCASE_PANEL.Name = "SHOWCASE_PANEL";
-            this.SHOWCASE_PANEL.Size = new System.Drawing.Size(1244, 592);
-            this.SHOWCASE_PANEL.TabIndex = 9;
-            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -374,7 +371,6 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.sleepTimeBar);
             this.panel1.Controls.Add(this.InfoCheckBox);
-            this.panel1.Controls.Add(this.FullscreenCheckBox);
             this.panel1.Controls.Add(this.PauseBtn);
             this.panel1.Controls.Add(this.ResumeBtn);
             this.panel1.Location = new System.Drawing.Point(262, 12);
@@ -437,17 +433,6 @@
             this.InfoCheckBox.Text = "Show elapsed time";
             this.InfoCheckBox.UseVisualStyleBackColor = true;
             this.InfoCheckBox.CheckedChanged += new System.EventHandler(this.InfoCheckBox_CheckedChanged);
-            // 
-            // FullscreenCheckBox
-            // 
-            this.FullscreenCheckBox.AutoSize = true;
-            this.FullscreenCheckBox.Location = new System.Drawing.Point(375, 30);
-            this.FullscreenCheckBox.Name = "FullscreenCheckBox";
-            this.FullscreenCheckBox.Size = new System.Drawing.Size(74, 17);
-            this.FullscreenCheckBox.TabIndex = 21;
-            this.FullscreenCheckBox.Text = "Fullscreen";
-            this.FullscreenCheckBox.UseVisualStyleBackColor = true;
-            this.FullscreenCheckBox.CheckedChanged += new System.EventHandler(this.FullscreenCheckBox_CheckedChanged);
             // 
             // PauseBtn
             // 
@@ -621,14 +606,67 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Bars";
             // 
+            // SHOWCASE_PANEL
+            // 
+            this.SHOWCASE_PANEL.Location = new System.Drawing.Point(262, 91);
+            this.SHOWCASE_PANEL.Name = "SHOWCASE_PANEL";
+            this.SHOWCASE_PANEL.Size = new System.Drawing.Size(1244, 591);
+            this.SHOWCASE_PANEL.TabIndex = 14;
+            // 
+            // checkBoxBlack
+            // 
+            this.checkBoxBlack.AutoSize = true;
+            this.checkBoxBlack.Location = new System.Drawing.Point(109, 739);
+            this.checkBoxBlack.Name = "checkBoxBlack";
+            this.checkBoxBlack.Size = new System.Drawing.Size(53, 17);
+            this.checkBoxBlack.TabIndex = 15;
+            this.checkBoxBlack.Text = "Black";
+            this.checkBoxBlack.UseVisualStyleBackColor = true;
+            this.checkBoxBlack.CheckedChanged += new System.EventHandler(this.CheckBoxBlack_CheckedChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(12, 740);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(91, 13);
+            this.label16.TabIndex = 16;
+            this.label16.Text = "Background color";
+            // 
+            // checkBoxGray
+            // 
+            this.checkBoxGray.AutoSize = true;
+            this.checkBoxGray.Location = new System.Drawing.Point(166, 739);
+            this.checkBoxGray.Name = "checkBoxGray";
+            this.checkBoxGray.Size = new System.Drawing.Size(48, 17);
+            this.checkBoxGray.TabIndex = 17;
+            this.checkBoxGray.Text = "Gray";
+            this.checkBoxGray.UseVisualStyleBackColor = true;
+            this.checkBoxGray.CheckedChanged += new System.EventHandler(this.CheckBoxGray_CheckedChanged);
+            // 
+            // checkBoxDarkBlue
+            // 
+            this.checkBoxDarkBlue.AutoSize = true;
+            this.checkBoxDarkBlue.Location = new System.Drawing.Point(220, 739);
+            this.checkBoxDarkBlue.Name = "checkBoxDarkBlue";
+            this.checkBoxDarkBlue.Size = new System.Drawing.Size(72, 17);
+            this.checkBoxDarkBlue.TabIndex = 18;
+            this.checkBoxDarkBlue.Text = "Dark blue";
+            this.checkBoxDarkBlue.UseVisualStyleBackColor = true;
+            this.checkBoxDarkBlue.CheckedChanged += new System.EventHandler(this.CheckBoxDarkBlue_CheckedChanged);
+            // 
             // Start
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1518, 762);
+            this.Controls.Add(this.checkBoxDarkBlue);
+            this.Controls.Add(this.checkBoxGray);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.checkBoxBlack);
+            this.Controls.Add(this.SHOWCASE_PANEL);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.SHOWCASE_PANEL);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel2);
@@ -636,7 +674,6 @@
             this.Name = "Start";
             this.Text = "SortingVisualizer";
             this.Load += new System.EventHandler(this.Start_Load);
-            this.DoubleClick += new System.EventHandler(this.Start_DoubleClick);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -652,6 +689,7 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -675,11 +713,9 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblFileName;
-        private System.Windows.Forms.Panel SHOWCASE_PANEL;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox InfoCheckBox;
-        private System.Windows.Forms.CheckBox FullscreenCheckBox;
         private System.Windows.Forms.Button PauseBtn;
         private System.Windows.Forms.Button ResumeBtn;
         private System.Windows.Forms.TrackBar sleepTimeBar;
@@ -712,6 +748,11 @@
         private System.Windows.Forms.TextBox textBoxAmountOfBars;
         private System.Windows.Forms.TextBox textBoxAlgorithmName;
         private System.Windows.Forms.Label LblHasBeenUsed;
+        private System.Windows.Forms.Panel SHOWCASE_PANEL;
+        private CheckBox checkBoxDarkBlue;
+        private CheckBox checkBoxGray;
+        private Label label16;
+        private CheckBox checkBoxBlack;
     }
 }
 

@@ -1,30 +1,31 @@
-﻿using SortingVisualizer.Algorithms;
-using SortingVisualizer.Draw.Windows;
+﻿using SortingVisualizer.Draw.Windows;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp2.Algorithms;
-using WindowsFormsApp2.Draw;
 
 namespace SortingVisualizer.Draw
 {
     public class SortingWindow : Form
     {
         public event EventHandler MinimizeScreen;
-        public Size SCREENDIMENSIONS { get; set; }
+        public event EventHandler MaximizeScreen;
+
+        private readonly BufferedGraphicsContext cntxt = BufferedGraphicsManager.Current;
+        private BufferedGraphics grafx;
+
+        private byte bufferingMode;
+        private readonly string[] bufferingModeStrings =
+            { "Draw to Form without OptimizedDoubleBufferring control style",
+          "Draw to Form using OptimizedDoubleBuffering control style",
+          "Draw to HDC for form" };
         public int[] Array { get; set; }
         public int ArrayLength => Array.Length;
         public int[] Colors { get; set; }
         public int SHUFFLE_SPEED { get; set; }
         public bool ShowInfo { get; set; }
         public bool MeasureTime { get; set; }
+        public Brush BGColor { get; set; }
 
         private readonly int AMOUNT_OF_PILLARS;
 
@@ -33,32 +34,42 @@ namespace SortingVisualizer.Draw
         private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(true);
 
         private SortingHandler _sortingHandler;
+        private int count;
+
         public bool Fullscreen { get; set; }
 
-        public SortingWindow(int amountOfBars, Size DIMENSIONS, int SHUFFLE_SPEED)
+        public SortingWindow(int AMOUNT_OF_PILLARS, Size WINDOW_SIZE, int SHUFFLE_SPEED)
         {
             InitializeComponent();
 
-            SCREENDIMENSIONS = DIMENSIONS;
-            Width = DIMENSIONS.Width;
-            Height = DIMENSIONS.Height;
-            AMOUNT_OF_PILLARS = amountOfBars;
-            ShowInfo = true;
+            FormBorderStyle = FormBorderStyle.None;
+            TopLevel = false;
+            Size = WINDOW_SIZE;
+            this.AMOUNT_OF_PILLARS = AMOUNT_OF_PILLARS;
             this.SHUFFLE_SPEED = SHUFFLE_SPEED;
+            BGColor = Brushes.Black;
+
+            ShowInfo = true;
+            bufferingMode = 1;
 
             CreateArrays();
             PopulateLists();
-
+            MouseDown += new MouseEventHandler(MouseDownHandler);
+            Resize += new EventHandler(OnResize);
+            Closed += new EventHandler(OnClosed);
             DoubleBuffered = true;
-            Size = DIMENSIONS;
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            Paint += Renderer;
+            cntxt = BufferedGraphicsManager.Current;
+            cntxt.MaximumBuffer = new Size(Width + 1, Height + 1);
+            grafx = cntxt.Allocate(this.CreateGraphics(),
+                 new Rectangle(0, 0, Width, Height));
         }
 
         #region SHUFFLE
         public void ShuffleAfterSorted()
         {
-            for(int i = 0; i < Array.Length; i++)
+            for (int i = 0; i < Array.Length; i++)
             {
                 SwapSingle(i, i, SHUFFLE_SPEED);
             }
@@ -77,7 +88,7 @@ namespace SortingVisualizer.Draw
         {
             Random random = new Random();
 
-            for(int i = 0; i < Array.Length; i++)
+            for (int i = 0; i < Array.Length; i++)
             {
                 int index = random.Next(Array.Length - 1);
                 Swap(i, index, SHUFFLE_SPEED);
@@ -130,8 +141,7 @@ namespace SortingVisualizer.Draw
             Colors[indexA] = 100;
             Colors[indexB] = 100;
 
-            if(!MeasureTime)
-                Sleep(sleepTime);
+            Sleep(sleepTime);
         }
         public int SwapSingle(int index, int value, int sleepTime)
         {
@@ -141,8 +151,7 @@ namespace SortingVisualizer.Draw
 
             Colors[value] = 100;
 
-            if (!MeasureTime)
-                Sleep(sleepTime);
+            Sleep(sleepTime);
 
             return index;
         }
@@ -151,8 +160,7 @@ namespace SortingVisualizer.Draw
             Array[index] = value;
             Colors[index] = 100;
 
-            if (!MeasureTime)
-                Sleep(sleepTime);
+            Sleep(sleepTime);
         }
 
         #endregion
@@ -160,74 +168,150 @@ namespace SortingVisualizer.Draw
         #region VISUALIZE
         private void Sleep(int sleepTime)
         {
+            Invoke(new MethodInvoker(() =>
+            {
+                if (grafx != null)
+                {
+                    DrawToBuffer(grafx.Graphics);
+                    Refresh();
+                }
+            }));
+
             //Try to sleep, otherwise pause the current thread.
             try
             {
                 Thread.Sleep(sleepTime);
             }
-            catch(ThreadInterruptedException)
+            catch (ThreadInterruptedException)
             {
                 Thread.CurrentThread.Interrupt();
             }
-
             _manualResetEvent.WaitOne();
         }
         #endregion
 
-        #region RENDER
-        private void Renderer(object sender, PaintEventArgs e)
+        #region Events
+        private void MouseDownHandler(object sender, MouseEventArgs e)
         {
-            if (!MeasureTime)
+            switch (e.Button)
             {
-                Graphics g = e.Graphics;
-                g.Clear(Color.Black);
+                case MouseButtons.Right:
+                    if (++bufferingMode > 2)
+                        bufferingMode = 0;
 
-                if (ShowInfo)
+                    if (bufferingMode == 1)
+                        this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+                    if (bufferingMode == 2)
+                        this.SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
+                    PrepareRefresh();
+                    break;
+                case MouseButtons.Left:
+                    Toggle_FULLSCREEN();
+                    break;
+            }
+
+        }
+
+        private void OnResize(object sender, EventArgs e)
+        {
+            Console.WriteLine("Resized!");
+            // Re-create the graphics buffer for a new window size.
+            cntxt.MaximumBuffer = new Size(this.Width + 1, this.Height + 1);
+            if (grafx != null)
+            {
+                grafx.Dispose();
+                grafx = null;
+            }
+            grafx = cntxt.Allocate(this.CreateGraphics(),
+                new Rectangle(0, 0, this.Width, this.Height));
+
+
+            // Cause the background to be cleared and redraw.
+            PrepareRefresh();
+        }
+
+        private void PrepareRefresh()
+        {
+            count = 3;
+            DrawToBuffer(grafx.Graphics);
+            Refresh();
+        }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            grafx.Dispose();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            grafx.Render(e.Graphics);
+        }
+        #endregion
+
+        #region Render
+        private void DrawToBuffer(Graphics g)
+        {
+            // Clear the graphics buffer every five updates.
+            if (++count > 2)
+            {
+                count = 0;
+                g.FillRectangle(BGColor, 0, 0, Width, Height);
+            }
+
+            RenderTexts(g);
+
+            float BAR_WIDTH = Size.Width / (float)AMOUNT_OF_PILLARS;
+
+            for (int i = 0; i < AMOUNT_OF_PILLARS; i++)
+            {
+                float currentVal = GetIndex(i);
+                double percentOfMax = currentVal / GetMax();
+                double heightPercentOfPanel = percentOfMax * BAR_HEIGHT_PERCENT;
+
+                float height = (float)(heightPercentOfPanel * (float)Size.Height);
+                float xCoord = i + (BAR_WIDTH - 1) * i;
+                float yCoord = Size.Height - height;
+
+                int colorValue = Colors[i] * 2;
+
+                Brush brush;
+                if (!(colorValue > 255) && !(colorValue < 0))
                 {
-                    if (_sortingHandler.GetCurrentSortingItem() != null)
+                    if (colorValue > 245)
                     {
-                        g.DrawString("Real world elapsed time: " + _sortingHandler.GetCurrentSortingItem().ElapsedTime + " ms", new Font("Arial", 12, FontStyle.Italic), new SolidBrush(Color.White), 20, 20);
+                        brush = new SolidBrush(Color.FromArgb(11, 255 - colorValue, 153));
+                    }
+                    else
+                    {
+                        brush = new SolidBrush(Color.FromArgb(255 - colorValue, 121, 232));
+                    }
+                    g.FillRectangle(brush, new RectangleF(xCoord, yCoord, BAR_WIDTH, height));
+
+                    if (Colors[i] > 0)
+                    {
+                        Colors[i] -= 1;
                     }
                 }
+            }
+        }
 
-                if (Fullscreen){
-                    g.DrawString("Double click to exit full screen.", new Font("Arial", 12, FontStyle.Italic), new SolidBrush(Color.White), 20, 40);
-                }
+        private void RenderTexts(Graphics g)
+        {
+            if (!Fullscreen)
+            {
+                g.DrawString("Click to go full screen.", new Font("Arial", 8), Brushes.White, 10, 10);
+            }
+            else
+            {
+                g.DrawString("Buffering Mode: " + bufferingModeStrings[bufferingMode] + " - [Right Click To Change Render Mode]", new Font("Arial", 8), Brushes.White, 10, 10);
+            }
 
-                float BAR_WIDTH = SCREENDIMENSIONS.Width / (float)AMOUNT_OF_PILLARS;
-
-                for (int i = 0; i < AMOUNT_OF_PILLARS; i++)
+            if (ShowInfo)
+            {
+                if (_sortingHandler.GetCurrentSortingItem() != null)
                 {
-                    float currentVal = GetIndex(i);
-                    double percentOfMax = currentVal / GetMax();
-                    double heightPercentOfPanel = percentOfMax * BAR_HEIGHT_PERCENT;
-
-                    float height = (float)(heightPercentOfPanel * (float)SCREENDIMENSIONS.Height);
-                    float xCoord = i + (BAR_WIDTH - 1) * i;
-                    float yCoord = SCREENDIMENSIONS.Height - height;
-
-                    int colorValue = Colors[i] * 2;
-
-                    Brush brush;
-                    if (!(colorValue > 255) && !(colorValue < 0))
-                    {
-                        if (colorValue > 190)
-                        {
-                            brush = new SolidBrush(Color.FromArgb(11, 255 - colorValue, 153));
-                        }
-                        else
-                        {
-                            brush = new SolidBrush(Color.FromArgb(255 - colorValue, 121, 232));
-                        }
-                        g.FillRectangle(brush, new RectangleF(xCoord, yCoord, BAR_WIDTH, height));
-
-                        if (Colors[i] > 0)
-                        {
-                            Colors[i] -= 1;
-                        }
-                    }
+                    g.DrawString("Real world elapsed time: " + _sortingHandler.GetCurrentSortingItem().ElapsedTime + " seconds", new Font("Arial", 10), Brushes.White, 10, 25);
                 }
-                Invalidate();
             }
         }
         #endregion
@@ -251,20 +335,15 @@ namespace SortingVisualizer.Draw
             return max;
         }
 
-
-        #region GETTERS/SETTERS
-
         public void Toggle_FULLSCREEN()
         {
-            if (!WindowState.Equals(FormWindowState.Maximized))
+            if (!Fullscreen)
             {
-                WindowState = FormWindowState.Maximized;
-                FormBorderStyle = FormBorderStyle.None;
+                MaximizeScreen?.Invoke(this, null);
             }
             else
             {
-                WindowState = FormWindowState.Normal;
-                FormBorderStyle = FormBorderStyle.FixedSingle;
+                MinimizeScreen?.Invoke(this, null);
             }
         }
 
@@ -286,14 +365,7 @@ namespace SortingVisualizer.Draw
         {
             return Array[index];
         }
-        private void SortingWindow_DoubleClick(object sender, EventArgs e)
-        {
-            Hide();
-            Fullscreen = false;
-            MinimizeScreen?.Invoke(this, null);
-        }
 
-        #endregion
         private void InitializeComponent()
         {
             this.SuspendLayout();
@@ -304,9 +376,7 @@ namespace SortingVisualizer.Draw
             this.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.Name = "SortingWindow";
             this.Text = "Sorting window";
-            this.DoubleClick += new System.EventHandler(this.SortingWindow_DoubleClick);
             this.ResumeLayout(false);
-
         }
     }
 }

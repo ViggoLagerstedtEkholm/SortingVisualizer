@@ -1,14 +1,14 @@
-﻿using SortingVisualizer.Validate;
-using SortingVisualizer.Algorithms;
+﻿using SortingVisualizer.Algorithms;
+using SortingVisualizer.Draw.Windows;
+using SortingVisualizer.Validate;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using SortingVisualizer.Draw.Windows;
-using WindowsFormsApp2.Algorithms;
 using System.ComponentModel;
-using WindowsFormsApp2.Draw.Windows;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
+using WindowsFormsApp2.Algorithms;
+using WindowsFormsApp2.Draw.Windows;
 using WindowsFormsApp2.IO;
 
 namespace SortingVisualizer.Draw
@@ -16,46 +16,72 @@ namespace SortingVisualizer.Draw
     public partial class Start : Form
     {
         private SortingHandler SortingHandler;
-        private readonly Queue<Handler> QueueHandler;
+        private readonly Queue<Algorithm> QueueHandler;
         private readonly List<RadioButton> RadioButtonsFiles;
         private SortingWindow Window;
         private readonly Serialize Serializer;
         private readonly SessionViewer SessionViewer;
-        private Handler CurrentAlgorithm { get; set; }
+        private Algorithm CurrentAlgorithm { get; set; }
         private string FileName;
         private bool Save;
         private int AMOUNT_OF_PILLARS;
-        private int WIDTH => SHOWCASE_PANEL.Width;
-        private int HEIGHT => SHOWCASE_PANEL.Height;
+        private int SHOWCASE_PANEL_WIDTH => SHOWCASE_PANEL.Width;
+        private int SHOWCASE_PANEL_HEIGHT => SHOWCASE_PANEL.Height;
+        private int WINDOW_WIDTH => Screen.PrimaryScreen.Bounds.Width;
+        private int WINDOW_HEIGHT => Screen.PrimaryScreen.Bounds.Height;
         private string Path => GetPath();
         private string DirectoryPath => GetDirectory();
         public Start()
         {
             InitializeComponent();
+            DoubleBuffered = true;
             RadioButtonsFiles = new List<RadioButton>();
-            QueueHandler = new Queue<Handler>();
+            QueueHandler = new Queue<Algorithm>();
             Serializer = new XMLSerializer(DirectoryPath);
             SessionViewer = new SessionViewer(Serializer)
             {
                 TopLevel = false
             };
+            DisableUIControlElements();
             InitializeState();
             CreateSessionInstance();
+            EnableSideHud();
         }
 
-        private string GetDirectory()
+        #region Events/Callbacks
+        private void AlgorithmPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
         {
-            string workingDirectory = Environment.CurrentDirectory;
-            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-            return projectDirectory + @"\SavedFiles";
+            switch (e.PropertyName)
+            {
+                case nameof(Algorithm.SleepTime):
+                    textBoxSleep.BeginInvoke(new Action(() =>
+                    {
+                        textBoxSleep.Text = CurrentAlgorithm.SleepTime.ToString();
+                    }));
+                    break;
+                case nameof(Algorithm.Swaps):
+                    textBoxSwaps.BeginInvoke(new Action(() =>
+                    {
+                        textBoxSwaps.Text = CurrentAlgorithm.Swaps.ToString();
+                    }));
+                    break;
+            }
         }
-
-        private string GetPath()
+        private void GetCurrentAlgorithm(Algorithm algorithm)
         {
-            return DirectoryPath + @"\" + textBoxFileName.Text + ".xml";
+            CurrentAlgorithm = algorithm;
+            textBoxAlgorithmName.BeginInvoke(new Action(() =>
+            {
+                textBoxAlgorithmName.Text = algorithm.Name;
+            }));
+
+            textBoxSleep.BeginInvoke(new Action(() =>
+            {
+                textBoxSleep.Text = algorithm.SleepTime.ToString();
+            }));
         }
 
-        private void AddEventHandler(Handler handler)
+        private void AddEventHandler(Algorithm handler)
         {
             handler.PropertyChanged += AlgorithmPropertyChangedHandler;
         }
@@ -66,23 +92,21 @@ namespace SortingVisualizer.Draw
             SHOWCASE_PANEL.Controls.Clear();
             SHOWCASE_PANEL.Invalidate();
             Window.Close();
-            if (!Window.Fullscreen)
-            {
-                ShowMessage("Sorting finished.");
-            }
+
+            ShowMessage("Sorting finished.");
+            
             SessionViewer.UpdateSessions();
             DisableUIControlElements();
-            btnStart.Enabled = true;
+            CreateSessionInstance();
             CheckFileSlot();
         }
 
         private void ShowMessage(string message)
         {
-        
             MessageBox.Show(message, "SYSTEM_MESSAGE");
-           
             CreateSessionInstance();
         }
+        #endregion
 
         #region SIDEBAR/UI_CONTROLS
         private void InitializeState()
@@ -90,40 +114,57 @@ namespace SortingVisualizer.Draw
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
 
-            DisableUIControlElements();
-
             tbPath.Text = Path;
-
             tbPath.Enabled = false;
+
             textBoxFileName.Enabled = false;
         }
 
         private void DisableUIControlElements()
         {
+            checkBoxBlack.Enabled = false;
+            checkBoxGray.Enabled = false;
+            checkBoxDarkBlue.Enabled = false;
             PauseBtn.Enabled = false;
             ResumeBtn.Enabled = false;
             InfoCheckBox.Enabled = false;
-            FullscreenCheckBox.Enabled = false;
             sleepTimeBar.Enabled = false;
             shuffleSleepTimeBar.Enabled = false;
         }
 
         private void EnableUIControlElements()
         {
+            checkBoxBlack.Enabled = true;
+            checkBoxGray.Enabled = true;
+            checkBoxDarkBlue.Enabled = true;
             PauseBtn.Enabled = true;
             ResumeBtn.Enabled = true;
             InfoCheckBox.Enabled = true;
-            FullscreenCheckBox.Enabled = true;
             sleepTimeBar.Enabled = true;
             shuffleSleepTimeBar.Enabled = true;
         }
+
+        private void EnableSideHud()
+        {
+            btnStart.Enabled = true;
+        }
+
+        private void DisableSideHud()
+        {
+            btnStart.Enabled = false;
+        }
+
         #endregion
 
+        #region Load
         private void Start_Load(object sender, EventArgs e)
         {
             AlgorithmsList.Items.AddRange(Enum.GetNames(typeof(ALGORITHM_TYPE)));
             AlgorithmsList.CheckOnClick = true;
         }
+        #endregion
+
+        #region Validate inputs
         private void BtnStart_Click(object sender, EventArgs e)
         {
             if (!Validator.CheckBoxListHasValue(AlgorithmsList))
@@ -156,101 +197,70 @@ namespace SortingVisualizer.Draw
                 CreateWindowInstance();
             }
         }
+        #endregion
 
+        #region Create instances
         private void CreateSessionInstance()
         {
             SHOWCASE_PANEL.Controls.Clear();
             SHOWCASE_PANEL.Controls.Add(SessionViewer);
-            DisableFrame(SessionViewer);
             SessionViewer.Show();
         }
         private void CreateWindowInstance()
         {
             SHOWCASE_PANEL.Controls.Clear();
+
             int SLEEP = Int32.Parse(textBoxSleepStart.Text);
             int SHUFFLE_SPEED = Int32.Parse(textBoxShuffleSpeed.Text);
 
-            Window = new SortingWindow(AMOUNT_OF_PILLARS, new Size(WIDTH, HEIGHT), SHUFFLE_SPEED);
+            Window = new SortingWindow(AMOUNT_OF_PILLARS, new Size(SHOWCASE_PANEL_WIDTH, SHOWCASE_PANEL_HEIGHT), SHUFFLE_SPEED);
             SortingHandler = new SortingHandler(QueueHandler, Serializer, Window, FileName, Save);
             Window.SetSortingHandler(SortingHandler);
             SortingHandler.RestartWindowState += RestartWindowState;
             Window.MinimizeScreen += MinimizeScreen;
-            DisableFrame(Window);
+            Window.MaximizeScreen += MaximizeScreen;
 
             textBoxAmountOfBars.Text = AMOUNT_OF_PILLARS.ToString();
             textBoxVisualize.Text = SortingHandler.Remaining.ToString();
             textBoxShuffleSp.Text = textBoxShuffleSpeed.Text;
             FillAlgotihms(SLEEP);
 
-            btnStart.Enabled = false;
+            DisableSideHud();
             EnableUIControlElements();
-
             SHOWCASE_PANEL.Controls.Add(Window);
             Window.Show();
+
             SortingHandler.InitiateSorting(GetCurrentAlgorithm);
         }
+        #endregion
 
-        private void DisableFrame(Form form)
-        {
-            form.TopLevel = false;
-            form.FormBorderStyle = FormBorderStyle.None;
-            form.Width = WIDTH;
-            form.Height = HEIGHT;
-        }
-
-        private void GetCurrentAlgorithm(Handler algorithm)
-        {
-            CurrentAlgorithm = algorithm;
-            textBoxAlgorithmName.BeginInvoke(new Action(() =>
-            {
-                textBoxAlgorithmName.Text = algorithm.Name;
-            }));
-
-            textBoxSleep.BeginInvoke(new Action(() =>
-            {
-                textBoxSleep.Text = algorithm.SleepTime.ToString();
-            }));
-        }
-
-        private void PopUpFullScreen()
-        {
-            SHOWCASE_PANEL.Controls.Remove(Window);
-            int width = Screen.PrimaryScreen.Bounds.Width;
-            int height = Screen.PrimaryScreen.Bounds.Height;
-            Window.TopLevel = true;
-            Window.WindowState = FormWindowState.Normal;
-            Window.Size = new Size(width, height);
-            Window.SCREENDIMENSIONS = new Size(width, height);
-            Window.Show();
-        }
-
+        #region Window states
         public void MinimizeScreen(object sender, EventArgs e)
         {
+            Console.WriteLine("Minimizing...");
+            Window.Fullscreen = false;
+            Window.WindowState = FormWindowState.Normal;
+            Window.FormBorderStyle = FormBorderStyle.None;
             Window.TopLevel = false;
-            FullscreenCheckBox.Checked = false;
             SHOWCASE_PANEL.Controls.Add(Window);
-            Window.SCREENDIMENSIONS = new Size(WIDTH, HEIGHT);
+            Window.Size = new Size(SHOWCASE_PANEL_WIDTH, SHOWCASE_PANEL_HEIGHT);
             Window.Show();
         }
-        private void AlgorithmPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-        {            
-            switch (e.PropertyName)
-            {
-                case nameof(Handler.SleepTime):
-                    textBoxSleep.BeginInvoke(new Action(() =>
-                   {
-                       textBoxSleep.Text = CurrentAlgorithm.SleepTime.ToString();
-                   })); 
-                    break;
-                case nameof(Handler.Swaps):
-                    textBoxSwaps.BeginInvoke(new Action(() =>
-                    {
-                        textBoxSwaps.Text = CurrentAlgorithm.Swaps.ToString();
-                    }));
-                    break;
-            }
-        }
 
+        public void MaximizeScreen(object sender, EventArgs e)
+        {
+            Console.WriteLine("Maximizing...");
+            Window.Fullscreen = true;
+            SHOWCASE_PANEL.Controls.Remove(Window);
+            Window.TopLevel = true;
+            Window.WindowState = FormWindowState.Normal;
+            Window.FormBorderStyle = FormBorderStyle.None;
+            Window.Size = new Size(WINDOW_WIDTH, WINDOW_HEIGHT);
+            Window.Show();
+        }
+        #endregion
+
+        #region Algorithms
         private void FillAlgotihms(int SLEEP)
         {
             foreach (object itemChecked in AlgorithmsList.CheckedItems)
@@ -258,75 +268,81 @@ namespace SortingVisualizer.Draw
                 switch (itemChecked.ToString())
                 {
                     case "BUBBLE":
-                        BubbleSort bubble = new BubbleSort(SLEEP, Window);
-                        QueueHandler.Enqueue(bubble);
-                        AddEventHandler(bubble);
-                        bubble.Name = "Bubble sort";
+                        QueueHandler.Enqueue(new BubbleSort(SLEEP, Window, "Bubble sort"));
                         break;
                     case "SELECTION":
-                        SelectionSort selction = new SelectionSort(SLEEP, Window);
-                        QueueHandler.Enqueue(selction);
-                        AddEventHandler(selction);
-                        selction.Name = "Selection sort";
+                        QueueHandler.Enqueue(new SelectionSort(SLEEP, Window, "Selection sort"));
                         break;
                     case "HEAP":
-                        HeapSort heap = new HeapSort(SLEEP, Window);
-                        QueueHandler.Enqueue(heap);
-                        AddEventHandler(heap);
-                        heap.Name = "Heap sort";
+                        QueueHandler.Enqueue(new HeapSort(SLEEP, Window, "Heap sort"));
                         break;
                     case "MERGE":
-                        MergeSort merge = new MergeSort(SLEEP, Window);
-                        QueueHandler.Enqueue(merge);
-                        AddEventHandler(merge);
-                        merge.Name = "Merge sort";
+                        QueueHandler.Enqueue(new MergeSort(SLEEP, Window, "Merge sort"));
                         break;
                     case "QUICK":
-                        QuickSort quick = new QuickSort(SLEEP, Window);
-                        QueueHandler.Enqueue(quick);
-                        AddEventHandler(quick);
-                        quick.Name = "Quick sort";
+                        QueueHandler.Enqueue(new QuickSort(SLEEP, Window, "Quick sort"));
                         break;
                     case "INSERTION":
-                        InsertionSort insertion = new InsertionSort(SLEEP, Window);
-                        QueueHandler.Enqueue(insertion);
-                        AddEventHandler(insertion);
-                        insertion.Name = "Insertion sort";
+                        QueueHandler.Enqueue(new InsertionSort(SLEEP, Window, "Insertion sort"));
                         break;
                     case "COCKTAIL":
-                        CocktailSort cocktail = new CocktailSort(SLEEP, Window);
-                        QueueHandler.Enqueue(cocktail);
-                        AddEventHandler(cocktail);
-                        cocktail.Name = "Cocktail sort";
+                        QueueHandler.Enqueue(new CocktailSort(SLEEP, Window, "Cocktail sort"));
                         break;
                     case "SHELL":
-                        ShellSort shell = new ShellSort(SLEEP, Window);
-                        QueueHandler.Enqueue(shell);
-                        AddEventHandler(shell);
-                        shell.Name = "Shell sort";
+                        QueueHandler.Enqueue(new ShellSort(SLEEP, Window, "Shell sort"));
                         break;
                     case "COMB":
-                        CombSort comb = new CombSort(SLEEP, Window);
-                        QueueHandler.Enqueue(comb);
-                        AddEventHandler(comb);
-                        comb.Name = "Comb sort";
+                        QueueHandler.Enqueue(new CombSort(SLEEP, Window, "Comb sort"));
                         break;
                     case "CYCLE":
-                        CycleSort cycle = new CycleSort(SLEEP, Window);
-                        QueueHandler.Enqueue(cycle);
-                        AddEventHandler(cycle);
-                        cycle.Name = "Cycle sort";
+                        QueueHandler.Enqueue(new CycleSort(SLEEP, Window, "Cycle sort"));
                         break;
                     case "STOOGE":
-                        StoogeSort stooge = new StoogeSort(SLEEP, Window);
-                        QueueHandler.Enqueue(stooge);
-                        AddEventHandler(stooge);
-                        stooge.Name = "Stooge sort";
+                        QueueHandler.Enqueue(new StoogeSort(SLEEP, Window, "Stooge sort"));
                         break;
                 }
             }
+            foreach (Algorithm algorithm in QueueHandler)
+            {
+                AddEventHandler(algorithm);
+            }
+        }
+        #endregion
+
+        #region Directory
+
+        private bool CheckFileSlot()
+        {
+            if (!File.Exists(Path))
+            {
+                LblHasBeenUsed.BackColor = Color.Green;
+                LblHasBeenUsed.Text = "Not already used.";
+                FileName = textBoxFileName.Text;
+                return true;
+            }
+            else
+            {
+                LblHasBeenUsed.BackColor = Color.Red;
+                LblHasBeenUsed.Text = "Already used.";
+                FileName = textBoxFileName.Text;
+                return false;
+            }
         }
 
+        private string GetDirectory()
+        {
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+            return projectDirectory + @"\SavedFiles";
+        }
+
+        private string GetPath()
+        {
+            return DirectoryPath + @"\" + textBoxFileName.Text + ".xml";
+        }
+        #endregion
+
+        #region Event handlers
         private void AlgorithmsList_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedAlgorithmListBox.Items.Clear();
@@ -384,14 +400,6 @@ namespace SortingVisualizer.Draw
             }
         }
 
-        private void FullscreenCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (FullscreenCheckBox.Checked)
-            {
-                PopUpFullScreen();
-            }
-        }
-
         private void SleepTimeBar_Scroll(object sender, EventArgs e)
         {
             CurrentAlgorithm.SleepTime = sleepTimeBar.Value;
@@ -418,7 +426,7 @@ namespace SortingVisualizer.Draw
         private void ShuffleSleepTimeBar_Scroll(object sender, EventArgs e)
         {
             Window.SHUFFLE_SPEED = shuffleSleepTimeBar.Value;
-            textBoxShuffleSp.Text = Window.SHUFFLE_SPEED.ToString();    
+            textBoxShuffleSp.Text = Window.SHUFFLE_SPEED.ToString();
         }
 
         private void CheckBoxSerialize_CheckedChanged(object sender, EventArgs e)
@@ -441,28 +449,36 @@ namespace SortingVisualizer.Draw
         {
             CheckFileSlot();
         }
+        #endregion
 
-        private bool CheckFileSlot()
+        private void CheckBoxBlack_CheckedChanged(object sender, EventArgs e)
         {
-            if (!File.Exists(Path))
+            if (checkBoxBlack.Checked)
             {
-                LblHasBeenUsed.BackColor = Color.Green;
-                LblHasBeenUsed.Text = "Not already used.";
-                FileName = textBoxFileName.Text;
-                return true;
-            }
-            else
-            {
-                LblHasBeenUsed.BackColor = Color.Red;
-                LblHasBeenUsed.Text = "Already used.";
-                FileName = textBoxFileName.Text;
-                return false;
+                Window.BGColor = Brushes.Black;
+                checkBoxGray.Checked = false;
+                checkBoxDarkBlue.Checked = false;
             }
         }
 
-        private void Start_DoubleClick(object sender, EventArgs e)
+        private void CheckBoxGray_CheckedChanged(object sender, EventArgs e)
         {
+            if (checkBoxGray.Checked)
+            {
+                Window.BGColor = Brushes.Gray;
+                checkBoxDarkBlue.Checked = false;
+                checkBoxBlack.Checked = false;
+            }
+        }
 
+        private void CheckBoxDarkBlue_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxDarkBlue.Checked)
+            {
+                Window.BGColor = Brushes.DarkBlue;
+                checkBoxBlack.Checked = false;
+                checkBoxGray.Checked = false;
+            }
         }
     }
 }
