@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Serialization;
 using WindowsFormsApp2.Draw;
 
@@ -28,7 +24,7 @@ namespace WindowsFormsApp2.IO
             List<Session> objects = new List<Session>();
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Session));
-            for(int i = 0; i < names.Count; i++)
+            for (int i = 0; i < names.Count; i++)
             {
                 using (FileStream inFile = new FileStream(names[i], FileMode.Open, FileAccess.Read))
                 {
