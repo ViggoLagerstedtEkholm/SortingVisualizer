@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace SortingVisualizer.Validate
@@ -12,9 +8,7 @@ namespace SortingVisualizer.Validate
         public static bool TxfHasInteger(TextBox txfBox)
         {
             bool hasInteger = false;
-            int parsedValue;
-
-            if(int.TryParse(txfBox.Text, out parsedValue))
+            if (int.TryParse(txfBox.Text, out _))
             {
                 hasInteger = true;
             }
@@ -26,7 +20,7 @@ namespace SortingVisualizer.Validate
         {
             bool res = false;
 
-            for(int i = 0; i < buttons.Count; i++)
+            for (int i = 0; i < buttons.Count; i++)
             {
                 if (buttons[i].Checked)
                 {

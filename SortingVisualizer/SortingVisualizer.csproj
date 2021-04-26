@@ -147,7 +147,7 @@
     <Compile Include="Algorithms\Constants.cs" />
     <Compile Include="Algorithms\CycleSort.cs" />
     <Compile Include="Algorithms\GnomeSort.cs" />
-    <Compile Include="Algorithms\Handler.cs" />
+    <Compile Include="Algorithms\Algorithm.cs" />
     <Compile Include="Algorithms\HeapSort.cs" />
     <Compile Include="Algorithms\InsertionSort.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />

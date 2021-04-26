@@ -1,18 +1,13 @@
-﻿using CSCore.SoundOut;
-using SortingVisualizer.Draw;
+﻿using SortingVisualizer.Draw;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp2.IO;
 
 
 namespace SortingVisualizer
 {
     static class Program
     {
-        
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
