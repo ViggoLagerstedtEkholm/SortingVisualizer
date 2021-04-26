@@ -1,22 +1,15 @@
 ﻿using SortingVisualizer.Draw;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class StoogeSort : Handler
+    public class StoogeSort : Algorithm
     {
         /// <summary>
         /// STOOGE-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/stooge-sort/
         /// </summary>
-        public StoogeSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
+        public StoogeSort(int sleepTime, SortingWindow window, string name) : base(sleepTime, window, name)
         { }
         public override void Sort()
         {

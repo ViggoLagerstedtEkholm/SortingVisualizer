@@ -1,22 +1,15 @@
 ﻿using SortingVisualizer.Draw;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class ShellSort : Handler
+    public class ShellSort : Algorithm
     {
         /// <summary>
         /// SHELL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/shellsort/
         /// </summary>
-        public ShellSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
+        public ShellSort(int sleepTime, SortingWindow window, string name) : base(sleepTime, window, name)
         { }
 
         public override void Sort()

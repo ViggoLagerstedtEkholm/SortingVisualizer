@@ -1,23 +1,16 @@
 ﻿using SortingVisualizer.Draw;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    class CocktailSort : Handler
+    class CocktailSort : Algorithm
     {
         /// <summary>
         /// COCKTAIL-SORT
         /// Help with implementation - https://www.geeksforgeeks.org/cocktail-sort/
         /// </summary>
-        public CocktailSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
-        {}
+        public CocktailSort(int sleepTime, SortingWindow window, string name) : base(sleepTime, window, name)
+        { }
 
         public override void Sort()
         {

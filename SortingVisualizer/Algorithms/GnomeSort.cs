@@ -1,23 +1,16 @@
 ﻿using SortingVisualizer.Draw;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class GnomeSort : Handler
+    public class GnomeSort : Algorithm
     {
         /// <summary>
         /// GNOME-SORT
         /// https://en.wikipedia.org/wiki/Gnome_sort
         /// </summary>
 
-        public GnomeSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
+        public GnomeSort(int sleepTime, SortingWindow window, string name) : base(sleepTime, window, name)
         { }
 
         public override void Sort()

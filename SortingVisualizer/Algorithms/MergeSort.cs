@@ -1,22 +1,16 @@
 ﻿using SortingVisualizer.Draw;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using WindowsFormsApp2.Algorithms;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class MergeSort : Handler
+    public class MergeSort : Algorithm
     {
         /// <summary>
         /// MERGE-SORT
         /// Help with implementation - http://csharpexamples.com/c-merge-sort-algorithm-implementation/
         /// </summary>
-        public MergeSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
+        public MergeSort(int sleepTime, SortingWindow window, string name) : base(sleepTime, window, name)
         { }
         public override void Sort()
         {

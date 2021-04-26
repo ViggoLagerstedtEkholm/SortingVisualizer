@@ -1,17 +1,10 @@
-﻿using SortingVisualizer.Algorithms;
-using SortingVisualizer.Draw;
-using System;
-using System.Collections.Generic;
+﻿using SortingVisualizer.Draw;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace WindowsFormsApp2.Algorithms
 {
-    public abstract class Handler : INotifyPropertyChanged
+    public abstract class Algorithm : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -57,15 +50,16 @@ namespace WindowsFormsApp2.Algorithms
 
         public double ElapsedTime
         {
-            get { return sw.Elapsed.TotalMilliseconds; }
+            get { return sw.Elapsed.TotalSeconds; }
         }
 
         public Stopwatch sw = new Stopwatch();
 
-        public Handler(int sleepTime, SortingWindow window)
+        public Algorithm(int sleepTime, SortingWindow window, string name)
         {
             Window = window;
             SleepTime = sleepTime;
+            Name = name;
         }
         public void Start()
         {

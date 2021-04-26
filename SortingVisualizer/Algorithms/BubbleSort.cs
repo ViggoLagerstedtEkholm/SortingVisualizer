@@ -1,25 +1,17 @@
 ﻿using SortingVisualizer.Draw;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using SortingVisualizer.Algorithms;
 using WindowsFormsApp2.Algorithms;
-using System.Diagnostics;
 
 namespace SortingVisualizer.Algorithms
 {
-    public class BubbleSort : Handler
+    public class BubbleSort : Algorithm
     {
         /// <summary>
         /// BUBBLE-SORT
         /// https://sv.wikipedia.org/wiki/Bubbelsortering
         /// </summary>
 
-        public BubbleSort(int sleepTime, SortingWindow window) : base(sleepTime, window)
-        {}
+        public BubbleSort(int sleepTime, SortingWindow window, string name) : base(sleepTime, window, name)
+        { }
 
         public override void Sort()
         {
