@@ -1,4 +1,6 @@
 # SortingVisualizer
+This is a tool that I created to help myself visualize sorting algorithms for my datastructures and algorithm course. This was a fun project that helped me code more in C# and at the same time prepare me for some sorting algorithms!
+
 Visualize different soring algorithms!
 
 Overview
