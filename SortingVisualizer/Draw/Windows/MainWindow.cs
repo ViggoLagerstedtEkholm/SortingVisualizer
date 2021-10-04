@@ -99,6 +99,7 @@ namespace SortingVisualizer.Draw
             DisableUIControlElements();
             CreateSessionInstance();
             CheckFileSlot();
+            EnableSideHud();
         }
 
         private void ShowMessage(string message)
